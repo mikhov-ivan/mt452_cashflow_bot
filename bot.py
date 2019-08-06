@@ -1,3 +1,5 @@
+from bottle import Bottle, response, request as bottle_request
+import requests
 import telegram
 
 global bot
