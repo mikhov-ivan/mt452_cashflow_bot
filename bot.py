@@ -1,8 +1,10 @@
 import os
 import sys
+import logging
 import requests
 import telegram
 from telegram.ext import Updater
+from telegram.ext import CommandHandler
 from bottle import Bottle, response, request as bottle_request
 
 global bot
@@ -15,6 +17,9 @@ APP_URL = 'https://mt452-cashflow-bot.herokuapp.com/'
 APP_KEY = '4276eb911ca3133611d23040e1ee439ea21738932dda94e502f37fae0497'
 BOT_URL = 'https://api.telegram.org/bot861062365:AAEq3evcJCE5nZCSclev9Z8ki-cAjwdTUqQ/'
 TOKEN = '861062365:AAEq3evcJCE5nZCSclev9Z8ki-cAjwdTUqQ'
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logger = logging.getLogger()
 
 def p(*args):
     print(args[0])
@@ -66,12 +71,20 @@ class TelegramBot(BotHandlerMixin, Bottle):
         return text[::-1]
 
 
+def start_handler():
+    logger.info("User {} started bot".format(update.effective_user["id"]))
+    update.message.reply_text("Hello from Python!\nPress /random to get random number")
+
 if __name__ == '__main__':
+    logger.info("Starting bot")
     updater = Updater(TOKEN)
-    PORT = int(os.environ.get('PORT', '5000'))
+    PORT = int(os.environ.get('PORT', '8443'))
+    
+    updater.dispatcher.add_handler(CommandHandler("start", start_handler))
+    updater.dispatcher.add_handler(CommandHandler("random", random_handler))
+    
     updater.start_webhook(listen='0.0.0.0', port=PORT, url_path=TOKEN, key=APP_KEY)
     updater.bot.set_webhook(APP_URL + TOKEN)
-    updater.idle()
 
-    app = TelegramBot()
-    app.run(host=(APP_URL + TOKEN), port=PORT)
+    # app = TelegramBot()
+    # app.run(host=(APP_URL + TOKEN), port=PORT)
