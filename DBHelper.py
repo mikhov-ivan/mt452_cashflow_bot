@@ -5,35 +5,34 @@ from mysql.connector import errorcode
 global DB_NAME
 global TABLES
 
-global db
 global logger
-
-DB_NAME = 'akakich_telegram'
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s: %(message)s')
 logger = logging.getLogger()
 
 class DBHelper:
-    def __init__(self):
-        self.telegram_db = mysql.connector.connect(
+    def connect(self):
+        return mysql.connector.connect(
             user='akakich_telegram',
             password='mt452cashflowbot',
             host='141.8.193.216',
-            database=DB_NAME
+            database='akakich_telegram'
         )
         
-    def __del__(self):
-        self.telegram_db.close()
+    def disconnect(self, cnx):
+        cnx.close()
         
     def get_categories(self):
         try:
             response = {}
             query = "SELECT * FROM category"
-            cursor = self.telegram_db.cursor()
+            cnx = self.connect()
+            cursor = cnx.cursor()
             cursor.execute(query)
             for (ouid, code, title) in cursor:
                 response[ouid] = {'ouid': ouid, 'code': code, 'title': title}
             cursor.close()
+            self.disconnect(cnx)
             logger.info('OK')
         except mysql.connector.Error as err:
             logger.info(err.msg)
