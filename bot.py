@@ -22,7 +22,7 @@ logger = logging.getLogger()
 
 def handle_start(bot, update):
     logger.info("User {} started bot".format(update.effective_user["id"]))
-    update.message.reply_text("Hello {}!".format(update.message.from_user.first_name))
+    update.message.reply_text("Hello, {}!".format(update.message.from_user.first_name))
 
 
 if __name__ == '__main__':
