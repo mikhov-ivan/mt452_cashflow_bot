@@ -40,9 +40,9 @@ class TelegramBot(BotHandlerMixin, Bottle):
     def __init__(self, *args, **kwargs):
         super(TelegramBot, self).__init__()
         self.route('/' + TOKEN, callback=self.handle_event, method="POST")
+        p('Mikhov 1')
 
     def handle_event(self):
-        p('Mikhov')
         self.send_message({
             "chat_id": chat_id,
             "text": answer,
@@ -67,10 +67,9 @@ class TelegramBot(BotHandlerMixin, Bottle):
 
 
 if __name__ == '__main__':
-    p('Mikhov 1')
     updater = Updater(TOKEN)
     PORT = int(os.environ.get('PORT', '5000'))
-    updater.start_webhook(listen='0.0.0.0', port=PORT, url_path=APP_URL+TOKEN, key=APP_KEY)
+    updater.start_webhook(listen='0.0.0.0', port=PORT, url_path=TOKEN, key=APP_KEY)
     updater.bot.set_webhook(APP_URL + TOKEN)
     updater.idle()
 
