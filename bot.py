@@ -34,9 +34,10 @@ def get_categories(bot, update):
     logger.info("Setting up database")
     categories = db.get_categories()
     for c in categories: msg += "[{}] {} {}\n".format(c.ouid, c.code, c.title)
-    update.message.reply_text("Following categories are available:\n{}".format(msg))
+    update.message.reply_text(telegram.Message.caption_html"Following categories are available:<br><br>{}".format(msg)))
 
-
+bot.send_message(chat_id=chat_id, text='<b>Example message</b>', 
+                  parse_mode=telegram.ParseMode.HTML)
 if __name__ == "__main__":
     logger.info("Starting bot")
     updater = Updater(TOKEN)
