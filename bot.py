@@ -22,8 +22,7 @@ logger = logging.getLogger()
 
 def handle_start(bot, update):
     logger.info("User {} started bot".format(update.effective_user["id"]))
-    logger.info(telegram.Update.de_json(update, bot))
-    update.message.reply_text("Hello from Python!\nPress /random to get random number")
+    update.message.reply_text("Hello {}!".format(update.message.from_user.first_name))
 
 
 if __name__ == '__main__':
@@ -32,3 +31,4 @@ if __name__ == '__main__':
     updater.dispatcher.add_handler(CommandHandler("start", handle_start))
     updater.start_webhook(listen='0.0.0.0', port=PORT, url_path=TOKEN, key=APP_KEY)
     updater.bot.set_webhook(APP_URL + TOKEN)
+
