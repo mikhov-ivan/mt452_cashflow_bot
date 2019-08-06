@@ -29,7 +29,7 @@ class DBHelper:
             db = mysql.connector.connect(
                 user='akakich_telegram',
                 password='mt452cashflowbot',
-                host=None,
+                host="localhost",
                 database=DB_NAME
             )
         except mysql.connector.Error as err:
