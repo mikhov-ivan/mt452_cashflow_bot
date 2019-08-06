@@ -2,11 +2,11 @@ import logging
 import mysql.connector
 from mysql.connector import errorcode
 
+global DB_NAME
+global TABLES
+
 global db
 global logger
-
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-logger = logging.getLogger()
 
 DB_NAME = 'akakich_telegram'
 
@@ -22,27 +22,24 @@ TABLES['employees'] = (
     "  PRIMARY KEY (`emp_no`)"
     ") ENGINE=InnoDB")
 
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger()
 
 class DBHelper:
     def __init__(self):
-        try:
-            db = mysql.connector.connect(
-                user='akakich_telegram',
-                password='mt452cashflowbot',
-                host='141.8.193.216',
-                database=DB_NAME
-            )
-        except mysql.connector.Error as err:
-            logger.info('Can not open connection to {}'.format(DB_NAME))
+        self.telegram_db = mysql.connector.connect(
+            user='akakich_telegram',
+            password='mt452cashflowbot',
+            host='141.8.193.216',
+            database=DB_NAME
+        )
         
     def __del__(self):
-        try:
-            db.close()
-        except mysql.connector.Error as err:
-            logger.info('Can not close connection to {}'.format(DB_NAME))
+        self.telegram_db.close()
     
     def setup(self):
-        cursor = db.cursor()
+        cursor = self.telegram_db.cursor()
+        
         try:
             cursor.execute('USE {}'.format(DB_NAME))
         except mysql.connector.Error as err:
@@ -61,5 +58,6 @@ class DBHelper:
                     logger.info(err.msg)
             else:
                 logger.info('OK')
+        
         cursor.close()
 
