@@ -49,7 +49,7 @@ class DBHelper:
         for table_name in TABLES:
             table_description = TABLES[table_name]
             try:
-                logger.info('Creating table {}: '.format(table_name), end='')
+                logger.info('Creating table {}'.format(table_name))
                 cursor.execute(table_description)
             except mysql.connector.Error as err:
                 if err.errno == errorcode.ER_TABLE_EXISTS_ERROR:
