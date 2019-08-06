@@ -10,19 +10,7 @@ global logger
 
 DB_NAME = 'akakich_telegram'
 
-TABLES = {}
-TABLES['employees'] = (
-    "CREATE TABLE `employees` ("
-    "  `emp_no` int(11) NOT NULL AUTO_INCREMENT,"
-    "  `birth_date` date NOT NULL,"
-    "  `first_name` varchar(14) NOT NULL,"
-    "  `last_name` varchar(16) NOT NULL,"
-    "  `gender` enum('M','F') NOT NULL,"
-    "  `hire_date` date NOT NULL,"
-    "  PRIMARY KEY (`emp_no`)"
-    ") ENGINE=InnoDB")
-
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s - %(message)s')
 logger = logging.getLogger()
 
 class DBHelper:
@@ -36,13 +24,19 @@ class DBHelper:
         
     def __del__(self):
         self.telegram_db.close()
-    
-    def setup(self):
-        cursor = self.telegram_db.cursor()
         
+    def get_categories(self):
         try:
-            cursor.execute('USE {}'.format(DB_NAME))
+            response = array()
+            query = "SELECT * FROM category"
+            cursor = self.telegram_db.cursor()
+            cursor.execute(query)
+            for (ouid, code, title) in cursor:
+                response[ouid] = {'code' => code, 'title' => title}
+            cursor.close()
+            logger.info('OK')
         except mysql.connector.Error as err:
+<<<<<<< HEAD
             logger.info('Database {} does not exist'.format(DB_NAME))
             exit(1)
             
@@ -60,4 +54,8 @@ class DBHelper:
                 logger.info('OK')
         
         cursor.close()
+=======
+            logger.info(err.msg)
+        return response
+>>>>>>> MySQL database connector
 
