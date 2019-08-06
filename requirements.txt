@@ -6,7 +6,6 @@ chardet==3.0.4
 colorama==0.4.1
 configparser==3.7.4
 enum34==1.1.6
-futures==3.2.0
 hidapi==0.7.99.post21
 idna==2.8
 isort==4.3.20
