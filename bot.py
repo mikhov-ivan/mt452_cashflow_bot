@@ -48,7 +48,7 @@ class TelegramBot(BotHandlerMixin, Bottle):
 
 if __name__ == '__main__':
     updater = Updater(TOKEN)
-    PORT = int(os.environ.get('PORT', '8443'))
+    PORT = int(os.environ.get('PORT', '5000'))
     updater.start_webhook(listen='0.0.0.0', port=PORT, url_path=TOKEN, key=APP_KEY)
     updater.bot.set_webhook(APP_URL + TOKEN)
     updater.idle()
