@@ -30,8 +30,8 @@ def handle_start(bot, update):
     update.message.reply_text('Hello, {}!'.format(update.message.from_user.first_name))
     
 def handle_setup(bot, update):
-    logger.info('Setting up database'))
-    update.message.reply_text('Hello, {}!'.format(update.message.from_user.first_name))
+    logger.info('Setting up database')
+    db.setup()
 
 
 if __name__ == '__main__':
