@@ -1,6 +1,7 @@
-from bottle import Bottle, response, request as bottle_request
 import requests
 import telegram
+from telegram.ext import Updater
+from bottle import Bottle, response, request as bottle_request
 
 global bot
 global APP_URL
