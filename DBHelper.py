@@ -2,6 +2,9 @@ import logging
 import mysql.connector
 from mysql.connector import errorcode
 
+global db
+global logger
+
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger()
 
@@ -21,9 +24,8 @@ TABLES['employees'] = (
 
 
 class DBHelper:
-    MYSQL = None
     def __init__(self):
-        self.MYSQL = mysql.connector.connect(
+        db = mysql.connector.connect(
             user='akakich_telegram',
             password='mt452cashflowbot',
             host='141.8.193.216',
@@ -31,10 +33,10 @@ class DBHelper:
         )
         
     def __del__(self): 
-        self.MYSQL.close()
+        db.close()
     
     def setup(self):
-        cursor = self.MYSQL.cursor()
+        cursor = db.cursor()
         try:
             cursor.execute('USE {}'.format(DB_NAME))
         except mysql.connector.Error as err:
