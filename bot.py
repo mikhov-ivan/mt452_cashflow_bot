@@ -21,11 +21,6 @@ TOKEN = '861062365:AAEq3evcJCE5nZCSclev9Z8ki-cAjwdTUqQ'
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger()
 
-def p(*args):
-    print(args[0])
-    print(args[0] % (len(args) > 1 and args[1:] or []))
-    sys.stdout.flush()
-
 
 class BotHandlerMixin:
     def get_chat_id(self, data):
@@ -45,7 +40,6 @@ class TelegramBot(BotHandlerMixin, Bottle):
     def __init__(self, *args, **kwargs):
         super(TelegramBot, self).__init__()
         self.route('/' + TOKEN, callback=self.handle_event, method="POST")
-        p('Mikhov 1')
 
     def handle_event(self):
         self.send_message({
@@ -81,7 +75,6 @@ if __name__ == '__main__':
     PORT = int(os.environ.get('PORT', '8443'))
     
     updater.dispatcher.add_handler(CommandHandler("start", start_handler))
-    updater.dispatcher.add_handler(CommandHandler("random", random_handler))
     
     updater.start_webhook(listen='0.0.0.0', port=PORT, url_path=TOKEN, key=APP_KEY)
     updater.bot.set_webhook(APP_URL + TOKEN)
