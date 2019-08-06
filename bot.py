@@ -33,7 +33,8 @@ def get_categories(bot, update):
     msg = ''
     logger.info('Setting up database')
     categories = db.get_categories
-    for (c in categories): msg += '[{}] {} {}\n'.format(c->ouid, c->code, c->title)
+    for (c in categories):
+        msg += '[{}] {} {}\n'.format(c->ouid, c->code, c->title)
     update.message.reply_text('Following categories are available:\n{}'.format(msg))
 
 
