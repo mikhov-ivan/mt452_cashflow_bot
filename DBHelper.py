@@ -1,31 +1,58 @@
-import sqlite3
+import logging
+import mysql.connector
+from mysql.connector import errorcode
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger()
+
+DB_NAME = 'akakich_telegram'
+
+TABLES = {}
+TABLES['employees'] = (
+    "CREATE TABLE `employees` ("
+    "  `emp_no` int(11) NOT NULL AUTO_INCREMENT,"
+    "  `birth_date` date NOT NULL,"
+    "  `first_name` varchar(14) NOT NULL,"
+    "  `last_name` varchar(16) NOT NULL,"
+    "  `gender` enum('M','F') NOT NULL,"
+    "  `hire_date` date NOT NULL,"
+    "  PRIMARY KEY (`emp_no`)"
+    ") ENGINE=InnoDB")
 
 
 class DBHelper:
-    def setup(self):
-        stmt = "CREATE TABLE IF NOT EXISTS items (description text, owner text);"
-        self.conn.execute(stmt)
-        self.conn.commit()
+    MYSQL = None
 
-    def add_item(self, item_text, owner):
-        stmt = "INSERT INTO items (description, owner) VALUES (?, ?);"
-        args = (item_text, owner)
-        self.conn.execute(stmt, args)
-        self.conn.commit()
-
-    def delete_item(self, item_text, owner):
-        stmt = "DELETE FROM items WHERE description = (?) AND owner = (?);"
-        args = (item_text, owner )
-        self.conn.execute(stmt, args)
-        self.conn.commit()
-
-    def get_items(self, owner):
-        stmt = "SELECT description FROM items WHERE owner = (?);"
-        args = (owner, )
-        return [x[0] for x in self.conn.execute(stmt, args)]
-
-    def drop_all(self):
-        stmt = "DROP TABLE ;"
-        self.conn.execute(stmt)
-        self.conn.commit()
+    def __init__():
+        MYSQL = mysql.connector.connect(
+            user='akakich_telegram',
+            password='mt452cashflowbot',
+            host='141.8.193.216',
+            database=DB_NAME
+        )
         
+    def __del__(self): 
+        MYSQL.close()
+    
+    def setup(self):
+        cursor = MYSQL.cursor()
+        try:
+            cursor.execute("USE {}".format(DB_NAME))
+        except mysql.connector.Error as err:
+            logger.info("Database {} does not exists.".format(DB_NAME))
+            exit(1)
+            
+        for table_name in TABLES:
+            table_description = TABLES[table_name]
+            try:
+                logger.info("Creating table {}: ".format(table_name), end='')
+                cursor.execute(table_description)
+            except mysql.connector.Error as err:
+                if err.errno == errorcode.ER_TABLE_EXISTS_ERROR:
+                    logger.info("already exists.")
+                else:
+                    logger.info(err.msg)
+            else:
+                logger.info("OK")
+        cursor.close()
+
