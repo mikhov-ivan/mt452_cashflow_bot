@@ -37,22 +37,22 @@ class DBHelper:
     def setup(self):
         cursor = MYSQL.cursor()
         try:
-            cursor.execute("USE {}".format(DB_NAME))
+            cursor.execute('USE {}'.format(DB_NAME))
         except mysql.connector.Error as err:
-            logger.info("Database {} does not exists.".format(DB_NAME))
+            logger.info('Database {} does not exists.'.format(DB_NAME))
             exit(1)
             
         for table_name in TABLES:
             table_description = TABLES[table_name]
             try:
-                logger.info("Creating table {}: ".format(table_name), end='')
+                logger.info('Creating table {}: '.format(table_name), end='')
                 cursor.execute(table_description)
             except mysql.connector.Error as err:
                 if err.errno == errorcode.ER_TABLE_EXISTS_ERROR:
-                    logger.info("already exists.")
+                    logger.info('already exists.')
                 else:
                     logger.info(err.msg)
             else:
-                logger.info("OK")
+                logger.info('OK')
         cursor.close()
 
