@@ -22,7 +22,7 @@ logger = logging.getLogger()
 
 def handle_start(bot, update):
     logger.info("User {} started bot".format(update.effective_user["id"]))
-    logger.info(Update.de_json(update, bot))
+    logger.info(telegram.Update.de_json(update, bot))
     update.message.reply_text("Hello from Python!\nPress /random to get random number")
 
 
