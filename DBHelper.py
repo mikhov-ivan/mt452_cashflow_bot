@@ -25,15 +25,21 @@ TABLES['employees'] = (
 
 class DBHelper:
     def __init__(self):
-        db = mysql.connector.connect(
-            user='akakich_telegram',
-            password='mt452cashflowbot',
-            host='141.8.193.216',
-            database=DB_NAME
-        )
+        try:
+            db = mysql.connector.connect(
+                user='akakich_telegram',
+                password='mt452cashflowbot',
+                host='141.8.193.216',
+                database=DB_NAME
+            )
+        except mysql.connector.Error as err:
+            logger.info('Can not open connection to {}'.format(DB_NAME))
         
-    def __del__(self): 
-        db.close()
+    def __del__(self):
+        try:
+            db.close()
+        except mysql.connector.Error as err:
+            logger.info('Can not close connection to {}'.format(DB_NAME))
     
     def setup(self):
         cursor = db.cursor()
