@@ -3,7 +3,7 @@ import logging
 import telegram
 from telegram.ext import Updater
 from telegram.ext import CommandHandler
-from dbhelper import DBHelper
+from DBHelper import DBHelper
 
 global APP_URL
 global APP_KEY
