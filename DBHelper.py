@@ -27,12 +27,12 @@ class DBHelper:
         
     def get_categories(self):
         try:
-            response = array()
+            response = {}
             query = "SELECT * FROM category"
             cursor = self.telegram_db.cursor()
             cursor.execute(query)
             for (ouid, code, title) in cursor:
-                response[ouid] = {'code': code, 'title': title}
+                response[ouid] = {'ouid': ouid, 'code': code, 'title': title}
             cursor.close()
             logger.info('OK')
         except mysql.connector.Error as err:
