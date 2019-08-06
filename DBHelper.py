@@ -29,7 +29,7 @@ class DBHelper:
             db = mysql.connector.connect(
                 user='akakich_telegram',
                 password='mt452cashflowbot',
-                host="localhost",
+                host='141.8.193.216',
                 database=DB_NAME
             )
         except mysql.connector.Error as err:
@@ -46,7 +46,7 @@ class DBHelper:
         try:
             cursor.execute('USE {}'.format(DB_NAME))
         except mysql.connector.Error as err:
-            logger.info('Database {} does not exists.'.format(DB_NAME))
+            logger.info('Database {} does not exist'.format(DB_NAME))
             exit(1)
             
         for table_name in TABLES:
