@@ -21,6 +21,7 @@ TABLES['employees'] = (
 
 
 class DBHelper:
+    MYSQL = None
     def __init__(self):
         self.MYSQL = mysql.connector.connect(
             user='akakich_telegram',
