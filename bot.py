@@ -33,7 +33,7 @@ class BotHandlerMixin:
 class TelegramBot(BotHandlerMixin, Bottle):
     def __init__(self, *args, **kwargs):
         super(TelegramBot, self).__init__()
-        self.route('/', callback=self.post_handler, method="POST")
+        self.route('/' + TOKEN, callback=self.post_handler, method="POST")
 
     def post_handler(self):
         data = telegram.Update.de_json(request.get_json(force=True))
