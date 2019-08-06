@@ -36,7 +36,7 @@ class TelegramBot(BotHandlerMixin, Bottle):
         self.route('/' + TOKEN, callback=self.handle_event, method="POST")
 
     def handle_event(self):
-        update.message.reply_text('Hello ')
+        self.send_message('Hello')
         data = telegram.Update.de_json(request.get_json(force=True))
         answer_data = self.prepare_data_for_answer(data)
         self.send_message(answer_data)
