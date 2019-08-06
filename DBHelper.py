@@ -53,7 +53,7 @@ class DBHelper:
                 cursor.execute(table_description)
             except mysql.connector.Error as err:
                 if err.errno == errorcode.ER_TABLE_EXISTS_ERROR:
-                    logger.info('already exists.')
+                    logger.info('Already exists.')
                 else:
                     logger.info(err.msg)
             else:
