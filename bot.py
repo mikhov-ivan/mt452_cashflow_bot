@@ -1,10 +1,15 @@
 import telegram
 
 global bot
-global APP_URL = 'https://mt452-cashflow-bot.herokuapp.com/'
-global APP_KEY = '4276eb911ca3133611d23040e1ee439ea21738932dda94e502f37fae0497'
-global BOT_URL = 'https://api.telegram.org/bot861062365:AAEq3evcJCE5nZCSclev9Z8ki-cAjwdTUqQ/'
-global TOKEN = 'bot861062365:AAEq3evcJCE5nZCSclev9Z8ki-cAjwdTUqQ'
+global APP_URL
+global APP_KEY
+global BOT_URL
+global TOKEN
+
+APP_URL = 'https://mt452-cashflow-bot.herokuapp.com/'
+APP_KEY = '4276eb911ca3133611d23040e1ee439ea21738932dda94e502f37fae0497'
+BOT_URL = 'https://api.telegram.org/bot861062365:AAEq3evcJCE5nZCSclev9Z8ki-cAjwdTUqQ/'
+TOKEN = 'bot861062365:AAEq3evcJCE5nZCSclev9Z8ki-cAjwdTUqQ'
 
 
 class BotHandlerMixin:
