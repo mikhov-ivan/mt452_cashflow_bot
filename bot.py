@@ -59,4 +59,4 @@ if __name__ == '__main__':
     updater.idle()
 
     app = TelegramBot()
-    app.run(host=(APP_URL + TOKEN), PORT)
+    app.run(host=(APP_URL + TOKEN), port=PORT)
