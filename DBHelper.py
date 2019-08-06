@@ -21,10 +21,8 @@ TABLES['employees'] = (
 
 
 class DBHelper:
-    MYSQL = None
-
     def __init__(self):
-        MYSQL = mysql.connector.connect(
+        self.MYSQL = mysql.connector.connect(
             user='akakich_telegram',
             password='mt452cashflowbot',
             host='141.8.193.216',
@@ -32,10 +30,10 @@ class DBHelper:
         )
         
     def __del__(self): 
-        MYSQL.close()
+        self.MYSQL.close()
     
     def setup(self):
-        cursor = MYSQL.cursor()
+        cursor = self.MYSQL.cursor()
         try:
             cursor.execute('USE {}'.format(DB_NAME))
         except mysql.connector.Error as err:
