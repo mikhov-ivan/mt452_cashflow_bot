@@ -27,6 +27,8 @@ class BotHandlerMixin:
 
     def send_message(self, prepared_data):
         message_url = BOT_URL + 'sendMessage'
+        print(message_url)
+        print(prepared_data)
         requests.post(message_url, json=prepared_data)
 
 
