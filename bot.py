@@ -32,5 +32,3 @@ if __name__ == '__main__':
     updater.dispatcher.add_handler(CommandHandler("start", handle_start))
     updater.start_webhook(listen='0.0.0.0', port=PORT, url_path=TOKEN, key=APP_KEY)
     updater.bot.set_webhook(APP_URL + TOKEN)
-
-data = telegram.Update.de_json(request.get_json(force=True))
