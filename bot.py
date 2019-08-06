@@ -16,7 +16,8 @@ BOT_URL = 'https://api.telegram.org/bot861062365:AAEq3evcJCE5nZCSclev9Z8ki-cAjwd
 TOKEN = '861062365:AAEq3evcJCE5nZCSclev9Z8ki-cAjwdTUqQ'
 
 def p(*args):
-    print args[0] % (len(args) > 1 and args[1:] or [])
+    print(args[0])
+    print(args[0] % (len(args) > 1 and args[1:] or []))
     sys.stdout.flush()
 
 
