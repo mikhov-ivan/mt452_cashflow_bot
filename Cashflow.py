@@ -18,13 +18,19 @@ class State(Enum):
 class StateMachine:
     def __init__(self):
         self.state = State.MAIN
+        self.log_state()
+    
+    def cmd(self, cmd):
+        pass
+    
+    def log_state(self):
+        logger.info("SM: Current state: {}".format(self.state.name))
 
 
 class Cashflow:
     def __init__(self):
         self.db = DBHelper()
         self.sm = StateMachine()
-        logger.error(self.sm.state.name)
     
     def set_handlers(self, updater):
         # category_groups = self.db.get_category_groups()
