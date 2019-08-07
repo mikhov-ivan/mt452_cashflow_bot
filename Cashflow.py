@@ -71,7 +71,7 @@ class GeneralHandler:
                     msg += "{}: /{}{}{}".format(row.title, type.value, row.code, os.linesep)
                 elif type == Type.TRANSACTION:
                     msg += "{}: /{} {}".format(row.execution_date, row.amount, row.currency, row.title, os.linesep)
-            html = template.format(len(categories), os.linesep, os.linesep, msg)
+            html = template.format(len(response), os.linesep, os.linesep, msg)
         else:
             html = "List is empty"
         send(bot, update.message.chat_id, html)
