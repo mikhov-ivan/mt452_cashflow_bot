@@ -42,7 +42,7 @@ def get_categories(bot, update):
         msg = ""
         for (ouid, code, title) in categories.values():
             msg += "[{}] {} - {}{}".format(ouid, code, title, os.linesep)
-        html = "Following <b>categories</b> are available:{}{}".format(msg, os.linesep)
+        html = "Following <b>categories</b> are available:{}{}".format(os.linesep, msg)
     else:
         html = "There are <b>no categories</b> available".format(os.linesep)
     send(bot, update.message.chat_id, html)
