@@ -11,7 +11,7 @@ global BOT_URL
 global TOKEN
 global PORT
 
-global db
+global app
 global logger
 
 APP_URL = "https://mt452-cashflow-bot.herokuapp.com/"
@@ -22,7 +22,7 @@ PORT = int(os.environ.get("PORT", "8443"))
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s: %(message)s")
 logger = logging.getLogger()
-db = DBHelper()
+app = Cashflow()
 
 
 def log_update(update):
@@ -38,13 +38,13 @@ def handle_start(bot, update):
 def get_categories(bot, update):
     msg = ""
     log_update(update)
-    categories = db.get_categories()
+    categories = app.get_categories()
     if len(categories) > 0:
         for c in categories:
-            msg += "[{}] {} {}\n".format(c.ouid, c.code, c.title)
-        html = "Following <b>categories</b> are available:{}{}sss".format(msg, os.linesep)
+            msg += "[{}] {} {}{}".format(c.ouid, c.code, c.title, os.linesep)
+        html = "Following <b>categories</b> are available:{}{}".format(msg, os.linesep)
     else:
-        html = "There are <b>no categories</b> {}available".format(os.linesep)
+        html = "There are <b>no categories</b> available".format(os.linesep)
     send(bot, update.message.chat_id, html)
 
 
@@ -52,6 +52,6 @@ if __name__ == "__main__":
     logger.info("Starting bot")
     updater = Updater(TOKEN)
     updater.dispatcher.add_handler(CommandHandler("start", handle_start))
-    updater.dispatcher.add_handler(CommandHandler("categories", get_categories))
+    updater.dispatcher.add_handler(CommandHandler("cats", get_categories))
     updater.start_webhook(listen="0.0.0.0", port=PORT, url_path=TOKEN, key=APP_KEY)
     updater.bot.set_webhook(APP_URL + TOKEN)
