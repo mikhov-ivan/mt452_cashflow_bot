@@ -85,8 +85,9 @@ class DBHelper:
                 " SELECT"
                 "    t.ouid AS transaction_ouid,"
                 "    t.execution_date AS transaction_execution_date,"
-                "    t.title AS transaction_title,"
-                "    cur.code AS currency_code"
+                "    cur.code AS currency_code,"
+                "    t.amount AS transaction_amount,"
+                "    t.title AS transaction_title"
                 " FROM transaction t"
                 "    INNER JOIN currency cur ON cur.OUID = t.currency_ouid"
                 " ORDER BY t.execution_date"
@@ -97,7 +98,7 @@ class DBHelper:
             cursor = cnx.cursor()
             cursor.execute(query)
             for row in cursor:
-                response[row[0]] = Transaction(row[0], row[1], row[2], row[3])
+                response[row[0]] = Transaction(row[0], row[1], row[2], row[3], row[4])
             cursor.close()
             self.disconnect(cnx)
         except mysql.connector.Error as err:
