@@ -30,7 +30,7 @@ class Cashflow:
         
     def get_regex_handler(prefix):
         if prefix == CmdPrefix.CATEGORY_GROUP: handler = self.handle_category_group
-        else if prefix == CmdPrefix.CATEGORY: handler = self.handle_category
+        elif prefix == CmdPrefix.CATEGORY: handler = self.handle_category
         return RegexHandler("^(/" + prefix + "[a-zA-Z]+)$", handler)
 
     def handle_category_group(self, bot, update):
