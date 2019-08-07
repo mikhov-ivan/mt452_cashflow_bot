@@ -31,7 +31,7 @@ class DBHelper:
             cursor = cnx.cursor()
             cursor.execute(query)
             for (ouid, code, title) in cursor:
-                response["ouid"] = {"ouid": ouid, "code": code, "title": title}
+                response["ouid"] = (ouid, code, title)
             cursor.close()
             self.disconnect(cnx)
             logger.info("OK")
