@@ -41,7 +41,7 @@ class GeneralHandler:
         
     def handle_cgs(self, bot, update):
         log_update(update)
-        html = self.get_list(Type.CATEGORY)
+        html = self.get_list(Type.CATEGORY_GROUP)
         send(bot, update.message.chat_id, html)
         
     def handle_cats(self, bot, update):
