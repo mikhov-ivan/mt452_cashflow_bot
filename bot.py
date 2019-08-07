@@ -26,7 +26,7 @@ db = DBHelper()
 
 
 def send(bot, chat_id, msg):
-    bot.sendMessage(chat_id=chat_id*, text=msg, parse_mode='HTML')
+    bot.sendMessage(chat_id=chat_id, text=msg, parse_mode='HTML')
 
 def handle_start(bot, update):
     logger.info("User {} started bot".format(update.effective_user["id"]))

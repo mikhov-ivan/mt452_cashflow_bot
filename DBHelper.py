@@ -1,3 +1,4 @@
+import os
 import logging
 import mysql.connector
 from mysql.connector import errorcode
@@ -13,10 +14,10 @@ logger = logging.getLogger()
 class DBHelper:
     def connect(self):
         return mysql.connector.connect(
-            user="akakich_telegram",
-            password="mt452cashflowbot",
-            host="141.8.193.216",
-            database="akakich_telegram"
+            user=os.environ.get('DB_USER', None),
+            password=os.environ.get('DB_PASSWORD', None),
+            host=os.environ.get('DB_HOST', None),
+            database=os.environ.get('DB_NAME', None)
         )
         
     def disconnect(self, cnx):
