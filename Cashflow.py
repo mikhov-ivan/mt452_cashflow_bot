@@ -35,7 +35,7 @@ class Cashflow:
         if len(categories) > 0:
             msg = ""
             for c in categories.values():
-                msg += "/{} - {}{}".format(c.code, c.title, os.linesep)
+                msg += "{}: /{}{}".format(c.title, c.code, os.linesep)
             html = "Following <b>categories</b> are available:{}{}{}".format(os.linesep, os.linesep, msg)
         else:
             html = "There are <b>no categories</b> available".format(os.linesep)
