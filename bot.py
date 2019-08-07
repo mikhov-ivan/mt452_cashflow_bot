@@ -38,7 +38,7 @@ def get_categories(bot, update):
     categories = db.get_categories()
     for c in categories: msg += "[{}] {} {}\n".format(c.ouid, c.code, c.title)
     html = "Following categories are available:<br><br>{}".format(msg)
-    send(update.effective_chat, html)
+    send(bot, update.effective_chat, html)
 
 
 if __name__ == "__main__":
