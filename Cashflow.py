@@ -69,7 +69,7 @@ class GeneralHandler:
             msg = ""
             for row in response.values():
                 if type == Type.CATEGORY_GROUP or type == Type.CATEGORY:
-                    msg += "{}: /{}{}{}".format(row.title, CmdPrefix[type].value, row.code, os.linesep)
+                    msg += "{}: /{}{}{}".format(row.title, CmdPrefix[type.name].value, row.code, os.linesep)
                 elif type == Type.TRANSACTION:
                     msg += "{}: {} {} {}{}".format(row.execution_date, row.amount, row.currency, row.title, os.linesep)
             html = template.format(len(response), os.linesep, os.linesep, msg)
