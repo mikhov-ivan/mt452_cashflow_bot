@@ -33,7 +33,7 @@ class DBHelper:
                 "    cg_msg.ru AS category_group_title"
                 " FROM category cg"
                 "    INNER JOIN msg cg_msg ON cg_msg.OUID = cg.title_msg_ouid"
-                " ORDER BY c_msg.ru"
+                " ORDER BY cg_msg.ru"
             )
             
             response = {}
