@@ -29,7 +29,6 @@ class Cashflow:
         updater.dispatcher.add_handler(CommandHandler("start", self.handle_start))
         updater.dispatcher.add_handler(CommandHandler("cgs", self.handle_cgs))
         updater.dispatcher.add_handler(CommandHandler("cats", self.handle_cats))
-        updater.dispatcher.add_handler(CommandHandler("trans", self.handle_trans))
         
     def get_regex_handler(self, prefix):
         if prefix == CmdPrefix.CATEGORY_GROUP: handler = self.handle_category_group
