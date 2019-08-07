@@ -39,8 +39,12 @@ def get_categories(bot, update):
     msg = ""
     log_update(update)
     categories = db.get_categories()
-    for c in categories: msg += "[{}] {} {}\n".format(c.ouid, c.code, c.title)
-    html = "Following <b>categories</b> are available:{}%0A".format(msg)
+    if len(categories) > 0:
+        for c in categories:
+            msg += "[{}] {} {}\n".format(c.ouid, c.code, c.title)
+        html = "Following <b>categories</b> are available:{}{}sss".format(msg, os.linesep)
+    else:
+        html = "There are <b>no categories</b> {}available".format(os.linesep)
     send(bot, update.message.chat_id, html)
 
 
