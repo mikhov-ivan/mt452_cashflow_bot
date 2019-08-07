@@ -26,6 +26,7 @@ class Cashflow:
     def set_handlers(self, updater):
         for prefix in CmdPrefix: updater.dispatcher.add_handler(self.get_regex_handler(prefix))
         updater.dispatcher.add_handler(CommandHandler("start", self.handle_start))
+        updater.dispatcher.add_handler(CommandHandler("cgs", self.handle_cgs))
         updater.dispatcher.add_handler(CommandHandler("cats", self.handle_cats))
         
     def get_regex_handler(self, prefix):
@@ -41,10 +42,6 @@ class Cashflow:
         self.log_update(update)
         self.send(bot, update.message.chat_id, "Category: <b>{}</b>".format(update.message.text))
         
-    def handle_start(self, bot, update):
-        logger.info("User {} started bot".format(update.effective_user["id"]))
-        self.send(bot, update.message.chat_id, "Hello, <b>{}</b>!".format(update.message.from_user.first_name))
-        
     def handle_cats(self, bot, update):
         self.log_update(update)
         categories = self.db.get_categories()
@@ -56,6 +53,22 @@ class Cashflow:
         else:
             html = "There are <b>no categories</b> available".format(os.linesep)
         self.send(bot, update.message.chat_id, html)
+        
+    def handle_cgs(self, bot, update):
+        self.log_update(update)
+        category_groups = self.db.get_category_groups()
+        if len(category_groups) > 0:
+            msg = ""
+            for cg in category_groups.values():
+                msg += "{}: /{}{}{}".format(cg.title, CmdPrefix.CATEGORY_GROUP.value, cg.code, os.linesep)
+            html = "Following <b>category groups</b> are available:{}{}{}".format(os.linesep, os.linesep, msg)
+        else:
+            html = "There are <b>no category groups</b> available".format(os.linesep)
+        self.send(bot, update.message.chat_id, html)
+        
+    def handle_start(self, bot, update):
+        logger.info("User {} started bot".format(update.effective_user["id"]))
+        self.send(bot, update.message.chat_id, "Hello, <b>{}</b>!".format(update.message.from_user.first_name))
         
     def send(self, bot, chat_id, msg):
         bot.sendMessage(chat_id=chat_id, text=msg, parse_mode='HTML')

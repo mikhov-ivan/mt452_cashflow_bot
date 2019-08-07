@@ -24,6 +24,29 @@ class DBHelper:
     def disconnect(self, cnx):
         cnx.close()
     
+    def get_category_groups(self):
+        try:
+            query = (
+                " SELECT"
+                "    cg.ouid AS category_group_ouid,"
+                "    cg_msg.ru AS category_group_title"
+                " FROM category cg"
+                "    INNER JOIN msg cg_msg ON cg_msg.OUID = cg.title_msg_ouid"
+                " ORDER BY c_msg.ru"
+            )
+            
+            response = {}
+            cnx = self.connect()
+            cursor = cnx.cursor()
+            cursor.execute(query)
+            for row in cursor:
+                response[row[0]] = CategoryGroup(row[0], row[1], row[2])
+            cursor.close()
+            self.disconnect(cnx)
+        except mysql.connector.Error as err:
+            logger.error(err.msg)
+        return response
+    
     def get_categories(self):
         try:
             query = (
