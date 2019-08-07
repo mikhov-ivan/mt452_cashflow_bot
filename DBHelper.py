@@ -37,6 +37,7 @@ class DBHelper:
                 "    INNER JOIN msg c_msg ON c_msg.OUID = c.title_msg_ouid"
                 "    INNER JOIN category_group cg ON cg.OUID = c.category_group_ouid"
                 "        INNER JOIN msg cg_msg ON cg_msg.OUID = cg.title_msg_ouid"
+                " ORDER BY c_msg.ru"
             )
             
             response = {}
