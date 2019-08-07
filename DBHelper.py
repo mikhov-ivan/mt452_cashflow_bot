@@ -25,8 +25,20 @@ class DBHelper:
     
     def get_categories(self):
         try:
+            query = (
+                "SELECT"
+                "   c.ouid AS category_ouid"
+                "   c.code AS category_code"
+                "   c_msg AS category_title"
+                "   cg.ouid AS category_group_ouid"
+                "   cg_msg.ru AS category_group_title"
+                "FROM category c"
+                "   INNER JOIN msg c_msg ON c_msg.OUID = c.title_msg_ouid"
+                "   INNER JOIN category_group ON cg.OUID = c.category_group_ouid"
+                "       INNER JOIN msg cg_msg ON cg_msg.OUID = cg.title_msg_ouid"
+            )
+            
             response = {}
-            query = "SELECT * FROM category"
             cnx = self.connect()
             cursor = cnx.cursor()
             cursor.execute(query)
