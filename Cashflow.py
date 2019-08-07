@@ -7,10 +7,10 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s: %(mes
 logger = logging.getLogger()
 
 class Cashflow:
-    def __init__():
+    def __init__(self):
         self.db = DBHelper()
         self.state = "main"
         
-    def get_categories():
-        return db.get_categories()
+    def get_categories(self):
+        return self.db.get_categories()
 
