@@ -41,16 +41,17 @@ class GeneralHandler:
         
     def handle_cgs(self, bot, update):
         log_update(update)
-        self.get_list(Type.CATEGORY_GROUP)
-        
-    def handle_trans(self, bot, update):
-        log_update(update)
-        self.get_list(Type.TRANSACTION)
+        html = self.get_list(Type.CATEGORY)
+        send(bot, update.message.chat_id, html)
         
     def handle_cats(self, bot, update):
         log_update(update)
         html = self.get_list(Type.CATEGORY)
         send(bot, update.message.chat_id, html)
+        
+    def handle_trans(self, bot, update):
+        log_update(update)
+        self.get_list(Type.TRANSACTION)
         
     def get_list(self, type):
         if type == Type.CATEGORY_GROUP:
