@@ -14,8 +14,8 @@ logger = logging.getLogger()
 
 
 class CmdPrefix(Enum):
-    CATEGORY_GROUP = "cg"
-    CATEGORY = "c"
+    CATEGORY_GROUP = "cg_"
+    CATEGORY = "c_"
 
 
 class Cashflow:
