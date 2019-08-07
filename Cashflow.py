@@ -31,7 +31,7 @@ class Cashflow:
         
     def get_categories(self, bot, update):
         self.log_update(update)
-        categories = app.get_categories()
+        categories = self.db.get_categories()
         if len(categories) > 0:
             msg = ""
             for (ouid, code, title) in categories.values():
