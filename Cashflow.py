@@ -51,7 +51,8 @@ class GeneralHandler:
         
     def handle_trans(self, bot, update):
         log_update(update)
-        self.get_list(Type.TRANSACTION)
+        html = self.get_list(Type.TRANSACTION)
+        send(bot, update.message.chat_id, html)
         
     def get_list(self, type):
         if type == Type.CATEGORY_GROUP:
