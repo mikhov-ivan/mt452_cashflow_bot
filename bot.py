@@ -40,7 +40,7 @@ def get_categories(bot, update):
     log_update(update)
     categories = db.get_categories()
     for c in categories: msg += "[{}] {} {}\n".format(c.ouid, c.code, c.title)
-    html = "Following categories are available:<br><br>{}".format(msg)
+    html = "Following <b>categories</b> are available:{}%0A".format(msg)
     send(bot, update.message.chat_id, html)
 
 
