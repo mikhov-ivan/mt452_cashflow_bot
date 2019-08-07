@@ -36,12 +36,12 @@ def handle_start(bot, update):
     update.message.reply_text("Hello, {}!".format(update.message.from_user.first_name))
     
 def get_categories(bot, update):
-    msg = ""
     log_update(update)
     categories = app.get_categories()
     if len(categories) > 0:
-        for (ouid, code, title) in categories.items():
-            msg += "[{}] {} - {}{}".format(ouid, code, title, os.linesep)
+        msg = ""
+        for ouid, c in categories.items():
+            msg += "[{}] {} - {}{}".format(ouid, c.code, c.title, os.linesep)
         html = "Following <b>categories</b> are available:{}{}".format(msg, os.linesep)
     else:
         html = "There are <b>no categories</b> available".format(os.linesep)
