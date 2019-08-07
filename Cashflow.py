@@ -20,18 +20,21 @@ def log_update(update):
     logger.info("{} {}".format(update.update_id, update.message))
 
 
-class CmdPrefix(Enum):
-    CATEGORY_GROUP = "cg_"
-    CATEGORY = "c_"
-
-
 class Type(Enum):
     CATEGORY_GROUP = 1
     CATEGORY = 2
     TRANSACTION = 3
 
 
+class CmdPrefix(Enum):
+    CATEGORY_GROUP = "cg_"
+    CATEGORY = "c_"
+
+
 class GeneralHandler:
+    def __init__(self):
+        self.db = DBHelper()
+    
     def handle_start(self, bot, update):
         logger.info("User {} {} started bot".format(update.effective_user["id"], update.message.from_user.first_name))
         send(bot, update.message.chat_id, "Hello, <b>{}</b>!".format(update.message.from_user.first_name))
