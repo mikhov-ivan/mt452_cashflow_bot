@@ -1,5 +1,8 @@
 import os
 import logging
+import telegram
+from telegram.ext import Updater
+from telegram.ext import CommandHandler
 from DBHelper import DBHelper
 
 global logger
