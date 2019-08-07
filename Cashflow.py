@@ -24,8 +24,7 @@ class Cashflow:
         self.sm = StateMachine()
     
     def set_handlers(self, updater):
-        updater.dispatcher.add_handler(self.get_regex_handler(CmdPrefix.CATEGORY_GROUP))
-        updater.dispatcher.add_handler(self.get_regex_handler(CmdPrefix.CATEGORY))
+        for prefix in CmdPrefix: updater.dispatcher.add_handler(self.get_regex_handler(prefix))
         updater.dispatcher.add_handler(CommandHandler("start", self.handle_start))
         updater.dispatcher.add_handler(CommandHandler("cats", self.handle_cats))
         
@@ -52,7 +51,7 @@ class Cashflow:
         if len(categories) > 0:
             msg = ""
             for c in categories.values():
-                msg += "{}: /{}{}{}".format(c.title, CmdPrefix.CATEGORY, c.code, os.linesep)
+                msg += "{}: /{}{}{}".format(c.title, CmdPrefix.CATEGORY.value, c.code, os.linesep)
             html = "Following <b>categories</b> are available:{}{}{}".format(os.linesep, os.linesep, msg)
         else:
             html = "There are <b>no categories</b> available".format(os.linesep)
