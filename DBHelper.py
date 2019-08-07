@@ -2,6 +2,7 @@ import os
 import logging
 import mysql.connector
 from mysql.connector import errorcode
+from Structures import CategoryGroup
 from Structures import Category
 
 global DB_NAME
