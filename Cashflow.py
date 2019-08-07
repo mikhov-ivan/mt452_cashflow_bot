@@ -34,7 +34,7 @@ class Cashflow:
         categories = self.db.get_categories()
         if len(categories) > 0:
             msg = ""
-            for (ouid, code, title) in categories:
+            for (ouid, code, title) in categories.values():
                 msg += "/{} - {}{}".format(code, title, os.linesep)
             html = "Following <b>categories</b> are available:{}{}{}".format(os.linesep, os.linesep, msg)
         else:
