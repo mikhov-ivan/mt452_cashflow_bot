@@ -49,7 +49,8 @@ class GeneralHandler:
         
     def handle_cats(self, bot, update):
         log_update(update)
-        self.get_list(Type.CATEGORY)
+        html = self.get_list(Type.CATEGORY)
+        send(bot, update.message.chat_id, html)
         
     def get_list(self, type):
         if type == Type.CATEGORY_GROUP:
@@ -74,7 +75,7 @@ class GeneralHandler:
             html = template.format(len(response), os.linesep, os.linesep, msg)
         else:
             html = "List is empty"
-        send(bot, update.message.chat_id, html)
+        return html
     
 
 
