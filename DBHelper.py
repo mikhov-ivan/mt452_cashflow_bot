@@ -30,7 +30,7 @@ class DBHelper:
                 " SELECT"
                 "    c.ouid AS category_ouid,"
                 "    c.code AS category_code,"
-                "    c_mssg.ru AS category_title,"
+                "    c_msg.ru AS category_title,"
                 "    cg.ouid AS category_group_ouid,"
                 "    cg_msg.ru AS category_group_title"
                 " FROM category c"

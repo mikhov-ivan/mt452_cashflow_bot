@@ -11,18 +11,20 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s: %(mes
 logger = logging.getLogger()
 
 
-class Cashflow:
-    class StateMachine:
-        class State(Enum):
-            MAIN = 1
-        
-        def __init__(self):
-            self.state = State.MAIN
-        
+class State(Enum):
+    MAIN = 1
+   
+   
+class StateMachine:
+    def __init__(self):
+        self.state = State.MAIN
 
+
+class Cashflow:
     def __init__(self):
         self.db = DBHelper()
         self.sm = StateMachine()
+        logger.error(self.sm.state.name)
     
     def set_handlers(self, updater):
         # category_groups = self.db.get_category_groups()
