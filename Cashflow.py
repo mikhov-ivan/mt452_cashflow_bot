@@ -16,8 +16,8 @@ class Cashflow:
     
     def set_handlers(self, updater):
         categories = self.db.get_categories()
-        for (ouid, code, title) in categories.values():
-            updater.dispatcher.add_handler(CommandHandler(code, self.handle_cats))
+        for c in categories.values():
+            updater.dispatcher.add_handler(CommandHandler(c.code, self.handle_cats))
         updater.dispatcher.add_handler(CommandHandler("start", self.handle_start))
         updater.dispatcher.add_handler(CommandHandler("cats", self.get_categories))
 
@@ -34,8 +34,8 @@ class Cashflow:
         categories = self.db.get_categories()
         if len(categories) > 0:
             msg = ""
-            for (ouid, code, title) in categories.values():
-                msg += "/{} - {}{}".format(code, title, os.linesep)
+            for c in categories.values():
+                msg += "/{} - {}{}".format(c.code, c.title, os.linesep)
             html = "Following <b>categories</b> are available:{}{}{}".format(os.linesep, os.linesep, msg)
         else:
             html = "There are <b>no categories</b> available".format(os.linesep)

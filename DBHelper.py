@@ -2,6 +2,7 @@ import os
 import logging
 import mysql.connector
 from mysql.connector import errorcode
+from Structures import Category
 
 global DB_NAME
 global TABLES
@@ -43,7 +44,7 @@ class DBHelper:
             cursor = cnx.cursor()
             cursor.execute(query)
             for row in cursor:
-                response[row[0]] = (row[0], row[1], row[2])
+                response[row[0]] = Category(row[0], row[1], row[2])
             cursor.close()
             self.disconnect(cnx)
             logger.info("OK")
