@@ -17,7 +17,7 @@ class Cashflow:
     def set_handlers(self, updater):
         categories = self.db.get_categories()
         for (ouid, code, title) in categories.values():
-            updater.dispatcher.add_handler(CommandHandler(category_code, self.handle_cats))
+            updater.dispatcher.add_handler(CommandHandler(code, self.handle_cats))
         updater.dispatcher.add_handler(CommandHandler("start", self.handle_start))
         updater.dispatcher.add_handler(CommandHandler("cats", self.get_categories))
 
