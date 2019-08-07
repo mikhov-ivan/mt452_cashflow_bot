@@ -4,6 +4,7 @@ import mysql.connector
 from mysql.connector import errorcode
 from Structures import CategoryGroup
 from Structures import Category
+from Structures import Transaction
 
 global DB_NAME
 global TABLES
@@ -72,6 +73,30 @@ class DBHelper:
             cursor.execute(query)
             for row in cursor:
                 response[row[0]] = Category(row[0], row[1], row[2])
+            cursor.close()
+            self.disconnect(cnx)
+        except mysql.connector.Error as err:
+            logger.error(err.msg)
+        return response
+    
+    def get_transactions(self):
+        try:
+            query = (
+                " SELECT"
+                "    t.ouid AS transaction_ouid,"
+                "    t.execution_date AS transaction_execution_date,"
+                "    t.title AS transaction_title,"
+                "    cur.code AS currency_code"
+                " FROM transaction t"
+                " ORDER BY t.execution_date"
+            )
+            
+            response = {}
+            cnx = self.connect()
+            cursor = cnx.cursor()
+            cursor.execute(query)
+            for row in cursor:
+                response[row[0]] = Transaction(row[0], row[1], row[2], row[3])
             cursor.close()
             self.disconnect(cnx)
         except mysql.connector.Error as err:

@@ -16,6 +16,7 @@ logger = logging.getLogger()
 class CmdPrefix(Enum):
     CATEGORY_GROUP = "cg_"
     CATEGORY = "c_"
+    TRANSACTION = "tr_"
 
 
 class Cashflow:
@@ -28,6 +29,7 @@ class Cashflow:
         updater.dispatcher.add_handler(CommandHandler("start", self.handle_start))
         updater.dispatcher.add_handler(CommandHandler("cgs", self.handle_cgs))
         updater.dispatcher.add_handler(CommandHandler("cats", self.handle_cats))
+        updater.dispatcher.add_handler(CommandHandler("trans", self.handle_trans))
         
     def get_regex_handler(self, prefix):
         if prefix == CmdPrefix.CATEGORY_GROUP: handler = self.handle_category_group
@@ -42,35 +44,46 @@ class Cashflow:
         self.log_update(update)
         self.send(bot, update.message.chat_id, "Category: <b>{}</b>".format(update.message.text))
         
-    def handle_cats(self, bot, update):
-        self.log_update(update)
-        categories = self.db.get_categories()
-        if len(categories) > 0:
-            msg = ""
-            for c in categories.values():
-                msg += "{}: /{}{}{}".format(c.title, CmdPrefix.CATEGORY.value, c.code, os.linesep)
-            template = "Following <b>{} categories</b> are available:{}{}{}"
-            html = template.format(len(categories), os.linesep, os.linesep, msg)
-        else:
-            html = "There are <b>no categories</b> available".format(os.linesep)
-        self.send(bot, update.message.chat_id, html)
+    def handle_start(self, bot, update):
+        logger.info("User {} {} started bot".format(update.effective_user["id"], update.message.from_user.first_name))
+        self.send(bot, update.message.chat_id, "Hello, <b>{}</b>!".format(update.message.from_user.first_name))
         
     def handle_cgs(self, bot, update):
         self.log_update(update)
-        category_groups = self.db.get_category_groups()
-        if len(category_groups) > 0:
-            msg = ""
-            for cg in category_groups.values():
-                msg += "{}: /{}{}{}".format(cg.title, CmdPrefix.CATEGORY_GROUP.value, cg.code, os.linesep)
-            template = "Following <b>{} category groups</b> are available:{}{}{}"
-            html = template.format(len(category_groups), os.linesep, os.linesep, msg)
-        else:
-            html = "There are <b>no category groups</b> available".format(os.linesep)
-        self.send(bot, update.message.chat_id, html)
+        self.get_list(CmdPrefix.CATEGORY_GROUP)
         
-    def handle_start(self, bot, update):
-        logger.info("User {} started bot".format(update.effective_user["id"]))
-        self.send(bot, update.message.chat_id, "Hello, <b>{}</b>!".format(update.message.from_user.first_name))
+    def handle_trans(self, bot, update):
+        self.log_update(update)
+        self.get_list(CmdPrefix.TRANSACTION)
+        
+    def handle_cats(self, bot, update):
+        self.log_update(update)
+        self.get_list(CmdPrefix.CATEGORY)
+        
+    def get_list(self, prefix):
+        if prefix == CmdPrefix.CATEGORY_GROUP:
+            response = self.db.get_category_groups()
+            template = "Following <b>{} category groups</b> are available:{}{}{}"
+            
+        elif prefix == CmdPrefix.CATEGORY:
+            response = self.db.get_categories()
+            template = "Following <b>{} categories</b> are available:{}{}{}"
+            
+        elif prefix == CmdPrefix.TRANSACTION:
+            response = self.db.get_transactions()
+            template = "You have <b>{} transactions</b> recorded:{}{}{}"
+        
+        if len(response) > 0:
+            msg = ""
+            for row in response.values():
+                if prefix == CmdPrefix.CATEGORY_GROUP or prefix == CmdPrefix.CATEGORY:
+                    msg += "{}: /{}{}".format(row.title, prefix.value + row.code, os.linesep)
+                elif prefix == CmdPrefix.TRANSACTION:
+                    msg += "{}: /{} {}".format(row.execution_date, row.amount, row.currency, row.title, os.linesep)
+            html = template.format(len(categories), os.linesep, os.linesep, msg)
+        else:
+            html = "List is empty"
+        self.send(bot, update.message.chat_id, html)
         
     def send(self, bot, chat_id, msg):
         bot.sendMessage(chat_id=chat_id, text=msg, parse_mode='HTML')
