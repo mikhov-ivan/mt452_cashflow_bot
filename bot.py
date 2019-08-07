@@ -40,8 +40,8 @@ def get_categories(bot, update):
     log_update(update)
     categories = app.get_categories()
     if len(categories) > 0:
-        for c in categories:
-            msg += "[{}] {} {}{}".format(ouid, code, title, os.linesep)
+        for ouid, category in categories:
+            msg += "[{}] {} - {}{}".format(ouid, category.code, category.title, os.linesep)
         html = "Following <b>categories</b> are available:{}{}".format(msg, os.linesep)
     else:
         html = "There are <b>no categories</b> available".format(os.linesep)
