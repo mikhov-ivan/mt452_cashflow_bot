@@ -30,7 +30,7 @@ class DBHelper:
                 " SELECT"
                 "    c.ouid AS category_ouid,"
                 "    c.code AS category_code,"
-                "    c_msg.ru AS category_title,"
+                "    c_mssg.ru AS category_title,"
                 "    cg.ouid AS category_group_ouid,"
                 "    cg_msg.ru AS category_group_title"
                 " FROM category c"
@@ -48,8 +48,7 @@ class DBHelper:
                 response[row[0]] = Category(row[0], row[1], row[2])
             cursor.close()
             self.disconnect(cnx)
-            logger.info("OK")
         except mysql.connector.Error as err:
-            logger.info(err.msg)
+            logger.error(err.msg)
         return response
         

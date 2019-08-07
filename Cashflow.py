@@ -4,20 +4,35 @@ import telegram
 from telegram.ext import Updater
 from telegram.ext import CommandHandler
 from DBHelper import DBHelper
+from enum import Enum
 
 global logger
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s: %(message)s")
 logger = logging.getLogger()
 
+
 class Cashflow:
+    class StateMachine:
+        class State(Enum):
+            MAIN = 1
+        
+        def __init__(self):
+            self.state = State.MAIN
+        
+
     def __init__(self):
         self.db = DBHelper()
-        self.state = "main"
+        self.sm = StateMachine()
     
     def set_handlers(self, updater):
+        # category_groups = self.db.get_category_groups()
+        # for cg in categories.values():
+            # updater.dispatcher.add_handler(CommandHandler(cg.code, self.handle_cats))
+            
         categories = self.db.get_categories()
         for c in categories.values():
             updater.dispatcher.add_handler(CommandHandler(c.code, self.handle_cats))
+        
         updater.dispatcher.add_handler(CommandHandler("start", self.handle_start))
         updater.dispatcher.add_handler(CommandHandler("cats", self.get_categories))
 
