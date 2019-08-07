@@ -88,6 +88,7 @@ class DBHelper:
                 "    t.title AS transaction_title,"
                 "    cur.code AS currency_code"
                 " FROM transaction t"
+                "    INNER JOIN currency cur ON cur.OUID = t.currency_ouid"
                 " ORDER BY t.execution_date"
             )
             
