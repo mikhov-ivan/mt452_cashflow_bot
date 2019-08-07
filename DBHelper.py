@@ -42,16 +42,9 @@ class DBHelper:
             cnx = self.connect()
             cursor = cnx.cursor()
             cursor.execute(query)
-            
-            for (
-                category_ouid,
-                category_code,
-                category_title,
-                category_group_ouid,
-                category_group_title
-            ) in categories.values():
-                response["ouid"] = (ouid, code, title)
-            
+            for row in cursor.items():
+                logger.info(row)
+                response[row.category_ouid] = row
             cursor.close()
             self.disconnect(cnx)
             logger.info("OK")
