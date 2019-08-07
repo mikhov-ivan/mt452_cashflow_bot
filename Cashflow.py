@@ -49,7 +49,7 @@ class Cashflow:
             msg = ""
             for c in categories.values():
                 msg += "{}: /{}{}{}".format(c.title, CmdPrefix.CATEGORY.value, c.code, os.linesep)
-            template = "Following <b>categories</b> ({}) are available:{}{}{}"
+            template = "Following <b>{} categories</b> are available:{}{}{}"
             html = template.format(len(categories), os.linesep, os.linesep, msg)
         else:
             html = "There are <b>no categories</b> available".format(os.linesep)
@@ -62,7 +62,7 @@ class Cashflow:
             msg = ""
             for cg in category_groups.values():
                 msg += "{}: /{}{}{}".format(cg.title, CmdPrefix.CATEGORY_GROUP.value, cg.code, os.linesep)
-            template = "Following <b>category groups</b> ({}) are available:{}{}{}"
+            template = "Following <b>{} category groups</b> are available:{}{}{}"
             html = template.format(len(category_groups), os.linesep, os.linesep, msg)
         else:
             html = "There are <b>no category groups</b> available".format(os.linesep)
