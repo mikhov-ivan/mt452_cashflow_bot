@@ -20,8 +20,7 @@ class DBHelper:
             user=os.environ.get('DB_USER', None),
             password=os.environ.get('DB_PASSWORD', None),
             host=os.environ.get('DB_HOST', None),
-            database=os.environ.get('DB_NAME', None)
-        )
+            database=os.environ.get('DB_NAME', None))
         
     def disconnect(self, cnx):
         cnx.close()
@@ -35,8 +34,7 @@ class DBHelper:
                 "    cg_msg.ru AS category_group_title"
                 " FROM category_group cg"
                 "    INNER JOIN msg cg_msg ON cg_msg.OUID = cg.title_msg_ouid"
-                " ORDER BY cg_msg.ru"
-            )
+                " ORDER BY cg_msg.ru")
             
             response = {}
             cnx = self.connect()
@@ -64,8 +62,7 @@ class DBHelper:
                 "    INNER JOIN msg c_msg ON c_msg.OUID = c.title_msg_ouid"
                 "    INNER JOIN category_group cg ON cg.OUID = c.category_group_ouid"
                 "        INNER JOIN msg cg_msg ON cg_msg.OUID = cg.title_msg_ouid"
-                " ORDER BY c_msg.ru"
-            )
+                " ORDER BY c_msg.ru")
             
             response = {}
             cnx = self.connect()
@@ -90,8 +87,7 @@ class DBHelper:
                 "    t.title AS transaction_title"
                 " FROM transaction t"
                 "    INNER JOIN currency cur ON cur.OUID = t.currency_ouid"
-                " ORDER BY t.execution_date"
-            )
+                " ORDER BY t.execution_date")
             
             response = {}
             cnx = self.connect()

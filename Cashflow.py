@@ -1,5 +1,6 @@
 import os
 import logging
+import datetime
 import telegram
 from telegram.ext import Updater
 from telegram.ext import CommandHandler
@@ -7,6 +8,9 @@ from telegram.ext import RegexHandler
 from StateMachine import StateMachine
 from DBHelper import DBHelper
 from enum import Enum
+
+global DATETIME_FORMAT
+DATETIME_FORMAT = "%d.%m.%Y %H:%M"
 
 global logger
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s: %(message)s")
@@ -73,7 +77,9 @@ class GeneralHandler:
                 if type == Type.CATEGORY_GROUP or type == Type.CATEGORY:
                     msg += "{}: /{}{}{}".format(row.title, CmdPrefix[type.name].value, row.code, os.linesep)
                 elif type == Type.TRANSACTION:
-                    msg += "{}: {} {} {}{}".format(row.execution_date, row.amount, row.currency, row.title, os.linesep)
+                    msg += "{}: {} {} {}{}".format(
+                        row.execution_date.strftime(DATETIME_FORMAT),
+                        row.amount, row.currency, row.title, os.linesep)
             html = template.format(len(response), os.linesep, os.linesep, msg)
         else:
             html = "List is empty"
