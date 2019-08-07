@@ -32,7 +32,7 @@ class DBHelper:
                 "    cg.ouid AS category_group_ouid,"
                 "    cg.code AS category_group_code,"
                 "    cg_msg.ru AS category_group_title"
-                " FROM category cg"
+                " FROM category_group cg"
                 "    INNER JOIN msg cg_msg ON cg_msg.OUID = cg.title_msg_ouid"
                 " ORDER BY cg_msg.ru"
             )
