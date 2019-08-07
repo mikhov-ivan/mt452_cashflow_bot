@@ -19,6 +19,12 @@ class CmdPrefix(Enum):
     TRANSACTION = "tr_"
 
 
+class Type(Enum):
+    CATEGORY_GROUP = 1
+    CATEGORY = 2
+    TRANSACTION = 3
+
+
 class Cashflow:
     def __init__(self):
         self.db = DBHelper()
@@ -29,6 +35,7 @@ class Cashflow:
         updater.dispatcher.add_handler(CommandHandler("start", self.handle_start))
         updater.dispatcher.add_handler(CommandHandler("cgs", self.handle_cgs))
         updater.dispatcher.add_handler(CommandHandler("cats", self.handle_cats))
+        updater.dispatcher.add_handler(CommandHandler("trans", self.handle_trans))
         
     def get_regex_handler(self, prefix):
         if prefix == CmdPrefix.CATEGORY_GROUP: handler = self.handle_category_group
@@ -49,35 +56,35 @@ class Cashflow:
         
     def handle_cgs(self, bot, update):
         self.log_update(update)
-        self.get_list(CmdPrefix.CATEGORY_GROUP)
+        self.get_list(Type.CATEGORY_GROUP)
         
     def handle_trans(self, bot, update):
         self.log_update(update)
-        self.get_list(CmdPrefix.TRANSACTION)
+        self.get_list(Type.TRANSACTION)
         
     def handle_cats(self, bot, update):
         self.log_update(update)
-        self.get_list(CmdPrefix.CATEGORY)
+        self.get_list(Type.CATEGORY)
         
-    def get_list(self, prefix):
-        if prefix == CmdPrefix.CATEGORY_GROUP:
+    def get_list(self, type):
+        if type == Type.CATEGORY_GROUP:
             response = self.db.get_category_groups()
             template = "Following <b>{} category groups</b> are available:{}{}{}"
             
-        elif prefix == CmdPrefix.CATEGORY:
+        elif type == Type.CATEGORY:
             response = self.db.get_categories()
             template = "Following <b>{} categories</b> are available:{}{}{}"
             
-        elif prefix == CmdPrefix.TRANSACTION:
+        elif type == Type.TRANSACTION:
             response = self.db.get_transactions()
             template = "You have <b>{} transactions</b> recorded:{}{}{}"
         
         if len(response) > 0:
             msg = ""
             for row in response.values():
-                if prefix == CmdPrefix.CATEGORY_GROUP or prefix == CmdPrefix.CATEGORY:
-                    msg += "{}: /{}{}".format(row.title, prefix.value + row.code, os.linesep)
-                elif prefix == CmdPrefix.TRANSACTION:
+                if type == Type.CATEGORY_GROUP or type == Type.CATEGORY:
+                    msg += "{}: /{}{}".format(row.title, type.value + row.code, os.linesep)
+                elif type == Type.TRANSACTION:
                     msg += "{}: /{} {}".format(row.execution_date, row.amount, row.currency, row.title, os.linesep)
             html = template.format(len(categories), os.linesep, os.linesep, msg)
         else:
