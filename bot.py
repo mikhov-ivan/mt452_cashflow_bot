@@ -25,33 +25,9 @@ logger = logging.getLogger()
 app = Cashflow()
 
 
-def log_update(update):
-    logger.info("{} {}".format(update.update_id, update.message))
-    
-def send(bot, chat_id, msg):
-    bot.sendMessage(chat_id=chat_id, text=msg, parse_mode='HTML')
-
-def handle_start(bot, update):
-    logger.info("User {} started bot".format(update.effective_user["id"]))
-    update.message.reply_text("Hello, {}!".format(update.message.from_user.first_name))
-    
-def get_categories(bot, update):
-    log_update(update)
-    categories = app.get_categories()
-    if len(categories) > 0:
-        msg = ""
-        for (ouid, code, title) in categories.values():
-            msg += "/{} - {}{}".format(code, title, os.linesep)
-        html = "Following <b>categories</b> are available:{}{}{}".format(os.linesep, os.linesep, msg)
-    else:
-        html = "There are <b>no categories</b> available".format(os.linesep)
-    send(bot, update.message.chat_id, html)
-
-
 if __name__ == "__main__":
     logger.info("Starting bot")
     updater = Updater(TOKEN)
-    updater.dispatcher.add_handler(CommandHandler("start", handle_start))
-    updater.dispatcher.add_handler(CommandHandler("cats", get_categories))
+    app.set_handlers(updater)
     updater.start_webhook(listen="0.0.0.0", port=PORT, url_path=TOKEN, key=APP_KEY)
     updater.bot.set_webhook(APP_URL + TOKEN)

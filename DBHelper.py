@@ -22,7 +22,7 @@ class DBHelper:
         
     def disconnect(self, cnx):
         cnx.close()
-        
+    
     def get_categories(self):
         try:
             response = {}
@@ -38,4 +38,4 @@ class DBHelper:
         except mysql.connector.Error as err:
             logger.info(err.msg)
         return response
-
+        
