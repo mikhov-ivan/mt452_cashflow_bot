@@ -3,7 +3,7 @@ import logging
 import telegram
 from telegram.ext import Updater
 from telegram.ext import CommandHandler
-from DBHelper import DBHelper
+from Cashflow import Cashflow
 
 global APP_URL
 global APP_KEY
