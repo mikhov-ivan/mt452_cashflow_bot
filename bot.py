@@ -25,6 +25,9 @@ logger = logging.getLogger()
 db = DBHelper()
 
 
+def log_update(update):
+    logger.info("{} {}".format(update.update_id, update.message))
+    
 def send(bot, chat_id, msg):
     bot.sendMessage(chat_id=chat_id, text=msg, parse_mode='HTML')
 
@@ -34,7 +37,7 @@ def handle_start(bot, update):
     
 def get_categories(bot, update):
     msg = ""
-    logger.info("Setting up database")
+    log_update(update)
     categories = db.get_categories()
     for c in categories: msg += "[{}] {} {}\n".format(c.ouid, c.code, c.title)
     html = "Following categories are available:<br><br>{}".format(msg)
