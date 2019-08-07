@@ -25,6 +25,9 @@ logger = logging.getLogger()
 db = DBHelper()
 
 
+def send(bot, chat_id, msg):
+    bot.sendMessage(chat_id=chat_id*, text=msg, parse_mode='HTML')
+
 def handle_start(bot, update):
     logger.info("User {} started bot".format(update.effective_user["id"]))
     update.message.reply_text("Hello, {}!".format(update.message.from_user.first_name))
@@ -34,9 +37,8 @@ def get_categories(bot, update):
     logger.info("Setting up database")
     categories = db.get_categories()
     for c in categories: msg += "[{}] {} {}\n".format(c.ouid, c.code, c.title)
-    
     html = "Following categories are available:<br><br>{}".format(msg)
-    update.message.reply_text(telegram.Message.caption_html(html))
+    send(update.effective_chat, html)
 
 
 if __name__ == "__main__":
@@ -46,4 +48,3 @@ if __name__ == "__main__":
     updater.dispatcher.add_handler(CommandHandler("categories", get_categories))
     updater.start_webhook(listen="0.0.0.0", port=PORT, url_path=TOKEN, key=APP_KEY)
     updater.bot.set_webhook(APP_URL + TOKEN)
-
