@@ -28,7 +28,7 @@ class Cashflow:
         updater.dispatcher.add_handler(CommandHandler("start", self.handle_start))
         updater.dispatcher.add_handler(CommandHandler("cats", self.handle_cats))
         
-    def get_regex_handler(prefix):
+    def get_regex_handler(self, prefix):
         if prefix == CmdPrefix.CATEGORY_GROUP: handler = self.handle_category_group
         elif prefix == CmdPrefix.CATEGORY: handler = self.handle_category
         return RegexHandler("^(/" + prefix + "[a-zA-Z]+)$", handler)
