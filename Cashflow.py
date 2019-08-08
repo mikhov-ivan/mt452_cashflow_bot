@@ -125,9 +125,18 @@ class Cashflow:
     
         logger.info("Register general commands: /start, /cgs, /cgs, /cs, /ts".format(prefix))
         updater.dispatcher.add_handler(CommandHandler("start", self.handlers["start"]))
-        updater.dispatcher.add_handler(CommandHandler("cgs", self.handlers["cgs"]))
-        updater.dispatcher.add_handler(CommandHandler("cs", self.handlers["cs"]))
-        updater.dispatcher.add_handler(CommandHandler("ts", self.handlers["ts"]))
+        
+        updater.dispatcher.add_handler(CommandHandler(
+            TypePrefix.CATEGORY_GROUP.value,
+            self.handlers[TypePrefix.CATEGORY_GROUP.value]))
+            
+        updater.dispatcher.add_handler(CommandHandler(
+            TypePrefix.CATEGORY.value,
+            self.handlers[TypePrefix.CATEGORY.value]))
+            
+        updater.dispatcher.add_handler(
+            CommandHandler(TypePrefix.TRANSACTION.value,
+            self.handlers[TypePrefix.TRANSACTION.value]))
         
     def handle_delete_transaction(self, bot, update):
         log_update(update)
