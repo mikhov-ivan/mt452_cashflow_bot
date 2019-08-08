@@ -111,11 +111,13 @@ class Cashflow:
         }
     
     def set_handlers(self, updater):
-        for st in TypePrefix:
-            if st in self.handlers:
-                updater.dispatcher.add_handler(self.handlers[st])
+        for t in TypePrefix:
+            logger.info("TypePrefix: {}".format(t.value))
+            if t in self.handlers:
+                updater.dispatcher.add_handler(self.handlers[t])
             for cmd in CmdPrefix:
-                prefix = "{}{}_".format(cmd.value, st.value)
+                logger.info("CmdPrefix: {}".format(cmd.value))
+                prefix = "{}{}_".format(cmd.value, t.value)
                 if prefix in self.handlers:
                     logger.info("Register regex command: /{}[a-zA-Z]+".format(prefix))
                     handler = RegexHandler("^(/" + prefix + "[a-zA-Z]+)$", self.handlers[prefix])
