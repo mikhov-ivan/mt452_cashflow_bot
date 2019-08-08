@@ -35,8 +35,8 @@ class CmdPrefix(Enum):
 
 
 class StructPrefix(Enum):
-    CATEGORY_GROUP = "cg_"
-    CATEGORY = "c_"
+    CATEGORY_GROUP = "cg"
+    CATEGORY = "c"
 
 
 class GeneralHandler:
@@ -81,7 +81,7 @@ class GeneralHandler:
                 if type == Type.CATEGORY_GROUP or type == Type.CATEGORY:
                     msg += "{}: /{}{}{}".format(
                         row.title,
-                        "{}{}".format(CmdPrefix.DELETE.value, StructPrefix[type.name].value),
+                        "{}{}_".format(CmdPrefix.DELETE.value, StructPrefix[type.name].value),
                         row.code,
                         os.linesep)
                 elif type == Type.TRANSACTION:
@@ -114,7 +114,7 @@ class Cashflow:
             if st in self.handlers:
                 updater.dispatcher.add_handler(self.handlers[st])
             for cmd in StructPrefix:
-                prefix = "{}{}".format(cmd.value, st.value)
+                prefix = "{}{}_".format(cmd.value, st.value)
                 if prefix in self.handlers:
                     handler = RegexHandler("^(/" + prefix + "[a-zA-Z]+)$", self.handlers[prefix])
                     updater.dispatcher.add_handler(handler)
