@@ -141,8 +141,8 @@ class Cashflow:
         
     def handle_delete_transaction(self, bot, update):
         log_update(update)
-        tmp_split = update.message.text.split("_")
-        ouid = int(tmp_split[len(tmp_split) - 1])
+        tmp_split = update.message.text.split("_t")
+        ouid = tmp_split[len(tmp_split) - 1]
         result = 1
         if result: send(bot, update.message.chat_id, "Transaction {} was deleted".format(ouid))
         else: send(bot, update.message.chat_id, "Transaction {} can not be deleted".format(ouid))
