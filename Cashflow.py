@@ -113,7 +113,7 @@ class Cashflow:
         for st in StructPrefix:
             if st in self.handlers:
                 updater.dispatcher.add_handler(self.handlers[st])
-            for cmd in StructPrefix:
+            for cmd in CmdPrefix:
                 prefix = "{}{}_".format(cmd.value, st.value)
                 if prefix in self.handlers:
                     logger.info("Register regex command: /{}[a-zA-Z]+".format(prefix))
