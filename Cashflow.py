@@ -31,13 +31,14 @@ class Type(Enum):
 
 
 class TypePrefix(Enum):
-    CATEGORY_GROUP = "cgs"
-    CATEGORY = "cs"
-    TRANSACTION = "ts"
+    CATEGORY_GROUP = "cg"
+    CATEGORY = "c"
+    TRANSACTION = "t"
 
 
 class CmdPrefix(Enum):
-    DELETE = "d"
+    EDIT = "edit"
+    DELETE = "delete"
 
 
 class GeneralHandler:
@@ -80,18 +81,15 @@ class GeneralHandler:
             msg = ""
             for row in response.values():
                 if type == Type.CATEGORY_GROUP or type == Type.CATEGORY:
-                    msg += "{}: /{}{}{}".format(
+                    msg += "{}: /{}{}".format(
                         row.title,
-                        "{}{}_".format(CmdPrefix.DELETE.value, TypePrefix[type.name].value),
-                        row.code,
+                        "{}_{}{}".format(CmdPrefix.DELETE.value, TypePrefix[type.name].value, row.ouid),
                         os.linesep)
                 elif type == Type.TRANSACTION:
-                    msg += "{}: {} {} {} /{}{}".format(
+                    msg += "{}: {} /{}{}".format(
                         row.execution_date.strftime(DATETIME_FORMAT),
-                        row.amount,
-                        row.currency,
-                        row.title,
-                        "{}{}_{}".format(CmdPrefix.DELETE.value, TypePrefix[type.name].value, row.ouid),
+                        "{} {} {}".format(row.amount, row.currency, row.title),
+                        "{}_{}{}".format(CmdPrefix.DELETE.value, TypePrefix[type.name].value, row.ouid),
                         os.linesep)
             html = template.format(len(response), os.linesep, os.linesep, msg)
         else:
@@ -108,10 +106,10 @@ class Cashflow:
         
         self.handlers = {
             "start": self.gh.handle_start,
-            "cgs": self.gh.handle_cgs,
-            "cs": self.gh.handle_cats,
-            "ts": self.gh.handle_trans,
-            "dts": self.handle_delete_transaction
+            "cg": self.gh.handle_cgs,
+            "c": self.gh.handle_cats,
+            "t": self.gh.handle_trans,
+            "delete_t": self.handle_delete_transaction
         }
     
     def set_handlers(self, updater):
@@ -119,10 +117,10 @@ class Cashflow:
             if t in self.handlers:
                 updater.dispatcher.add_handler(self.handlers[t])
             for cmd in CmdPrefix:
-                prefix = "{}{}".format(cmd.value, t.value)
+                prefix = "{}_{}".format(cmd.value, t.value)
                 if prefix in self.handlers:
-                    logger.info("Register regex command: /{}_[a-zA-Z]+".format(prefix))
-                    handler = RegexHandler("^(/" + prefix + "_[a-zA-Z0-9]+)$", self.handlers[prefix])
+                    logger.info("Register regex command: /{}[0-9]+".format(prefix))
+                    handler = RegexHandler("^(/" + prefix + "[0-9]+)$", self.handlers[prefix])
                     updater.dispatcher.add_handler(handler)
     
         logger.info("Register general commands: /start, /cgs, /cgs, /cs, /ts".format(prefix))
