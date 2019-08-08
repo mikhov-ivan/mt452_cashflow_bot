@@ -83,7 +83,7 @@ class GeneralHandler:
                 if type == Type.CATEGORY_GROUP or type == Type.CATEGORY:
                     msg += "{}: /{}{}".format(
                         row.title,
-                        "{}_{}{}".format(CmdPrefix.DELETE.value, TypePrefix[type.name].value, row.ouid),
+                        "{}{}{}".format(CmdPrefix.DELETE.value, TypePrefix[type.name].value, row.ouid),
                         os.linesep)
                 elif type == Type.TRANSACTION:
                     date = row.execution_date.strftime(DATETIME_FORMAT)
