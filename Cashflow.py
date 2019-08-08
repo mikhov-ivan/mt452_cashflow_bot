@@ -86,9 +86,10 @@ class GeneralHandler:
                         "{}_{}{}".format(CmdPrefix.DELETE.value, TypePrefix[type.name].value, row.ouid),
                         os.linesep)
                 elif type == Type.TRANSACTION:
-                    msg += "{}: {} /{}{}".format(
+                    msg += "{}: {} /{} or /{}{}".format(
                         row.execution_date.strftime(DATETIME_FORMAT),
                         "{} {} {}".format(row.amount, row.currency, row.title),
+                        "{}_{}{}".format(CmdPrefix.EDIT.value, TypePrefix[type.name].value, row.ouid),
                         "{}_{}{}".format(CmdPrefix.DELETE.value, TypePrefix[type.name].value, row.ouid),
                         os.linesep)
             html = template.format(len(response), os.linesep, os.linesep, msg)
