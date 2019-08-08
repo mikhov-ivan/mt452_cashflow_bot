@@ -21,7 +21,7 @@ def send(bot, chat_id, msg):
     bot.sendMessage(chat_id=chat_id, text=msg, parse_mode='HTML')
 
 def log_update(update):
-    logger.info("{} by {}: {}".format(update.update_id, update.from.username, update.message.text))
+    logger.info("{} by {}: {}".format(update.update_id, update["from"].username, update.message.text))
 
 
 class Type(Enum):
