@@ -10,7 +10,7 @@ from DBHelper import DBHelper
 from enum import Enum
 
 global DATETIME_FORMAT
-DATETIME_FORMAT = "%d.%m.%Y %H:%M"
+DATETIME_FORMAT = "%d.%m.%y"
 
 global logger
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s: %(message)s")
@@ -86,12 +86,14 @@ class GeneralHandler:
                         "{}_{}{}".format(CmdPrefix.DELETE.value, TypePrefix[type.name].value, row.ouid),
                         os.linesep)
                 elif type == Type.TRANSACTION:
-                    msg += "{}: {}{} {} or {}".format(
-                        row.execution_date.strftime(DATETIME_FORMAT),
-                        "{} {} {}".format(row.amount, row.currency, os.linesep),
-                        row.title,
-                        "/{}{}{}".format(CmdPrefix.EDIT.value, TypePrefix[type.name].value, row.ouid),
-                        "/{}{}{}{}{}".format(CmdPrefix.DELETE.value, TypePrefix[type.name].value, row.ouid, os.linesep, os.linesep))
+                    date = row.execution_date.strftime(DATETIME_FORMAT)
+                    msg += "{}{}".format(
+                        "{}: {} {} {} {}{}".format(
+                            date, row.amount, row.currency,
+                            "/{}{}{}".format(CmdPrefix.EDIT.value, TypePrefix[type.name].value, row.ouid),
+                            "/{}{}{}".format(CmdPrefix.DELETE.value, TypePrefix[type.name].value, row.ouid)
+                            os.linesep),
+                        "{}{}{}".format(row.title, os.linesep, os.linesep))
             html = template.format(len(response), os.linesep, os.linesep, msg)
         else:
             html = "List is empty"
@@ -110,7 +112,7 @@ class Cashflow:
             "cg": self.gh.handle_cgs,
             "c": self.gh.handle_cats,
             "t": self.gh.handle_trans,
-            "delete_t": self.handle_delete_transaction
+            "dt": self.handle_delete_transaction
         }
     
     def set_handlers(self, updater):
