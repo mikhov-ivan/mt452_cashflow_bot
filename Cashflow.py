@@ -119,10 +119,10 @@ class Cashflow:
                     handler = RegexHandler("^(/" + prefix + "[a-zA-Z]+)$", self.handlers[prefix])
                     updater.dispatcher.add_handler(handler)
     
-        updater.dispatcher.add_handler(CommandHandler("start", self.gh.handlers["start"]))
-        updater.dispatcher.add_handler(CommandHandler("cgs", self.gh.handlers["cgs"]))
-        updater.dispatcher.add_handler(CommandHandler("cs", self.gh.handlers["cs"]))
-        updater.dispatcher.add_handler(CommandHandler("ts", self.gh.handlers["ts"]))
+        updater.dispatcher.add_handler(CommandHandler("start", self.handlers["start"]))
+        updater.dispatcher.add_handler(CommandHandler("cgs", self.handlers["cgs"]))
+        updater.dispatcher.add_handler(CommandHandler("cs", self.handlers["cs"]))
+        updater.dispatcher.add_handler(CommandHandler("ts", self.handlers["ts"]))
         
     def handle_delete_transaction(self, bot, update):
         log_update(update)
