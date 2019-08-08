@@ -35,7 +35,6 @@ class CmdPrefix(Enum):
 
 
 class StructPrefix(Enum):
-    DELETE = "cg_"
     CATEGORY_GROUP = "cg_"
     CATEGORY = "c_"
 
@@ -101,22 +100,38 @@ class Cashflow:
         self.db = DBHelper()
         self.sm = StateMachine()
         self.gh = GeneralHandler()
+        
+        self.handlers = {
+            "start": self.gh.handle_start,
+            "cgs": self.gh.handle_cgs,
+            "cs": self.gh.handle_cats,
+            "ts": self.gh.handle_trans,
+            "dt": self.gh.handle_delete_transaction
+        }
     
     def set_handlers(self, updater):
-        for struct_prefix in StructPrefix:
-            updater.dispatcher.add_handler(self.get_regex_handler(struct_prefix))
-            for cmd_prefix in StructPrefix:
-                updater.dispatcher.add_handler(self.get_regex_handler("{}{}".format(cmd_prefix.value, struct_prefix.value)))
-        updater.dispatcher.add_handler(CommandHandler("start", self.gh.handle_start))
-        updater.dispatcher.add_handler(CommandHandler("cgs", self.gh.handle_cgs))
-        updater.dispatcher.add_handler(CommandHandler("cats", self.gh.handle_cats))
-        updater.dispatcher.add_handler(CommandHandler("trans", self.gh.handle_trans))
+        for st in StructPrefix:
+            if st in self.handlers:
+                updater.dispatcher.add_handler(self.handlers[st])
+            for cmd in StructPrefix:
+                prefix = "{}{}".format(cmd.value, st.value)
+                if prefix in self.handlers:
+                    handler = RegexHandler("^(/" + prefix + "[a-zA-Z]+)$", self.handlers[prefix])
+                    updater.dispatcher.add_handler(handler)
+    
+        updater.dispatcher.add_handler(CommandHandler("start", self.gh.handlers["start"]))
+        updater.dispatcher.add_handler(CommandHandler("cgs", self.gh.handlers["cgs"]))
+        updater.dispatcher.add_handler(CommandHandler("cs", self.gh.handlers["cs"]))
+        updater.dispatcher.add_handler(CommandHandler("ts", self.gh.handlers["ts"]))
         
-    def get_regex_handler(self, prefix):
-        if prefix == StructPrefix.CATEGORY_GROUP: handler = self.handle_category_group
-        elif prefix == StructPrefix.CATEGORY: handler = self.handle_category
-        return RegexHandler("^(/" + prefix + "[a-zA-Z]+)$", handler)
-
+    def handle_delete_transaction(self, bot, update):
+        log_update(update)
+        tmp_split = update.message.text.split("_")
+        ouid = tmp_split[len(tmp_split) - 1]
+        result = 1
+        if result: send(bot, update.message.chat_id, "Transaction was deleted")
+        else: send(bot, update.message.chat_id, "Transaction can not be deleted")
+        
     def handle_category_group(self, bot, update):
         log_update(update)
         send(bot, update.message.chat_id, "Category group: <b>{}</b>".format(update.message.text))
