@@ -91,8 +91,7 @@ class GeneralHandler:
                         row.amount,
                         row.currency,
                         row.title,
-                        "{}{}_".format(CmdPrefix.DELETE.value, TypePrefix[type.name].value),
-                        row.ouid,
+                        "{}{}_{}".format(CmdPrefix.DELETE.value, TypePrefix[type.name].value, row.ouid),
                         os.linesep)
             html = template.format(len(response), os.linesep, os.linesep, msg)
         else:
