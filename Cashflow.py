@@ -123,7 +123,7 @@ class Cashflow:
                 prefix = "{}{}".format(cmd.value, t.value)
                 if prefix in self.handlers:
                     logger.info("Register regex command: /{}_[a-zA-Z]+".format(prefix))
-                    handler = RegexHandler("^(/" + prefix + "_[a-zA-Z]+)$", self.handlers[prefix])
+                    handler = RegexHandler("^(/" + prefix + "_[a-zA-Z0-9]+)$", self.handlers[prefix])
                     updater.dispatcher.add_handler(handler)
     
         logger.info("Register general commands: /start, /cgs, /cgs, /cs, /ts".format(prefix))
