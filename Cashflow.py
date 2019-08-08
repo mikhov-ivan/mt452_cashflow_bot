@@ -86,7 +86,7 @@ class GeneralHandler:
                         "{}_{}{}".format(CmdPrefix.DELETE.value, TypePrefix[type.name].value, row.ouid),
                         os.linesep)
                 elif type == Type.TRANSACTION:
-                    msg += "{}: {}{}{} or {}".format(
+                    msg += "{}: {}{} {} or {}".format(
                         row.execution_date.strftime(DATETIME_FORMAT),
                         "{} {} {}".format(row.amount, row.currency, os.linesep),
                         row.title,
