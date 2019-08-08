@@ -89,7 +89,7 @@ class GeneralHandler:
                 elif type == Type.TRANSACTION:
                     date = row.execution_date.strftime(DATETIME_FORMAT)
                     msg += "{}{}".format(
-                        "{}: {} {}{}".format(date, row.amount, row.currency, os.linesep),
+                        "<b>{}</b>: {} {}{}".format(date, row.amount, row.currency, os.linesep),
                         "{} {} {}{}{}".format(
                             row.title, 
                             "/{}{}{}".format(CmdPrefix.EDIT.value, TypePrefix[type.name].value, row.ouid),
