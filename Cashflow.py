@@ -21,7 +21,7 @@ def send(bot, chat_id, msg):
     bot.sendMessage(chat_id=chat_id, text=msg, parse_mode='HTML')
 
 def log_update(update):
-    logger.info("{} {}".format(update.update_id, update.message))
+    logger.info("{} by {}: {}".format(update.update_id, update.from.username, update.message.text))
 
 
 class Type(Enum):
@@ -110,10 +110,10 @@ class Cashflow:
         
         self.handlers = {
             "start": self.gh.handle_start,
-            "cg": self.gh.handle_cgs,
-            "c": self.gh.handle_cats,
-            "t": self.gh.handle_trans,
-            "dt": self.handle_delete_transaction
+            "CG": self.gh.handle_cgs,
+            "C": self.gh.handle_cats,
+            "T": self.gh.handle_trans,
+            "DT": self.handle_delete_transaction
         }
     
     def set_handlers(self, updater):
