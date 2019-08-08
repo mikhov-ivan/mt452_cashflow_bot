@@ -91,8 +91,8 @@ class GeneralHandler:
                         "{}: {} {} {} {}{}".format(
                             date, row.amount, row.currency,
                             "/{}{}{}".format(CmdPrefix.EDIT.value, TypePrefix[type.name].value, row.ouid),
-                            "/{}{}{}".format(CmdPrefix.DELETE.value, TypePrefix[type.name].value, row.ouid)
-                            os.linesep)
+                            "/{}{}{}".format(CmdPrefix.DELETE.value, TypePrefix[type.name].value, row.ouid),
+                            os.linesep),
                         "{}{}{}".format(row.title, os.linesep, os.linesep))
             html = template.format(len(response), os.linesep, os.linesep, msg)
         else:
