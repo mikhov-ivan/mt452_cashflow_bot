@@ -82,7 +82,7 @@ class DBHelper:
                 " SELECT"
                 "    t.ouid AS transaction_ouid,"
                 "    t.execution_date AS transaction_execution_date,"
-                "    cur.code AS currency_code,"
+                "    cur.symbol AS currency_symbol,"
                 "    t.amount AS transaction_amount,"
                 "    t.title AS transaction_title"
                 " FROM transaction t"
