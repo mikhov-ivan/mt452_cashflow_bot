@@ -37,8 +37,8 @@ class TypePrefix(Enum):
 
 
 class CmdPrefix(Enum):
-    EDIT = "edit"
-    DELETE = "delete"
+    EDIT = "e"
+    DELETE = "d"
 
 
 class GeneralHandler:
@@ -90,8 +90,8 @@ class GeneralHandler:
                         row.execution_date.strftime(DATETIME_FORMAT),
                         "{} {} {}".format(row.amount, row.currency, os.linesep),
                         row.title,
-                        "/{}_{}{}".format(CmdPrefix.EDIT.value, TypePrefix[type.name].value, row.ouid),
-                        "/{}_{}{}{}{}".format(CmdPrefix.DELETE.value, TypePrefix[type.name].value, row.ouid, os.linesep, os.linesep))
+                        "/{}{}{}".format(CmdPrefix.EDIT.value, TypePrefix[type.name].value, row.ouid),
+                        "/{}{}{}{}{}".format(CmdPrefix.DELETE.value, TypePrefix[type.name].value, row.ouid, os.linesep, os.linesep))
             html = template.format(len(response), os.linesep, os.linesep, msg)
         else:
             html = "List is empty"
@@ -118,7 +118,7 @@ class Cashflow:
             if t in self.handlers:
                 updater.dispatcher.add_handler(self.handlers[t])
             for cmd in CmdPrefix:
-                prefix = "{}_{}".format(cmd.value, t.value)
+                prefix = "{}{}".format(cmd.value, t.value)
                 if prefix in self.handlers:
                     logger.info("Register regex command: /{}[0-9]+".format(prefix))
                     handler = RegexHandler("^(/" + prefix + "[0-9]+)$", self.handlers[prefix])
@@ -141,7 +141,7 @@ class Cashflow:
         
     def handle_delete_transaction(self, bot, update):
         log_update(update)
-        tmp_split = update.message.text.split("_t")
+        tmp_split = update.message.text.split("t")
         ouid = tmp_split[len(tmp_split) - 1]
         result = 1
         if result: send(bot, update.message.chat_id, "Transaction {} was deleted".format(ouid))
