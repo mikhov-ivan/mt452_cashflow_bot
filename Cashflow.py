@@ -30,13 +30,14 @@ class Type(Enum):
     TRANSACTION = 3
 
 
+class TypePrefix(Enum):
+    CATEGORY_GROUP = "cgs"
+    CATEGORY = "cs"
+    TRANSACTION = "ts"
+
+
 class CmdPrefix(Enum):
     DELETE = "d"
-
-
-class StructPrefix(Enum):
-    CATEGORY_GROUP = "cg"
-    CATEGORY = "c"
 
 
 class GeneralHandler:
@@ -81,7 +82,7 @@ class GeneralHandler:
                 if type == Type.CATEGORY_GROUP or type == Type.CATEGORY:
                     msg += "{}: /{}{}{}".format(
                         row.title,
-                        "{}{}_".format(CmdPrefix.DELETE.value, StructPrefix[type.name].value),
+                        "{}{}_".format(CmdPrefix.DELETE.value, TypePrefix[type.name].value),
                         row.code,
                         os.linesep)
                 elif type == Type.TRANSACTION:
@@ -110,7 +111,7 @@ class Cashflow:
         }
     
     def set_handlers(self, updater):
-        for st in StructPrefix:
+        for st in TypePrefix:
             if st in self.handlers:
                 updater.dispatcher.add_handler(self.handlers[st])
             for cmd in CmdPrefix:
