@@ -137,8 +137,8 @@ class Cashflow:
         tmp_split = update.message.text.split("_")
         ouid = tmp_split[len(tmp_split) - 1]
         result = 1
-        if result: send(bot, update.message.chat_id, "Transaction was deleted")
-        else: send(bot, update.message.chat_id, "Transaction can not be deleted")
+        if result: send(bot, update.message.chat_id, "Transaction {} was deleted".format(ouid))
+        else: send(bot, update.message.chat_id, "Transaction {} can not be deleted".format(ouid))
         
     def handle_category_group(self, bot, update):
         log_update(update)
