@@ -110,11 +110,11 @@ class Cashflow:
         
         self.handlers = {
             "start": self.gh.handle_start,
-            "CG": self.gh.handle_cgs,
-            "C": self.gh.handle_cats,
-            "T": self.gh.handle_trans,
-            "ET": self.handle_edit_transaction
-            "DT": self.handle_delete_transaction
+            TypePrefix.CATEGORY_GROUP.value: self.gh.handle_cgs,
+            TypePrefix.CATEGORY.value: self.gh.handle_cats,
+            TypePrefix.TRANSACTION.value: self.gh.handle_trans,
+            "{}{}".format(CmdPrefix.EDIT.value, TypePrefix.TRANSACTION.value): self.handle_edit_transaction,
+            "{}{}".format(CmdPrefix.DELETE.value, TypePrefix.TRANSACTION.value): self.handle_delete_transaction
         }
     
     def set_handlers(self, updater):
