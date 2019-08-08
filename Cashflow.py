@@ -143,7 +143,7 @@ class Cashflow:
             CommandHandler(TypePrefix.TRANSACTION.value,
             self.handlers[TypePrefix.TRANSACTION.value]))
         
-    def handle_delete_transaction(self, bot, update):
+    def handle_edit_transaction(self, bot, update):
         log_update(update)
         tmp_split = update.message.text.split(TypePrefix.TRANSACTION)
         ouid = tmp_split[len(tmp_split) - 1]
