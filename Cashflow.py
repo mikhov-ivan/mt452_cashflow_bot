@@ -86,9 +86,14 @@ class GeneralHandler:
                         row.code,
                         os.linesep)
                 elif type == Type.TRANSACTION:
-                    msg += "{}: {} {} {}{}".format(
+                    msg += "{}: {} {} {} /{}{}".format(
                         row.execution_date.strftime(DATETIME_FORMAT),
-                        row.amount, row.currency, row.title, os.linesep)
+                        row.amount,
+                        row.currency,
+                        row.title,
+                        "{}{}_".format(CmdPrefix.DELETE.value, TypePrefix[type.name].value),
+                        row.ouid,
+                        os.linesep)
             html = template.format(len(response), os.linesep, os.linesep, msg)
         else:
             html = "List is empty"
