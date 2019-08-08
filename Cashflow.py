@@ -107,7 +107,7 @@ class Cashflow:
             "cgs": self.gh.handle_cgs,
             "cs": self.gh.handle_cats,
             "ts": self.gh.handle_trans,
-            "dt": self.handle_delete_transaction
+            "dts": self.handle_delete_transaction
         }
     
     def set_handlers(self, updater):
