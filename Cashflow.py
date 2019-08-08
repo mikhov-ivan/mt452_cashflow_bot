@@ -31,14 +31,14 @@ class Type(Enum):
 
 
 class TypePrefix(Enum):
-    CATEGORY_GROUP = "cg"
-    CATEGORY = "c"
-    TRANSACTION = "t"
+    CATEGORY_GROUP = "CG"
+    CATEGORY = "C"
+    TRANSACTION = "T"
 
 
 class CmdPrefix(Enum):
-    EDIT = "e"
-    DELETE = "d"
+    EDIT = "E"
+    DELETE = "D"
 
 
 class GeneralHandler:
