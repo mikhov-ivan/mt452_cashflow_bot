@@ -10,7 +10,7 @@ from DBHelper import DBHelper
 from enum import Enum
 
 global DATETIME_FORMAT
-DATETIME_FORMAT = "%d.%m.%y"
+DATETIME_FORMAT = "%d.%m.%Y %H:%m"
 
 global logger
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s: %(message)s")
@@ -88,12 +88,13 @@ class GeneralHandler:
                 elif type == Type.TRANSACTION:
                     date = row.execution_date.strftime(DATETIME_FORMAT)
                     msg += "{}{}".format(
-                        "{}: {} {} {} {}{}".format(
-                            date, row.amount, row.currency,
+                        "{}: {} {}{}".format(date, row.amount, row.currency, os.linesep),
+                        "{} {} {}{}{}".format(
+                            row.title, 
                             "/{}{}{}".format(CmdPrefix.EDIT.value, TypePrefix[type.name].value, row.ouid),
                             "/{}{}{}".format(CmdPrefix.DELETE.value, TypePrefix[type.name].value, row.ouid),
-                            os.linesep),
-                        "{}{}{}".format(row.title, os.linesep, os.linesep))
+                            os.linesep,
+                            os.linesep))
             html = template.format(len(response), os.linesep, os.linesep, msg)
         else:
             html = "List is empty"
