@@ -67,15 +67,15 @@ class GeneralHandler:
     def get_list(self, type):
         if type == Type.CATEGORY_GROUP:
             response = self.db.get_category_groups()
-            template = "Following <b>{} category groups</b> are available:{}{}{}"
+            template = "<b>{} category groups</b> are available:{}{}{}"
             
         elif type == Type.CATEGORY:
             response = self.db.get_categories()
-            template = "Following <b>{} categories</b> are available:{}{}{}"
+            template = "<b>{} categories</b> are available:{}{}{}"
             
         elif type == Type.TRANSACTION:
             response = self.db.get_transactions()
-            template = "You have <b>{} transactions</b> recorded:{}{}{}"
+            template = "<b>{} transactions</b> recorded:{}{}{}"
         
         if len(response) > 0:
             msg = ""
