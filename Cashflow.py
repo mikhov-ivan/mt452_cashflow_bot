@@ -89,9 +89,9 @@ class GeneralHandler:
                     msg += "{}: {}{}{} or {}".format(
                         row.execution_date.strftime(DATETIME_FORMAT),
                         "{} {} {}".format(row.amount, row.currency, os.linesep),
-                        "{} {}".format(row.title, os.linesep),
+                        row.title,
                         "/{}_{}{}".format(CmdPrefix.EDIT.value, TypePrefix[type.name].value, row.ouid),
-                        "/{}_{}{}{}".format(CmdPrefix.DELETE.value, TypePrefix[type.name].value, row.ouid, os.linesep, os.linesep))
+                        "/{}_{}{}{}{}".format(CmdPrefix.DELETE.value, TypePrefix[type.name].value, row.ouid, os.linesep, os.linesep))
             html = template.format(len(response), os.linesep, os.linesep, msg)
         else:
             html = "List is empty"
