@@ -31,6 +31,11 @@ class Type(Enum):
 
 
 class CmdPrefix(Enum):
+    DELETE = "d"
+
+
+class StructPrefix(Enum):
+    DELETE = "cg_"
     CATEGORY_GROUP = "cg_"
     CATEGORY = "c_"
 
@@ -69,13 +74,17 @@ class GeneralHandler:
             
         elif type == Type.TRANSACTION:
             response = self.db.get_transactions()
-            template = "Following <b>{} category groups</b> are available:{}{}{} <a href='https://api.telegram.org/bot861062365:AAEq3evcJCE5nZCSclev9Z8ki-cAjwdTUqQ/sendMessage?chat_id=973372605&text=test'>asd</a>"
+            template = "You have <b>{} transactions</b> recorded:{}{}{}"
         
         if len(response) > 0:
             msg = ""
             for row in response.values():
                 if type == Type.CATEGORY_GROUP or type == Type.CATEGORY:
-                    msg += "{}: /{}{}{}".format(row.title, CmdPrefix[type.name].value, row.code, os.linesep)
+                    msg += "{}: /{}{}{}".format(
+                        row.title,
+                        "{}{}".format(CmdPrefix.DELETE.value, StructPrefix[type.name].value),
+                        row.code,
+                        os.linesep)
                 elif type == Type.TRANSACTION:
                     msg += "{}: {} {} {}{}".format(
                         row.execution_date.strftime(DATETIME_FORMAT),
@@ -94,16 +103,19 @@ class Cashflow:
         self.gh = GeneralHandler()
     
     def set_handlers(self, updater):
-        for prefix in CmdPrefix: updater.dispatcher.add_handler(self.get_regex_handler(prefix))
+        for struct_prefix in StructPrefix:
+            updater.dispatcher.add_handler(self.get_regex_handler(struct_prefix))
+            for cmd_prefix in StructPrefix:
+                updater.dispatcher.add_handler(self.get_regex_handler("{}{}".format(cmd_prefix.value, struct_prefix.value)))
         updater.dispatcher.add_handler(CommandHandler("start", self.gh.handle_start))
         updater.dispatcher.add_handler(CommandHandler("cgs", self.gh.handle_cgs))
         updater.dispatcher.add_handler(CommandHandler("cats", self.gh.handle_cats))
         updater.dispatcher.add_handler(CommandHandler("trans", self.gh.handle_trans))
         
     def get_regex_handler(self, prefix):
-        if prefix == CmdPrefix.CATEGORY_GROUP: handler = self.handle_category_group
-        elif prefix == CmdPrefix.CATEGORY: handler = self.handle_category
-        return RegexHandler("^(/" + prefix.value + "[a-zA-Z]+)$", handler)
+        if prefix == StructPrefix.CATEGORY_GROUP: handler = self.handle_category_group
+        elif prefix == StructPrefix.CATEGORY: handler = self.handle_category
+        return RegexHandler("^(/" + prefix + "[a-zA-Z]+)$", handler)
 
     def handle_category_group(self, bot, update):
         log_update(update)
