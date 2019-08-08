@@ -81,8 +81,9 @@ class GeneralHandler:
             msg = ""
             for row in response.values():
                 if type == Type.CATEGORY_GROUP or type == Type.CATEGORY:
-                    msg += "{}: /{}{}".format(
+                    msg += "{} /{} /{}{}".format(
                         row.title,
+                        "{}{}{}".format(CmdPrefix.EDIT.value, TypePrefix[type.name].value, row.ouid),
                         "{}{}{}".format(CmdPrefix.DELETE.value, TypePrefix[type.name].value, row.ouid),
                         os.linesep)
                 elif type == Type.TRANSACTION:
