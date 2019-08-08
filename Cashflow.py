@@ -113,6 +113,7 @@ class Cashflow:
             "CG": self.gh.handle_cgs,
             "C": self.gh.handle_cats,
             "T": self.gh.handle_trans,
+            "ET": self.handle_edit_transaction
             "DT": self.handle_delete_transaction
         }
     
@@ -144,7 +145,15 @@ class Cashflow:
         
     def handle_delete_transaction(self, bot, update):
         log_update(update)
-        tmp_split = update.message.text.split("t")
+        tmp_split = update.message.text.split(TypePrefix.TRANSACTION")
+        ouid = tmp_split[len(tmp_split) - 1]
+        result = 1
+        if result: send(bot, update.message.chat_id, "Edit transaction {}".format(ouid))
+        else: send(bot, update.message.chat_id, "Transaction {} can not be edited".format(ouid))
+        
+    def handle_delete_transaction(self, bot, update):
+        log_update(update)
+        tmp_split = update.message.text.split(TypePrefix.TRANSACTION)
         ouid = tmp_split[len(tmp_split) - 1]
         result = 1
         if result: send(bot, update.message.chat_id, "Transaction {} was deleted".format(ouid))
