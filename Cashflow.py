@@ -116,9 +116,11 @@ class Cashflow:
             for cmd in StructPrefix:
                 prefix = "{}{}_".format(cmd.value, st.value)
                 if prefix in self.handlers:
+                    logger.info("Register regex command: /{}[a-zA-Z]+".format(prefix))
                     handler = RegexHandler("^(/" + prefix + "[a-zA-Z]+)$", self.handlers[prefix])
                     updater.dispatcher.add_handler(handler)
     
+        logger.info("Register general commands: /start, /cgs, /cgs, /cs, /ts".format(prefix))
         updater.dispatcher.add_handler(CommandHandler("start", self.handlers["start"]))
         updater.dispatcher.add_handler(CommandHandler("cgs", self.handlers["cgs"]))
         updater.dispatcher.add_handler(CommandHandler("cs", self.handlers["cs"]))
