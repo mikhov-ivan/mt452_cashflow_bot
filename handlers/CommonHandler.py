@@ -2,6 +2,7 @@ import logging
 import Structures
 
 from Structures import Utils
+from Structures import Type
 from helpers.DBHelper import DBHelper
 
 

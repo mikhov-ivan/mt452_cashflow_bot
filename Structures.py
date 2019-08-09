@@ -26,12 +26,13 @@ class Format(Enum):
     DATETIME            = "%d.%m.%Y %H:%m"
 
 class Cmd(Enum):
-    START                       = "start"
-    GET_CATEGORY_GROUP_LIST     = TypePrefix.CATEGORY_GROUP.value
-    GET_CATEGORY_LIST           = TypePrefix.CATEGORY.value
-    GET_TRANSACTION_LIST        = TypePrefix.TRANSACTION.value
-    EDIT_TRANSACTION            = "{}{}".format(CmdPrefix.EDIT.value, TypePrefix.TRANSACTION.value)
-    DELETE_TRANSACTION          = "{}{}".format(CmdPrefix.DELETE.value, TypePrefix.TRANSACTION.value)
+    START                       = "start"                                                               # /start
+    GET_CATEGORY_GROUP_LIST     = TypePrefix.CATEGORY_GROUP.value                                       # /cg
+    GET_CATEGORY_LIST           = TypePrefix.CATEGORY.value                                             # /c
+    GET_TRANSACTION_LIST        = TypePrefix.TRANSACTION.value                                          # /t
+    CREATE_TRANSACTION          = "{}{}".format(CmdPrefix.EDIT.value, TypePrefix.TRANSACTION.value)     # /ct
+    EDIT_TRANSACTION            = "{}{}".format(CmdPrefix.EDIT.value, TypePrefix.TRANSACTION.value)     # /et452
+    DELETE_TRANSACTION          = "{}{}".format(CmdPrefix.DELETE.value, TypePrefix.TRANSACTION.value)   # /dt452
 
 
 class CategoryGroup:
@@ -66,12 +67,16 @@ class Utils(object):
     def log(cls, msg):
         cls.logger.info(msg)
     
-    def log_update(update):
-        log("{} by {}: {}".format(
+    @classmethod
+    def log_update(cls, update):
+        cls.log("Update_{} was sent by {} {}: {}".format(
             update.update_id,
-            update.message.from_user.username,
+            update.message.from_user.first_name,
+            update.message.from_user.last_name,
             update.message.text))
 
-    def send(bot, chat_id, msg):
+    @classmethod
+    def send(cls, bot, chat_id, msg):
+        cls.log("Send msg to chat_{}".format(chat_id))
         bot.sendMessage(chat_id=chat_id, text=msg, parse_mode="HTML")
 

@@ -25,6 +25,7 @@ class Cashflow:
             Cmd.GET_CATEGORY_GROUP_LIST.value: {"handler": self.common_handler.cgs,         "reg": None},
             Cmd.GET_CATEGORY_LIST.value:       {"handler": self.common_handler.cats,        "reg": None},   
             Cmd.GET_TRANSACTION_LIST.value:    {"handler": self.common_handler.trans,       "reg": None},
+            Cmd.CREATE_TRANSACTION.value:      {"handler": self.transaction_handler.create, "reg": None},
             Cmd.EDIT_TRANSACTION.value:        {"handler": self.transaction_handler.edit,   "reg": "/{}[0-9]+"},
             Cmd.DELETE_TRANSACTION.value:      {"handler": self.transaction_handler.delete, "reg": "/{}[0-9]+"}
         }
@@ -32,9 +33,13 @@ class Cashflow:
     def set_handlers(self, updater):
         for cmd, val in self.cmd.items():
             if val["reg"]:
+                uc = val["reg"].format(cmd).upper()
+                lc = val["reg"].format(cmd).lower()
                 Utils.log("Register regex command: {}".format(val["reg"].format(cmd)))
-                handler = RegexHandler("^(" + val["reg"].format(cmd) + ")$", val["handler"])
-                updater.dispatcher.add_handler(handler)
+                uch = RegexHandler("^(" + uc + ")$", val["handler"])
+                lch = RegexHandler("^(" + lc + ")$", val["handler"])
+                updater.dispatcher.add_handler(uch)
+                updater.dispatcher.add_handler(lch)
             else:
                 Utils.log("Register command: /{}".format(cmd))
                 updater.dispatcher.add_handler(CommandHandler(cmd, val["handler"]))
