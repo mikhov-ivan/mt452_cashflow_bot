@@ -35,7 +35,9 @@ class GeneralHandler:
     def start(self, bot, update):
         Utils.log("User {} {} started bot".format(update.effective_user["id"], update.message.from_user.first_name))
         Utils.send(bot, update.message.chat_id, "Hello, <b>{}</b>!".format(update.message.from_user.first_name))
-        update.message.reply_text("Main menu", reply_markup=main_menu_keyboard())
+        #update.message.reply_text("Main menu", reply_markup=main_menu_keyboard())
+        markup = self.list_keyboard(Type.CATEGORY_GROUP)
+        update.message.reply_text("Main menu", reply_markup=markup)
         
         kb = [[
             telegram.KeyboardButton('Groups'),
@@ -48,8 +50,6 @@ class GeneralHandler:
                          text="your message",
                          reply_markup=kb_markup)
 
-        markup = self.list_keyboard(Type.CATEGORY_GROUP)
-        update.message.reply_text("Main menu", reply_markup=markup)
 
         # query = update.callback_query
         # bot.edit_message_text(
