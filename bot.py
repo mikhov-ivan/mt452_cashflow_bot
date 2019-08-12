@@ -26,6 +26,4 @@ if __name__ == "__main__":
     elif Utils.mode == "prod":
         updater.start_webhook(listen="0.0.0.0", port=PORT, url_path=TOKEN, key=APP_KEY)
         updater.bot.set_webhook(APP_URL + TOKEN)
-    
-    #game.run(port=PORT)
 
