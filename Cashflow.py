@@ -14,7 +14,7 @@ from Structures import Utils
 from Structures import Cmd
 
 
-class Cashflow:
+class Bot:
     def __init__(self):
         self.general_handler        = GeneralHandler()
         self.common_handler         = CommonHandler()
@@ -30,7 +30,7 @@ class Cashflow:
             Cmd.DELETE_TRANSACTION.value:      {"handler": self.transaction_handler.delete, "reg": "/{}[0-9]+"}
         }
     
-    def set_handlers(self, updater):
+    def set_handlers(self, dispatcher):
         for cmd, val in self.cmd.items():
             if val["reg"]:
                 uc = val["reg"].format(cmd).upper()
@@ -38,9 +38,9 @@ class Cashflow:
                 Utils.log("Register regex command: {}".format(val["reg"].format(cmd)))
                 uch = RegexHandler("^(" + uc + ")$", val["handler"])
                 lch = RegexHandler("^(" + lc + ")$", val["handler"])
-                updater.dispatcher.add_handler(uch)
-                updater.dispatcher.add_handler(lch)
+                dispatcher.add_handler(uch)
+                dispatcher.add_handler(lch)
             else:
                 Utils.log("Register command: /{}".format(cmd))
-                updater.dispatcher.add_handler(CommandHandler(cmd, val["handler"]))
+                dispatcher.add_handler(CommandHandler(cmd, val["handler"]))
 
