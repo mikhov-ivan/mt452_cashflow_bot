@@ -75,7 +75,7 @@ class GeneralHandler:
                     keyboard[line].append(InlineKeyboardButton('Option 3', callback_data='m3'))
                     i += 1
                 else:
-                    keyboard[line + 1] = []
+                    keyboard.append([])
                     line += 1
                     i = 0
             return InlineKeyboardMarkup(keyboard)
