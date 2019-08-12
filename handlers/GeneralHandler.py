@@ -78,6 +78,8 @@ class GeneralHandler:
                     keyboard.append(line)
                     line = [button]
                     Utils.log("New line starts from {}".format(row.title))
+            if len(line) > 0 and len(line) < 3:
+                keyboard.append(line)
             return InlineKeyboardMarkup(keyboard)
         else:
             return None
