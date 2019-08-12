@@ -75,6 +75,7 @@ class GeneralHandler:
                 if i < 3:
                     i += 1
                 else:
+                    Utils.log("line")
                     keyboard.append([])
                     line += 1
                     i = 0
