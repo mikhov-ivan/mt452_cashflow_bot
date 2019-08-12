@@ -71,14 +71,14 @@ class GeneralHandler:
         keyboard = [[]]
         if len(response):
             for row in response.values():
-                if i < 4:
+                if i < 3:
                     keyboard[line].append(InlineKeyboardButton(row.title, callback_data=row.code))
                     i += 1
                 else:
                     keyboard.append([])
                     line += 1
                     i = 0
-            keyboard[2].append(InlineKeyboardButton("asd", callback_data="asd"))
+            keyboard[2].append(InlineKeyboardButton("{}".format(len(response)), callback_data="asd"))
             keyboard[2].append(InlineKeyboardButton("asd", callback_data="asd"))
             return InlineKeyboardMarkup(keyboard)
         else:
