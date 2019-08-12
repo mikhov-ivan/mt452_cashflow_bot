@@ -9,56 +9,26 @@ from Structures import Type
 from helpers.DBHelper import DBHelper
 
 
-def main_menu_keyboard():
-  keyboard = [
-        [InlineKeyboardButton('Option 1', callback_data='m1'),
-         InlineKeyboardButton('Option 2', callback_data='m2'),
-         InlineKeyboardButton('Option 2', callback_data='m2'),
-         InlineKeyboardButton('Option 2', callback_data='m2')],
-    
-        [InlineKeyboardButton('Option 2', callback_data='m2'),
-         InlineKeyboardButton('Option 2', callback_data='m2'),
-         InlineKeyboardButton('Option 2', callback_data='m2'),
-         InlineKeyboardButton('Option 2', callback_data='m2')],
-        
-        [InlineKeyboardButton('Option 3', callback_data='m3'),
-         InlineKeyboardButton('Option 2', callback_data='m2'),
-         InlineKeyboardButton('Option 2', callback_data='m2'),
-         InlineKeyboardButton('Option 2', callback_data='m2')]]
-  return InlineKeyboardMarkup(keyboard)
-
-
 class GeneralHandler:
     def __init__(self):
         self.db = DBHelper()
     
     def start(self, bot, update):
         Utils.log("User {} {} started bot".format(update.effective_user["id"], update.message.from_user.first_name))
-        Utils.send(bot, update.message.chat_id, "Hello, <b>{}</b>!".format(update.message.from_user.first_name))
-        #update.message.reply_text("Main menu", reply_markup=main_menu_keyboard())
-        markup = self.list_keyboard(Type.CATEGORY_GROUP)
-        update.message.reply_text("Main menu", reply_markup=markup)
         
-        kb = [[
+        keyboard = [[
             telegram.KeyboardButton('Groups'),
             telegram.KeyboardButton('Categories'),
             telegram.KeyboardButton('Transactions')]]
         
-        kb_markup = telegram.ReplyKeyboardMarkup(kb,
-                         resize_keyboard=True)
-        bot.send_message(chat_id=update.message.chat_id,
-                         text="your message",
-                         reply_markup=kb_markup)
+        markup = telegram.ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
+        msg = "Hello, <b>{}</b>!".format(update.message.from_user.first_name)
+        bot.send_message(chat_id=update.message.chat_id, text=msg, reply_markup=markup, parse_mode="HTML")
 
-
-        # query = update.callback_query
-        # bot.edit_message_text(
-            # chat_id=query.message.chat_id,
-            # message_id=query.message.message_id,
-            # text="asdasd",
-            # reply_markup=main_menu_keyboard())
+        markup = self.get_keyboard(Type.CATEGORY_GROUP)
+        update.message.reply_text("Main menu", reply_markup=markup)
     
-    def list_keyboard(self, type):
+    def get_keyboard(self, type):
         if type == Type.CATEGORY_GROUP:
             response = self.db.get_category_groups()
         elif type == Type.CATEGORY:
@@ -73,11 +43,9 @@ class GeneralHandler:
                 button = InlineKeyboardButton(row.title, callback_data=row.code)
                 if len(line) < 3:
                     line.append(button)
-                    Utils.log("line.append({})".format(row.title))
                 else:
                     keyboard.append(line)
                     line = [button]
-                    Utils.log("New line starts from {}".format(row.title))
             if len(line) > 0 and len(line) < 3:
                 keyboard.append(line)
             return InlineKeyboardMarkup(keyboard)
