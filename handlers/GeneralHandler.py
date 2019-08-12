@@ -78,6 +78,8 @@ class GeneralHandler:
                     keyboard.append([])
                     line += 1
                     i = 0
+            keyboard[2].append(InlineKeyboardButton("asd", callback_data="asd"))
+            keyboard[2].append(InlineKeyboardButton("asd", callback_data="asd"))
             return InlineKeyboardMarkup(keyboard)
         else:
             return None
