@@ -34,6 +34,20 @@ class GeneralHandler:
         Utils.log("User {} {} started bot".format(update.effective_user["id"], update.message.from_user.first_name))
         Utils.send(bot, update.message.chat_id, "Hello, <b>{}</b>!".format(update.message.from_user.first_name))
         update.message.reply_text("Main menu", reply_markup=main_menu_keyboard())
+        
+        kb = [[
+            telegram.KeyboardButton('GRP'),
+            telegram.KeyboardButton('CAT'),
+            telegram.KeyboardButton('TRZ'),
+            telegram.KeyboardButton('€'),
+            telegram.KeyboardButton('$'),
+            telegram.KeyboardButton('₽')]]
+        
+        kb_markup = telegram.ReplyKeyboardMarkup(kb,
+                         resize_keyboard=True)
+        bot.send_message(chat_id=update.message.chat_id,
+                         text="your message",
+                         reply_markup=kb_markup)
 
         # query = update.callback_query
         # bot.edit_message_text(

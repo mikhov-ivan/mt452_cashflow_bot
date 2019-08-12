@@ -11,9 +11,9 @@ class Type(Enum):
 
 
 class TypePrefix(Enum):
-    CATEGORY_GROUP      = "CG"
-    CATEGORY            = "C"
-    TRANSACTION         = "T"
+    CATEGORY_GROUP      = "GRP"
+    CATEGORY            = "CAT"
+    TRANSACTION         = "TRZ"
 
 
 class CmdPrefix(Enum):

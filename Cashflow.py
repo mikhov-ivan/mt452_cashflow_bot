@@ -22,10 +22,10 @@ class Bot:
         
         self.cmd = {
             "start":                           {"handler": self.general_handler.start,      "reg": None},
-            Cmd.GET_CATEGORY_GROUP_LIST.value: {"handler": self.common_handler.cgs,         "reg": None},
-            Cmd.GET_CATEGORY_LIST.value:       {"handler": self.common_handler.cats,        "reg": None},   
-            Cmd.GET_TRANSACTION_LIST.value:    {"handler": self.common_handler.trans,       "reg": None},
-            Cmd.CREATE_TRANSACTION.value:      {"handler": self.transaction_handler.create, "reg": None},
+            Cmd.GET_CATEGORY_GROUP_LIST.value: {"handler": self.common_handler.cgs,         "reg": "{}"},
+            Cmd.GET_CATEGORY_LIST.value:       {"handler": self.common_handler.cats,        "reg": "{}"},   
+            Cmd.GET_TRANSACTION_LIST.value:    {"handler": self.common_handler.trans,       "reg": "{}"},
+            Cmd.CREATE_TRANSACTION.value:      {"handler": self.transaction_handler.create, "reg": "{}"},
             Cmd.EDIT_TRANSACTION.value:        {"handler": self.transaction_handler.edit,   "reg": "/{}[0-9]+"},
             Cmd.DELETE_TRANSACTION.value:      {"handler": self.transaction_handler.delete, "reg": "/{}[0-9]+"}
         }
