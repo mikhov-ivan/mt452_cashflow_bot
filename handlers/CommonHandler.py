@@ -45,6 +45,7 @@ class CommonHandler:
         
         line = []
         keyboard = []
+        markup = None
         if len(response):
             for row in response.values():
                 button = InlineKeyboardButton(row.title, callback_data=row.code)
@@ -53,11 +54,17 @@ class CommonHandler:
                 else:
                     keyboard.append(line)
                     line = [button]
+            
+            callback = "{}_{}".format(CmdPrefix.CREATE.value, type.value)
+            button = InlineKeyboardButton("Создать", callback_data=callback)
             if len(line) > 0 and len(line) < 3:
+                line.append(button)
                 keyboard.append(line)
-            return InlineKeyboardMarkup(keyboard)
-        else:
-            return None
+            else:
+                line = [button]
+                keyboard.append(line)
+            markup = InlineKeyboardMarkup(keyboard)
+        return markup
         
     def get_list(self, type):
         if type == Type.CATEGORY_GROUP:

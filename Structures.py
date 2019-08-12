@@ -17,8 +17,9 @@ class TypePrefix(Enum):
 
 
 class CmdPrefix(Enum):
-    EDIT                = "E"
-    DELETE              = "D"
+    CREATE              = "Create"
+    EDIT                = "Edit"
+    DELETE              = "Delete"
 
 
 class Format(Enum):
