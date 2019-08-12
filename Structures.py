@@ -80,3 +80,9 @@ class Utils(object):
         cls.log("Send msg to chat_{}".format(chat_id))
         bot.sendMessage(chat_id=chat_id, text=msg, parse_mode="HTML")
 
+    @classmethod
+    def build_keyboard(cls, items):
+        keyboard = [[item] for item in items]
+        reply_markup = {"keyboard": keyboard, "one_time_keyboard": True}
+        return json.dumps(reply_markup)
+
