@@ -50,7 +50,7 @@ class CommonHandler:
                         "{}{}{}".format(CmdPrefix.DELETE.value, TypePrefix[type.name].value, row.ouid),
                         os.linesep)
                 elif type == Type.TRANSACTION:
-                    date = row.execution_date.strftime(Format.DATETIME)
+                    date = row.execution_date.strftime(Format.DATETIME.value)
                     msg += "{}{}".format(
                         "<b>{}</b>: {} {}{}".format(date, row.amount, row.currency, os.linesep),
                         "{} {} {}{}{}".format(
