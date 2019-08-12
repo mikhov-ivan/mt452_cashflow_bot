@@ -14,8 +14,8 @@ class GeneralHandler:
         self.db = DBHelper()
     
     def start(self, bot, update):
-        msg = "User {} {} started bot".format(update.effective_user["id"]
-        Utils.log(msg, update.message.from_user.first_name))
+        msg = "User {} {} started bot".format(update.effective_user["id"])
+        Utils.log(msg, update.message.from_user.first_name)
         
         keyboard = [[
             telegram.KeyboardButton('Groups'),
