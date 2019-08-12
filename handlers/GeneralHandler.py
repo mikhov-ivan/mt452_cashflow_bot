@@ -73,9 +73,12 @@ class GeneralHandler:
             for row in response:
                 if i < 4:
                     keyboard[line].append(InlineKeyboardButton('Option 3', callback_data='m3'))
+                    i += 1
                 else:
                     keyboard[line + 1] = []
                     line += 1
                     i = 0
-        return InlineKeyboardMarkup(keyboard)
+            return InlineKeyboardMarkup(keyboard)
+        else:
+            return None
         
