@@ -65,6 +65,9 @@ class GeneralHandler:
             response = self.db.get_categories()
         elif type == Type.TRANSACTION:
             response = self.db.get_transactions()
-        keyboard = [[InlineKeyboardButton('Option 3', callback_data='m3')] for item in response]
+        
+        keyboard = []
+        for row in response:
+            keyboard.append([InlineKeyboardButton('Option 3', callback_data='m3')])
         markup = telegram.ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
         
