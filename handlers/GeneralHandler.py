@@ -66,20 +66,18 @@ class GeneralHandler:
         elif type == Type.TRANSACTION:
             response = self.db.get_transactions()
         
-        i = 0
-        line = 0
-        keyboard = [[]]
+        line = []
+        keyboard = []
         if len(response):
             for row in response.values():
-                Utils.log("asd: {}".format(row.title))
-                if i == 3:
-                    Utils.log("line")
-                    keyboard.append([])
-                    line += 1
-                    i = 0
-                else: 
-                    i += 1
-                keyboard[line].append(InlineKeyboardButton(row.title, callback_data=row.code))
+                button = InlineKeyboardButton(row.title, callback_data=row.code)
+                if len(line) < 3:
+                    line.append(button)
+                    Utils.log("line.append({})".format(row.title))
+                else:
+                    keyboard.append(line)
+                    line = [button]
+                    Utils.log("New line starts from {}".format(row.title))
             return InlineKeyboardMarkup(keyboard)
         else:
             return None
