@@ -18,16 +18,45 @@ class CommonHandler:
         Utils.log_update(update)
         html = self.get_list(Type.CATEGORY_GROUP)
         Utils.send(bot, update.message.chat_id, html)
+        msg = "Список доступных <b>групп</b>"
+        markup = self.get_keyboard(Type.CATEGORY_GROUP)
+        update.message.reply_text(msg, reply_markup=markup, parse_mode="HTML")
         
     def cats(self, bot, update):
         Utils.log_update(update)
         html = self.get_list(Type.CATEGORY)
-        Utils.send(bot, update.message.chat_id, html)
+        msg = "Список доступных <b>категорий</b>"
+        markup = self.get_keyboard(Type.CATEGORY)
+        update.message.reply_text(msg, reply_markup=markup, parse_mode="HTML")
         
     def trans(self, bot, update):
         Utils.log_update(update)
         html = self.get_list(Type.TRANSACTION)
         Utils.send(bot, update.message.chat_id, html)
+    
+    def get_inline_keyboard(self, type):
+        if type == Type.CATEGORY_GROUP:
+            response = self.db.get_category_groups()
+        elif type == Type.CATEGORY:
+            response = self.db.get_categories()
+        elif type == Type.TRANSACTION:
+            response = self.db.get_transactions()
+        
+        line = []
+        keyboard = []
+        if len(response):
+            for row in response.values():
+                button = InlineKeyboardButton(row.title, callback_data=row.code)
+                if len(line) < 3:
+                    line.append(button)
+                else:
+                    keyboard.append(line)
+                    line = [button]
+            if len(line) > 0 and len(line) < 3:
+                keyboard.append(line)
+            return InlineKeyboardMarkup(keyboard)
+        else:
+            return None
         
     def get_list(self, type):
         if type == Type.CATEGORY_GROUP:
