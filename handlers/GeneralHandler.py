@@ -66,8 +66,16 @@ class GeneralHandler:
         elif type == Type.TRANSACTION:
             response = self.db.get_transactions()
         
-        keyboard = []
-        for row in response:
-            keyboard.append([InlineKeyboardButton('Option 3', callback_data='m3')])
+        i = 0
+        line = 0
+        keyboard = [[]]
+        if len(response):
+            for row in response:
+                if i < 4:
+                    keyboard[line].append([InlineKeyboardButton('Option 3', callback_data='m3')])
+                else:
+                    keyboard[line + 1] = []
+                    line += 1
+                    i = 0
         return InlineKeyboardMarkup(keyboard)
         
