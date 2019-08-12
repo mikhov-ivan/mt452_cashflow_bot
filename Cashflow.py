@@ -36,6 +36,7 @@ class Bot:
                 uc = val["reg"].format(cmd).upper()
                 lc = val["reg"].format(cmd).lower()
                 Utils.log("Register regex command: {}".format(val["reg"].format(cmd)))
+                uch = RegexHandler("^(" + cmd + ")$", val["handler"])
                 uch = RegexHandler("^(" + uc + ")$", val["handler"])
                 lch = RegexHandler("^(" + lc + ")$", val["handler"])
                 dispatcher.add_handler(uch)

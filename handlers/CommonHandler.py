@@ -19,14 +19,14 @@ class CommonHandler:
         html = self.get_list(Type.CATEGORY_GROUP)
         Utils.send(bot, update.message.chat_id, html)
         msg = "Список доступных <b>групп</b>"
-        markup = self.get_keyboard(Type.CATEGORY_GROUP)
+        markup = self.get_inline_keyboard(Type.CATEGORY_GROUP)
         update.message.reply_text(msg, reply_markup=markup, parse_mode="HTML")
         
     def cats(self, bot, update):
         Utils.log_update(update)
         html = self.get_list(Type.CATEGORY)
         msg = "Список доступных <b>категорий</b>"
-        markup = self.get_keyboard(Type.CATEGORY)
+        markup = self.get_inline_keyboard(Type.CATEGORY)
         update.message.reply_text(msg, reply_markup=markup, parse_mode="HTML")
         
     def trans(self, bot, update):
