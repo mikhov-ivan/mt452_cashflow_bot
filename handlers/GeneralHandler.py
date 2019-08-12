@@ -70,7 +70,7 @@ class GeneralHandler:
         line = 0
         keyboard = [[]]
         if len(response):
-            for row in response:
+            for row in response.values():
                 if i < 4:
                     keyboard[line].append(InlineKeyboardButton(row.title, callback_data=row.code))
                     i += 1
