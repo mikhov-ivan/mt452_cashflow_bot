@@ -33,12 +33,14 @@ class Bot:
     def set_handlers(self, dispatcher):
         for cmd, val in self.cmd.items():
             if val["reg"]:
+                cm = val["reg"].format(cmd).upper()
                 uc = val["reg"].format(cmd).upper()
                 lc = val["reg"].format(cmd).lower()
                 Utils.log("Register regex command: {}".format(val["reg"].format(cmd)))
-                uch = RegexHandler("^(" + val["reg"].format(cmd) + ")$", val["handler"])
+                cmh = RegexHandler("^(" + val["reg"].format(cmd) + ")$", val["handler"])
                 uch = RegexHandler("^(" + uc + ")$", val["handler"])
                 lch = RegexHandler("^(" + lc + ")$", val["handler"])
+                dispatcher.add_handler(cmh)
                 dispatcher.add_handler(uch)
                 dispatcher.add_handler(lch)
             else:

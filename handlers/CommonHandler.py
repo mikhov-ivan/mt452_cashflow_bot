@@ -28,7 +28,6 @@ class CommonHandler:
         
     def cats(self, bot, update):
         Utils.log_update(update)
-        html = self.get_list(Type.CATEGORY)
         msg = "Список доступных <b>категорий</b>"
         markup = self.get_inline_keyboard(Type.CATEGORY)
         update.message.reply_text(msg, reply_markup=markup, parse_mode="HTML")
