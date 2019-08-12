@@ -3,6 +3,7 @@ import Structures
 
 from Structures import Utils
 from Structures import Type
+from Structures import Format
 from helpers.DBHelper import DBHelper
 
 
@@ -48,7 +49,7 @@ class CommonHandler:
                         "{}{}{}".format(CmdPrefix.DELETE.value, TypePrefix[type.name].value, row.ouid),
                         os.linesep)
                 elif type == Type.TRANSACTION:
-                    date = row.execution_date.strftime(DATETIME_FORMAT)
+                    date = row.execution_date.strftime(Format.DATETIME)
                     msg += "{}{}".format(
                         "<b>{}</b>: {} {}{}".format(date, row.amount, row.currency, os.linesep),
                         "{} {} {}{}{}".format(
