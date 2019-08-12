@@ -4,6 +4,7 @@ import Structures
 from Structures import Utils
 from Structures import Type
 from Structures import Format
+from Structures import CmdPrefix
 from helpers.DBHelper import DBHelper
 
 
