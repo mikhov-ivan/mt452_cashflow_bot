@@ -68,7 +68,7 @@ class GeneralHandler:
         
         keyboard = []
         for row in response:
-            keyboard.append([[InlineKeyboardButton('Option 3', callback_data='m3')]])
+            keyboard.append([InlineKeyboardButton('Option 3', callback_data='m3')])
         markup = telegram.ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
         return markup
         
