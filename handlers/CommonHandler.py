@@ -6,6 +6,7 @@ from Structures import Utils
 from Structures import Type
 from Structures import Format
 from Structures import CmdPrefix
+from Structures import TypePrefix
 from helpers.DBHelper import DBHelper
 
 
