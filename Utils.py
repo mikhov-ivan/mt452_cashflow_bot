@@ -1,6 +1,7 @@
 import os
 import logging
 
+from Structures import Format
 from helpers.DBHelper import DBHelper
 
 
