@@ -1,7 +1,6 @@
 import os
+import logging
 import mysql.connector
-
-from Utils import Utils
 from mysql.connector import errorcode
 from Structures import CategoryGroup
 from Structures import Category
@@ -9,7 +8,10 @@ from Structures import Transaction
 
 global DB_NAME
 global TABLES
+global logger
 
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s: %(message)s")
+logger = logging.getLogger()
 
 class DBHelper:
     def connect(self):
@@ -42,7 +44,7 @@ class DBHelper:
             cursor.close()
             self.disconnect(cnx)
         except mysql.connector.Error as err:
-            Utils.log(err.msg)
+            logger.error(err.msg)
         return response
     
     def get_categories(self):
@@ -70,7 +72,7 @@ class DBHelper:
             cursor.close()
             self.disconnect(cnx)
         except mysql.connector.Error as err:
-            Utils.log(err.msg)
+            logger.error(err.msg)
         return response
     
     def get_transactions(self):
@@ -95,6 +97,6 @@ class DBHelper:
             cursor.close()
             self.disconnect(cnx)
         except mysql.connector.Error as err:
-            Utils.log(err.msg)
+            logger.error(err.msg)
         return response
         
