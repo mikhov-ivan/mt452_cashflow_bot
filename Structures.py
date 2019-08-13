@@ -60,6 +60,7 @@ class Transaction:
 
 
 class Utils(object):
+    db = DBHelper()
     mode = os.getenv("MODE")
     logging.basicConfig(level=logging.INFO, format=Format.LOG.value)
     logger = logging.getLogger()

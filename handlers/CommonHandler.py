@@ -55,7 +55,10 @@ class CommonHandler:
                     keyboard.append(line)
                     line = [button]
             
-            callback = "{}_{}".format(CmdPrefix.CREATE.value, type.value)
+            if type == Type.CATEGORY:
+                callback = "{}_{}_{}".format(CmdPrefix.CREATE.value, Type.TRANSACTION.value, row.ouid)
+                Utils.log("Register callback: {}".format(callback))
+            
             button = InlineKeyboardButton("Создать", callback_data=callback)
             if len(line) > 0 and len(line) < 3:
                 line.append(button)
