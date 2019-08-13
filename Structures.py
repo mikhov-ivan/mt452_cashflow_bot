@@ -2,6 +2,7 @@ import os
 import logging
 import datetime
 from enum import Enum
+from helpers.DBHelper import DBHelper
 
 
 class Type(Enum):

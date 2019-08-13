@@ -11,37 +11,37 @@ from Structures import Type
 from Structures import Format
 from Structures import CmdPrefix
 from Structures import TypePrefix
-from helpers.DBHelper import DBHelper
 
 
 class CommonHandler:
-    def __init__(self):
-        self.db = DBHelper()
-        
-    def cgs(self, bot, update):
+    @classmethod
+    def cgs(cls, bot, update):
         Utils.log_update(update)
         msg = "Список доступных <b>групп</b>"
-        markup = self.get_inline_keyboard(Type.CATEGORY_GROUP)
+        markup = cls.get_inline_keyboard(Type.CATEGORY_GROUP)
         update.message.reply_text(msg, reply_markup=markup, parse_mode="HTML")
-        
-    def cats(self, bot, update):
+       
+    @classmethod 
+    def cats(cls, bot, update):
         Utils.log_update(update)
         msg = "Список доступных <b>категорий</b>"
-        markup = self.get_inline_keyboard(Type.CATEGORY)
+        markup = cls.get_inline_keyboard(Type.CATEGORY)
         update.message.reply_text(msg, reply_markup=markup, parse_mode="HTML")
         
-    def trans(self, bot, update):
+    @classmethod
+    def trans(cls, bot, update):
         Utils.log_update(update)
-        html = self.get_list(Type.TRANSACTION)
+        html = cls.get_list(Type.TRANSACTION)
         Utils.send(bot, update.message.chat_id, html)
     
-    def get_inline_keyboard(self, type):
+    @classmethod
+    def get_inline_keyboard(cls, type):
         if type == Type.CATEGORY_GROUP:
-            response = self.db.get_category_groups()
+            response = Utils.db.get_category_groups()
         elif type == Type.CATEGORY:
-            response = self.db.get_categories()
+            response = Utils.db.get_categories()
         elif type == Type.TRANSACTION:
-            response = self.db.get_transactions()
+            response = Utils.db.get_transactions()
         
         line = []
         keyboard = []
@@ -69,17 +69,18 @@ class CommonHandler:
             markup = InlineKeyboardMarkup(keyboard)
         return markup
         
-    def get_list(self, type):
+    @classmethod
+    def get_list(cls, type):
         if type == Type.CATEGORY_GROUP:
-            response = self.db.get_category_groups()
+            response = Utils.db.get_category_groups()
             template = "<b>{} category groups</b> are available:{}{}{}"
             
         elif type == Type.CATEGORY:
-            response = self.db.get_categories()
+            response = Utils.db.get_categories()
             template = "<b>{} categories</b> are available:{}{}{}"
             
         elif type == Type.TRANSACTION:
-            response = self.db.get_transactions()
+            response = Utils.db.get_transactions()
             template = "<b>{} transactions</b> recorded:{}{}{}"
         
         if len(response) > 0:

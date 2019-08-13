@@ -6,13 +6,10 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 
 from Structures import Utils
 from Structures import Type
-from helpers.DBHelper import DBHelper
 
 
 class GeneralHandler:
-    def __init__(self):
-        self.db = DBHelper()
-    
+    @classmethod
     def start(self, bot, update):
         msg = "User {} {} started bot"
         Utils.log(msg.format(update.effective_user["id"], update.message.from_user.first_name))
