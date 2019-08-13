@@ -1,11 +1,11 @@
 import os
 import telegram
-import Utils
 
 from telegram.ext import Updater
 from telegram.ext import CommandHandler, CallbackQueryHandler
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 
+from Utils import Utils
 from Structures import Type
 from Structures import Format
 from Structures import CmdPrefix

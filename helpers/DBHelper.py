@@ -1,5 +1,7 @@
 import os
 import mysql.connector
+
+from Utils import Utils
 from mysql.connector import errorcode
 from Structures import CategoryGroup
 from Structures import Category
@@ -40,7 +42,7 @@ class DBHelper:
             cursor.close()
             self.disconnect(cnx)
         except mysql.connector.Error as err:
-            logger.error(err.msg)
+            Utils.log(err.msg)
         return response
     
     def get_categories(self):
@@ -68,7 +70,7 @@ class DBHelper:
             cursor.close()
             self.disconnect(cnx)
         except mysql.connector.Error as err:
-            logger.error(err.msg)
+            Utils.log(err.msg)
         return response
     
     def get_transactions(self):
@@ -93,6 +95,6 @@ class DBHelper:
             cursor.close()
             self.disconnect(cnx)
         except mysql.connector.Error as err:
-            logger.error(err.msg)
+            Utils.log(err.msg)
         return response
         
