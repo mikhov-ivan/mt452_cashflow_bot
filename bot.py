@@ -1,10 +1,10 @@
 import os
 import telegram
+import Utils
 
 from telegram.ext import Updater
 from telegram.ext import CommandHandler
 
-from Structures import Utils
 from Cashflow import Bot
 
 

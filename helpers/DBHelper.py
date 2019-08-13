@@ -1,5 +1,4 @@
 import os
-import logging
 import mysql.connector
 from mysql.connector import errorcode
 from Structures import CategoryGroup
@@ -9,10 +8,6 @@ from Structures import Transaction
 global DB_NAME
 global TABLES
 
-global logger
-
-logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s: %(message)s")
-logger = logging.getLogger()
 
 class DBHelper:
     def connect(self):

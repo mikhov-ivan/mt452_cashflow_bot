@@ -1,10 +1,10 @@
 import telegram
+import Utils
 
 from telegram.ext import Updater
 from telegram.ext import CommandHandler, CallbackQueryHandler
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 
-from Structures import Utils
 from Structures import Type
 
 

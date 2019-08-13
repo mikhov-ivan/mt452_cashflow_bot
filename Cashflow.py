@@ -1,6 +1,6 @@
 import os
-import logging
 import telegram
+import Utils
 
 from telegram.ext import Updater
 from telegram.ext import CommandHandler
@@ -10,7 +10,6 @@ from handlers.GeneralHandler import GeneralHandler
 from handlers.CommonHandler import CommonHandler
 from handlers.TransactionHandler import TransactionHandler
 
-from Structures import Utils
 from Structures import Cmd
 
 

@@ -1,4 +1,4 @@
-from Structures import Utils
+import Utils
 from Structures import TypePrefix
 
 
