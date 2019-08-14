@@ -117,7 +117,7 @@ class DBHelper:
                     "    t.title AS transaction_title"
                     " FROM transaction t"
                     "    INNER JOIN currency cur ON cur.OUID = t.currency_ouid"
-                    "    INNER JOIN category c ON c.OUID = t.category_ouid"
+                    "    LEFT JOIN category c ON c.OUID = t.category_ouid"
                     " WHERE 1 = 1 {}"
                     " ORDER BY t.execution_date")
                 
@@ -145,4 +145,22 @@ class DBHelper:
             }
         
         return response
+    
+    def create_transaction(self, amount=None):
+        query = (
+            " INSERT INTO transaction (execution_date, category_ouid, currency_ouid, amount, title)"
+            " VALUES ('{}', '{}', '{}', '{}', '{}')")
+        query = query.format("CURRENT_TIMESTAMP", None, None, amount, None)
+        
+        if self.mode == "prod":
+            try:
+                cnx = self.connect()
+                cursor = cnx.cursor()
+                cursor.execute(query)
+                cursor.close()
+                self.disconnect(cnx)
+            except mysql.connector.Error as err:
+                logger.error(err.msg)
+        else:
+            logger.info(query)
         

@@ -9,6 +9,10 @@ class Formats(Enum):
     DATETIME_DB         = "%Y-%m-%d %H:%M:%S"
 
 
+class Regexps(Enum):
+    NUMBER = "^([0-9]*\.?[0-9]+)$"
+
+
 class Types(Enum):
     GROUP           = "group"
     CATEGORY        = "category"

@@ -1,14 +1,17 @@
 import os
+import re
 
 from Utils import AppData
 from Utils import TgUtils
 from Utils import ServerUtils
 from Structures import Types
 from Structures import Formats
+from Structures import Regexps
 from Structures import Actions
 from Structures import ResponseTypes
 
-class Cmd(object):
+
+class CmdGet(object):
     @classmethod
     def get_list(cls, bot, update, is_callback=False):
         ServerUtils.log_update(update)
@@ -52,10 +55,6 @@ class Cmd(object):
                 msg = "Список <b>транзакций</b>"
                 response = cls.get_all_transactions(category_ouid)
                 response_type = ResponseTypes.HTML
-        else:
-            TgUtils.send(bot, update, "Что-то пошло не так")
-            ServerUtils.log("Unknown command: {}".format(cmd))
-            is_ok = False
         
         if response:
             if response_type == ResponseTypes.INLINE_KEYBOARD:
@@ -80,7 +79,7 @@ class Cmd(object):
                         parse_mode="HTML")
                 else:
                     TgUtils.send(bot, update, response)
-        elif is_ok:
+        else:
             TgUtils.send(bot, update, "Что-то пошло не так")
     
     @classmethod
@@ -132,4 +131,19 @@ class Cmd(object):
             html = "Ничего не найдено"
         return html
 
+
+class CmdCreate(object):
+    @classmethod
+    def create(cls):
+        pass
+    
+    @classmethod
+    def create_transaction(cls, bot, update):
+        ServerUtils.log_update(update)
+        cmd = update.message.text
+        
+        pattern = re.compile(Regexps.NUMBER.value)
+        if pattern.match(cmd):
+            amount = cmd
+            AppData.db.create_transaction(amount=amount)
 
