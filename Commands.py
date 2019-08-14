@@ -99,6 +99,10 @@ class Cmd(object):
     
     @classmethod
     def get_all_categories(cls, group_ouid):
+        keyboard_code = "get_all_categories"
+        if group_ouid:
+            keyboard_code = "get_all_categories_group_{}".format(group_ouid)
+        
         if not "get_all_categories" in AppData.keyboards:
             keyboard_items = {}
             response = AppData.db.get_categories(group_ouid=group_ouid)
@@ -107,8 +111,8 @@ class Cmd(object):
                 callback = "get_list -type transaction -c {}".format(c.ouid)
                 keyboard_items[c.title] = callback
             keyboard = TgUtils.build_keyboard(keyboard_items)
-            AppData.keyboards["get_all_categories"] = keyboard
-        keyboard = AppData.keyboards["get_all_categories"]
+            AppData.keyboards[keyboard_code] = keyboard
+        keyboard = AppData.keyboards[keyboard_code]
         return keyboard
     
     @classmethod
