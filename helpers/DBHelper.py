@@ -81,6 +81,7 @@ class DBHelper:
                 if group_ouid:
                     where += "AND cg.OUID = {}".format(group_ouid)
                 query = query.format(where)
+                logger.info(query)
                 
                 response = {}
                 cnx = self.connect()
