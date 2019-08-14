@@ -79,7 +79,7 @@ class DBHelper:
                 
                 where = ""
                 if group_ouid:
-                    where += "cg.OUID = {}".format(group_ouid)
+                    where += "AND cg.OUID = {}".format(group_ouid)
                 query.format(where)
                 
                 response = {}
@@ -121,7 +121,7 @@ class DBHelper:
                 
                 where = ""
                 if category_ouid:
-                    where += "c.OUID = {}".format(category_ouid)
+                    where += "AND c.OUID = {}".format(category_ouid)
                 query.format(where)
                 
                 response = {}
