@@ -63,25 +63,24 @@ class DBHelper:
         if self.mode == "prod":
             try:
                 query = (
-                    " SELECT" +
-                    "    c.ouid AS category_ouid," +
-                    "    c.code AS category_code," +
-                    "    c_msg.ru AS category_title," +
-                    "    cg.ouid AS category_group_ouid," +
-                    "    cg.code AS category_group_code," +
-                    "    cg_msg.ru AS category_group_title" +
-                    " FROM category c" +
-                    "    INNER JOIN msg c_msg ON c_msg.OUID = c.title_msg_ouid" +
-                    "    INNER JOIN category_group cg ON cg.OUID = c.category_group_ouid" +
-                    "        INNER JOIN msg cg_msg ON cg_msg.OUID = cg.title_msg_ouid" +
-                    " WHERE 1 = 1 {}" +
+                    " SELECT"
+                    "    c.ouid AS category_ouid,"
+                    "    c.code AS category_code,"
+                    "    c_msg.ru AS category_title,"
+                    "    cg.ouid AS category_group_ouid,"
+                    "    cg.code AS category_group_code,"
+                    "    cg_msg.ru AS category_group_title"
+                    " FROM category c"
+                    "    INNER JOIN msg c_msg ON c_msg.OUID = c.title_msg_ouid"
+                    "    INNER JOIN category_group cg ON cg.OUID = c.category_group_ouid"
+                    "        INNER JOIN msg cg_msg ON cg_msg.OUID = cg.title_msg_ouid"
+                    " WHERE 1 = 1 {}"
                     " ORDER BY c_msg.ru")
                 
                 where = ""
                 if group_ouid:
                     where += "AND cg.OUID = {}".format(group_ouid)
-                query.format(where)
-                logger.info(query)
+                query = query.format(where)
                 
                 response = {}
                 cnx = self.connect()
@@ -123,7 +122,7 @@ class DBHelper:
                 where = ""
                 if category_ouid:
                     where += "AND c.OUID = {}".format(category_ouid)
-                query.format(where)
+                query = query.format(where)
                 
                 response = {}
                 cnx = self.connect()
