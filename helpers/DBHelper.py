@@ -1,5 +1,6 @@
 import os
 import logging
+import datetime
 import mysql.connector
 from mysql.connector import errorcode
 from Structures import CategoryGroup
@@ -147,32 +148,40 @@ class DBHelper:
         return response
     
     def create_transaction(self, execution_date=None, category_ouid=None, currency_ouid=None, amount=None, title=None):
+        query_data = {
+            "execution_date": execution_date,
+            "category_ouid": category_ouid,
+            "currency_ouid": currency_ouid,
+            "amount": amount,
+            "title": title
+        }
+        
         if not execution_date:
-            execution_date = "CURRENT_TIMESTAMP"
+            query_data["execution_date"] = datetime.now().date()
         
         if not category_ouid:
-            category_ouid = ""
+            query_data["category_ouid"] = ""
             
         if not currency_ouid:
-            currency_ouid = ""
+            query_data["currency_ouid"] = ""
             
         if not amount:
-            amount = ""
+            query_data["amount"] = ""
             
         if not title:
-            title = ""
+            query_data["title"] = ""
         
         query = (
             " INSERT INTO transaction (execution_date, category_ouid, currency_ouid, amount, title)"
-            " VALUES ({}, '{}', '{}', '{}', '{}')")
-        query = query.format(execution_date, category_ouid, currency_ouid, amount, title)
+            " VALUES (%(execution_date)s, %(category_ouid)s, %(currency_ouid)s, %(amount)s, %(title)s)")
         
         logger.info(query)
         if self.mode == "prod":
             try:
                 cnx = self.connect()
                 cursor = cnx.cursor()
-                cursor.execute(query)
+                cursor.execute(query, query_data)
+                new_ouid = cursor.lastrowid
                 cursor.close()
                 self.disconnect(cnx)
             except mysql.connector.Error as err:
