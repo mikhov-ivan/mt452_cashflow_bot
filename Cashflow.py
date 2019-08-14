@@ -16,8 +16,8 @@ from Commands import CmdCreate
 class Bot:
     def __init__(self):
         self.cmds = {
-            "^(get_list.*)$": CmdGet.get_list,      # get_list -type group [-ouid <ouid>]
-            Regexps.NUMBER.value: CmdCreate.create  # create transaction by numeric input
+            "^(get_list.*)$": CmdGet.get_list,                  # get_list -type group [-ouid <ouid>]
+            Regexps.NUMBER.value: CmdCreate.create_transaction  # create transaction by numeric input
         }
     
     def set_handlers(self, dispatcher):
