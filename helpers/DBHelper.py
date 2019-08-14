@@ -146,11 +146,26 @@ class DBHelper:
         
         return response
     
-    def create_transaction(self, amount=None):
+    def create_transaction(self, execution_date=None, category_ouid=None, currency_ouid=None, amount=None, title=None):
+        if not execution_date:
+            execution_date = "CURRENT_TIMESTAMP"
+        
+        if not category_ouid:
+            category_ouid = ""
+            
+        if not currency_ouid:
+            currency_ouid = ""
+            
+        if not amount:
+            amount = ""
+            
+        if not title:
+            title = ""
+        
         query = (
             " INSERT INTO transaction (execution_date, category_ouid, currency_ouid, amount, title)"
-            " VALUES ('{}', '{}', '{}', '{}', '{}')")
-        query = query.format("CURRENT_TIMESTAMP", None, None, amount, None)
+            " VALUES ({}, '{}', '{}', '{}', '{}')")
+        query = query.format(execution_date, category_ouid, currency_ouid, amount, title)
         
         logger.info(query)
         if self.mode == "prod":
