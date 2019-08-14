@@ -152,6 +152,7 @@ class DBHelper:
             " VALUES ('{}', '{}', '{}', '{}', '{}')")
         query = query.format("CURRENT_TIMESTAMP", None, None, amount, None)
         
+            logger.info(query)
         if self.mode == "prod":
             try:
                 cnx = self.connect()
