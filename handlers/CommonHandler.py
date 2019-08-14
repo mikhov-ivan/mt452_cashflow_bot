@@ -13,18 +13,24 @@ from Structures import TypePrefix
 
 
 class CommonHandler:
+    keyboards = {}
+    
     @classmethod
     def cgs(cls, bot, update):
         Utils.log_update(update)
         msg = "Список доступных <b>групп</b>"
-        markup = cls.get_inline_keyboard(Type.CATEGORY_GROUP)
+        if not Type.CATEGORY.value in keyboards:
+            keyboards[Type.CATEGORY.value] = cls.get_inline_keyboard(Type.CATEGORY)
+        markup = keyboards[Type.CATEGORY.value]
         update.message.reply_text(msg, reply_markup=markup, parse_mode="HTML")
        
     @classmethod 
     def cats(cls, bot, update):
         Utils.log_update(update)
         msg = "Список доступных <b>категорий</b>"
-        markup = cls.get_inline_keyboard(Type.CATEGORY)
+        if not Type.CATEGORY.value in keyboards:
+            keyboards[Type.CATEGORY.value] = cls.get_inline_keyboard(Type.CATEGORY)
+        markup = keyboards[Type.CATEGORY.value]
         update.message.reply_text(msg, reply_markup=markup, parse_mode="HTML")
         
     @classmethod
@@ -55,7 +61,7 @@ class CommonHandler:
                     line = [button]
             
             if type == Type.CATEGORY:
-                callback = "{}_{}_{}".format(CmdPrefix.CREATE.value, Type.TRANSACTION.value, row.ouid)
+                callback = "{}_{}_{}".format(CmdPrefix.CREATE.value, TypePrefix.TRANSACTION.value, row.ouid)
                 Utils.log("Register callback: {}".format(callback))
             
             button = InlineKeyboardButton("Создать", callback_data=callback)

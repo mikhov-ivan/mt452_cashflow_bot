@@ -4,7 +4,7 @@ import telegram
 from telegram.ext import Updater
 from telegram.ext import CommandHandler
 
-from Utils import Utils
+from Utils import Preferences
 from Cashflow import Bot
 
 
@@ -20,10 +20,10 @@ if __name__ == "__main__":
     updater = Updater(token=TOKEN)
     bot.set_handlers(updater.dispatcher)
     
-    if Utils.mode == "dev":
+    if Preferences.mode == "dev":
         updater.start_polling()
         updater.idle()
-    elif Utils.mode == "prod":
+    elif Preferences.mode == "prod":
         updater.start_webhook(listen="0.0.0.0", port=PORT, url_path=TOKEN, key=APP_KEY)
         updater.bot.set_webhook(APP_URL + TOKEN)
 
