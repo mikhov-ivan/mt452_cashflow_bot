@@ -5,7 +5,7 @@ from enum import Enum
 
 class Formats(Enum):
     LOG                 = "%(asctime)s %(levelname)s: %(message)s"
-    DATE                = "%d.%m.%Y"
+    DATE                = "%d.%m.%Y %w"
     TIME                = "%H:%m"
     DATETIME            = "%d.%m.%Y %H:%m"
     DATETIME_DB         = "%Y-%m-%d %H:%M:%S"

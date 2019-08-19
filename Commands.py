@@ -126,8 +126,8 @@ class CmdGet(object):
                 date = row.execution_date.strftime(Formats.DATE.value)
                 if not current_date or date != current_date:
                     current_date = date
-                    msg += "{}{}<b>{}</b>".format(os.linesep, os.linesep, date, os.linesep)
-                msg += "{}<code>{}</code> {} {}".format(os.linesep, row.amount, row.currency, row.title)
+                    msg += "{}<code><b>{}</code>".format(os.linesep, os.linesep, date, os.linesep)
+                msg += "{}<code>{} {}</code> {}".format(os.linesep, row.amount, row.currency, row.title)
             html = template.format(len(response), msg)
         else:
             html = "Ничего не найдено"
