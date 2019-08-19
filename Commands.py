@@ -149,7 +149,7 @@ class CmdCreate(object):
                 response = AppData.db.get_transactions(ouid=new_ouid)
                 template = "<b>Транзакция</b> создана:{}{}"
         
-                if len(response) == 0:
+                if len(response) == 1:
                     msg = ""
                     row = response[new_ouid]
                     date = row.execution_date.strftime(Formats.DATETIME.value)
