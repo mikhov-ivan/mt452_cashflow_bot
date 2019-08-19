@@ -157,7 +157,7 @@ class CmdCreate(object):
                         "<b>{}</b>: {} {}{}".format(date, row.amount, row.currency, os.linesep),
                         "{}".format(row.title))
                     html = template.format(os.linesep, msg)
-                    TgUtils.send(bot, update, response)
+                    TgUtils.send(bot, update, html)
                 else:
                     TgUtils.send(bot, update, "Что-то пошло не так")
             else:
