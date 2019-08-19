@@ -125,6 +125,8 @@ class DBHelper:
                     " ORDER BY t.execution_date")
                 
                 where = ""
+                if ouid:
+                    where += "AND t.OUID = {}".format(ouid)
                 if category_ouid:
                     where += "AND c.OUID = {}".format(category_ouid)
                 query = query.format(where)
@@ -171,7 +173,7 @@ class DBHelper:
             query_data["amount"] = ""
             
         if not title:
-            query_data["title"] = ""
+            query_data["title"] = "Назначение неизвестно"
         
         query = (
             " INSERT INTO transaction (execution_date, category_ouid, currency_ouid, amount, title)"
@@ -186,8 +188,11 @@ class DBHelper:
                 cnx.commit()
                 cursor.close()
                 self.disconnect(cnx)
+                return new_ouid
             except mysql.connector.Error as err:
                 logger.error(err.msg)
         else:
             logger.info(query)
+            return 0
+        return -1
         

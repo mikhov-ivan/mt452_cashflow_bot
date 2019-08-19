@@ -144,6 +144,22 @@ class CmdCreate(object):
         
         pattern = re.compile(Regexps.NUMBER.value)
         if pattern.match(cmd):
-            amount = cmd
-            AppData.db.create_transaction(amount=amount)
+            new_ouid = AppData.db.create_transaction(amount=cmd)
+            if new_ouid > -1:
+                response = AppData.db.get_transactions(ouid=new_ouid)
+                template = "<b>Транзакция</b> создана:{}{}"
+        
+                if len(response) == 0:
+                    msg = ""
+                    row = response.values()[0]
+                    date = row.execution_date.strftime(Formats.DATETIME.value)
+                    msg += "{}{}".format(
+                        "<b>{}</b>: {} {}{}".format(date, row.amount, row.currency, os.linesep),
+                        "{}".format(row.title))
+                    html = template.format(os.linesep, msg)
+                    TgUtils.send(bot, update, response, parse_mode="HTML")
+                else:
+                    TgUtils.send(bot, update, "Что-то пошло не так")
+            else:
+                TgUtils.send(bot, update, "Что-то пошло не так")
 
