@@ -126,10 +126,11 @@ class DBHelper:
                 
                 where = ""
                 if ouid:
-                    where += "AND t.OUID = {}".format(ouid)
+                    where += " AND t.OUID = {}".format(ouid)
                 if category_ouid:
-                    where += "AND c.OUID = {}".format(category_ouid)
+                    where += " AND c.OUID = {}".format(category_ouid)
                 query = query.format(where)
+                logger.info(query)
                 
                 response = {}
                 cnx = self.connect()
