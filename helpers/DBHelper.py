@@ -5,6 +5,7 @@ import mysql.connector
 
 from datetime import date, datetime
 from mysql.connector import errorcode
+from Structures import Formats
 from Structures import CategoryGroup
 from Structures import Category
 from Structures import Transaction
