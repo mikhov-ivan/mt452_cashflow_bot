@@ -147,7 +147,7 @@ class CmdCreate(object):
             new_ouid = AppData.db.create_transaction(amount=cmd)
             if new_ouid > -1:
                 response = AppData.db.get_transactions(ouid=new_ouid)
-                template = "<b>Транзакция</b> создана:{}{}"
+                template = "{}"
         
                 if len(response) == 1:
                     msg = ""
@@ -156,7 +156,7 @@ class CmdCreate(object):
                     msg += "{}{}".format(
                         "<b>{}</b>: {} {}{}".format(date, row.amount, row.currency, os.linesep),
                         "{}".format(row.title))
-                    html = template.format(os.linesep, msg)
+                    html = template.format(msg)
                     TgUtils.send(bot, update, html)
                 else:
                     TgUtils.send(bot, update, "Что-то пошло не так")
