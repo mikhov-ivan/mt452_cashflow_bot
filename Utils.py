@@ -68,6 +68,10 @@ class ServerUtils(object):
             update.message.from_user.first_name,
             update.message.from_user.last_name,
             update.message.text))
+    
+    @classmethod
+    def align_right(cls, value):
+        return "{:4.1f}".format(value)
 
 
 class AppData(object):

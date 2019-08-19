@@ -130,7 +130,11 @@ class CmdGet(object):
                     current_date = date
                     weekday = calendar.day_name[datetime.datetime.strptime(date, Formats.DATE.value).weekday()]
                     msg += "{}{}<code>{} {}</code>".format(os.linesep, os.linesep, date, weekday, os.linesep)
-                msg += "{}<code>{}{}</code> {}".format(os.linesep, row.amount, row.currency, row.title)
+                msg += "{}<code>{}{}</code> {}".format(
+                    os.linesep,
+                    ServerUtils.align_right(row.amount),
+                    row.currency,
+                    row.title)
             html = template.format(len(response), msg)
         else:
             html = "Ничего не найдено"
