@@ -144,8 +144,6 @@ class DBHelper:
                     " GROUP BY CAST(t.transaction_execution_date AS DATE), t.currency_ouid"
                     " ORDER BY t.transaction_execution_date").format(self.get_transaction_q(ouid, category_ouid))
                 
-                logger.info(query)
-                
                 response = {}
                 cnx = self.connect()
                 cursor = cnx.cursor()
@@ -154,9 +152,9 @@ class DBHelper:
                     date = row[0].strftime(Formats.DATE.value)
                     if not date in response:
                         response[date] = {}
-                    if not row[1] in response[date]:
-                        response[date][row[1]] = 0.0
-                    response[date][row[1]] += row[2]
+                    if not str(row[1]) in response[date]:
+                        response[date][str(row[1])] = 0.0
+                    response[date][str(row[1])] += row[2]
                 cursor.close()
                 self.disconnect(cnx)
             except mysql.connector.Error as err:
