@@ -206,7 +206,7 @@ class DBHelper:
             query_data["category_ouid"] = ""
             
         if not currency_ouid:
-            query_data["currency_ouid"] = Defaults.CURRENCY
+            query_data["currency_ouid"] = Defaults.CURRENCY.value
             
         if not amount:
             query_data["amount"] = ""
