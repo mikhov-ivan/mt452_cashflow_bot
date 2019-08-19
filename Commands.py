@@ -151,7 +151,7 @@ class CmdCreate(object):
         
                 if len(response) == 0:
                     msg = ""
-                    row = response.values()[0]
+                    row = response[new_ouid]
                     date = row.execution_date.strftime(Formats.DATETIME.value)
                     msg += "{}{}".format(
                         "<b>{}</b>: {} {}{}".format(date, row.amount, row.currency, os.linesep),
