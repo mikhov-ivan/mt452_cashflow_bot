@@ -127,7 +127,7 @@ class CmdGet(object):
                 if not current_date or date != current_date:
                     current_date = date
                     msg += "{}{}<b>{}</b>".format(os.linesep, os.linesep, date, os.linesep)
-                msg += "{}{} {} {}".format(os.linesep, row.amount, row.currency, row.title)
+                msg += "{}<code>{}</code> {} {}".format(os.linesep, row.amount, row.currency, row.title)
             html = template.format(len(response), msg)
         else:
             html = "Ничего не найдено"
