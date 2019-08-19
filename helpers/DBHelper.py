@@ -183,6 +183,7 @@ class DBHelper:
                 cursor = cnx.cursor()
                 cursor.execute(query, query_data)
                 new_ouid = cursor.lastrowid
+                cnx.commit()
                 cursor.close()
                 self.disconnect(cnx)
             except mysql.connector.Error as err:
