@@ -6,8 +6,10 @@ import calendar
 from Utils import AppData
 from Utils import TgUtils
 from Utils import ServerUtils
+
 from Structures import Types
 from Structures import Formats
+from Structures import Defaults
 from Structures import Regexps
 from Structures import Actions
 from Structures import ResponseTypes
@@ -132,11 +134,19 @@ class CmdGet(object):
                         msg += "{}{}".format(os.linesep, os.linesep)
                     current_date = date
                     weekday = calendar.day_name[datetime.datetime.strptime(date, Formats.DATE.value).weekday()]
+                    
+                    total_rub = 0.0
+                    total_eur = 0.0
+                    if "1" in totals[date]:
+                        total_rub = totals[date][1]
+                    if "2" in totals[date]:
+                        total_eur = totals[date][2]
+                    
                     msg += "<b>{} {}</b><code> = {}{}, {}{}</code>".format(
                         date,
                         weekday,
-                        totals[date]["€"], "€",
-                        totals[date]["₽"], "₽",
+                        total_eur, "€",
+                        total_rub, "₽",
                         os.linesep)
                 msg += "{}<code>{}{}</code> {}".format(
                     os.linesep,

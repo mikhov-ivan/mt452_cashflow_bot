@@ -5,7 +5,9 @@ import mysql.connector
 
 from datetime import date, datetime
 from mysql.connector import errorcode
+
 from Structures import Formats
+from Structures import Defaults
 from Structures import CategoryGroup
 from Structures import Category
 from Structures import Transaction
@@ -85,7 +87,6 @@ class DBHelper:
                     where += "AND cg.OUID = {}".format(group_ouid)
                 query = query.format(where)
                 logger.info("{}".format(group_ouid))
-                logger.info(query)
                 
                 response = {}
                 cnx = self.connect()
@@ -137,7 +138,7 @@ class DBHelper:
                 query = (
                     " SELECT"
                     "     t.transaction_execution_date,"
-                    "     t.currency_symbol,"
+                    "     t.currency_ouid,"
                     "     SUM(t.transaction_amount) AS total_amount"
                     " FROM ({}) t"
                     " GROUP BY CAST(t.transaction_execution_date AS DATE), t.currency_ouid"
@@ -160,9 +161,9 @@ class DBHelper:
                 logger.error(err.msg)
         else:
             response = {
-                "12.08.2019": {"₽": 100.5, "€": 0.0},
-                "13.08.2019": {"₽": 100.5, "€": 202.7},
-                "14.08.2019": {"₽": 780.5, "€": 452.0}
+                "12.08.2019": {"1": 100.5, "2": 0.0},
+                "13.08.2019": {"1": 100.5, "2": 202.7},
+                "14.08.2019": {"1": 780.5, "2": 452.0}
             }
         return response
     
@@ -187,7 +188,6 @@ class DBHelper:
         if category_ouid:
             where += " AND c.OUID = {}".format(category_ouid)
         query = query.format(where)
-        logger.info(query)
         return query
     
     def create_transaction(self, execution_date=None, category_ouid=None, currency_ouid=None, amount=None, title=None):
@@ -206,7 +206,7 @@ class DBHelper:
             query_data["category_ouid"] = ""
             
         if not currency_ouid:
-            query_data["currency_ouid"] = "2"
+            query_data["currency_ouid"] = Structures.Defaults.CURRENCY
             
         if not amount:
             query_data["amount"] = ""

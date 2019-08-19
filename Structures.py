@@ -11,6 +11,10 @@ class Formats(Enum):
     DATETIME_DB         = "%Y-%m-%d %H:%M:%S"
 
 
+class Defaults(Enum):
+    CURRENCY = 2
+
+
 class Regexps(Enum):
     NUMBER = "^([0-9]*\.?[0-9]+)$"
 
