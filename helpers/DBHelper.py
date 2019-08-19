@@ -144,6 +144,8 @@ class DBHelper:
                     " GROUP BY CAST(t.transaction_execution_date AS DATE), t.currency_ouid"
                     " ORDER BY t.transaction_execution_date").format(self.get_transaction_q(ouid, category_ouid))
                 
+                logger.info(query)
+                
                 response = {}
                 cnx = self.connect()
                 cursor = cnx.cursor()

@@ -133,16 +133,16 @@ class CmdGet(object):
                     if current_date:
                         msg += "{}{}".format(os.linesep, os.linesep)
                     current_date = date
-                    weekday = calendar.day_name[datetime.datetime.strptime(date, Formats.DATE.value).weekday()]
+                    weekday = calendar.day_abbr[datetime.datetime.strptime(date, Formats.DATE.value).weekday()]
                     
                     total_rub = 0.0
                     total_eur = 0.0
                     if "1" in totals[date]:
-                        total_rub = totals[date][1]
+                        total_rub = totals[date]["1"]
                     if "2" in totals[date]:
-                        total_eur = totals[date][2]
+                        total_eur = totals[date]["2"]
                     
-                    msg += "<b>{} {}</b><code> = {}{}, {}{}</code>".format(
+                    msg += "<b>{} {}</b>:<code> {}{}</code> + <code>{}{}</code>".format(
                         date,
                         weekday,
                         total_eur, "€",
