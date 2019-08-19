@@ -129,7 +129,7 @@ class CmdGet(object):
                 if not current_date or date != current_date:
                     current_date = date
                     weekday = calendar.day_name[datetime.datetime.strptime(date, Formats.DATE.value).weekday()]
-                    msg += "{}{}<code>{} {}</code>".format(os.linesep, os.linesep, date, weekday, os.linesep)
+                    msg += "{}{}<b><code>{} {}</code></b>".format(os.linesep, os.linesep, date, weekday, os.linesep)
                 msg += "{}<code>{}{}</code> {}".format(
                     os.linesep,
                     ServerUtils.align_right(row.amount),
