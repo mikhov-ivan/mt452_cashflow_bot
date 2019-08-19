@@ -1,5 +1,7 @@
 import os
 import re
+import datetime
+import calendar
 
 from Utils import AppData
 from Utils import TgUtils
@@ -126,7 +128,8 @@ class CmdGet(object):
                 date = row.execution_date.strftime(Formats.DATE.value)
                 if not current_date or date != current_date:
                     current_date = date
-                    msg += "{}<code>{} {}</code>".format(os.linesep, os.linesep, date, date.weekday(), os.linesep)
+                    weekday = calendar.day_name[datetime.datetime.strptime(date, Formats.DATE.value).weekday()]
+                    msg += "{}{}<code>{} {}</code>".format(os.linesep, os.linesep, date, weekday, os.linesep)
                 msg += "{}<code>{}{}</code> {}".format(os.linesep, row.amount, row.currency, row.title)
             html = template.format(len(response), msg)
         else:
