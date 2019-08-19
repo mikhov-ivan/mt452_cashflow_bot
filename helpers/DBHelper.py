@@ -122,7 +122,7 @@ class DBHelper:
                     "    INNER JOIN currency cur ON cur.OUID = t.currency_ouid"
                     "    LEFT JOIN category c ON c.OUID = t.category_ouid"
                     " WHERE 1 = 1 {}"
-                    " ORDER BY t.execution_date")
+                    " ORDER BY t.execution_date, t.OUID")
                 
                 where = ""
                 if ouid:

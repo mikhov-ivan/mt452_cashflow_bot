@@ -117,15 +117,17 @@ class CmdGet(object):
     @classmethod
     def get_all_transactions(cls, category_ouid):
         response = AppData.db.get_transactions(category_ouid=category_ouid)
-        template = "<b>Транзакций</b> записано: {}{}{}{}"
+        template = "<b>Транзакций</b> записано: {}{}"
         
         if len(response) > 0:
             msg = ""
+            current_date = None
             for row in response.values():
                 date = row.execution_date.strftime(Formats.DATETIME.value)
-                msg += "{}{}".format(
-                    "<b>{}</b>: {} {}{}".format(date, row.amount, row.currency, os.linesep),
-                    "{}{}{}".format(row.title, os.linesep, os.linesep))
+                if not current_date or date != current_date:
+                    current_date = date
+                    msg += "{}{}<b>{}</b>{}".format(os.linesep, os.linesep, date, os.linesep)
+                msg += "{} {} {}".format(row.amount, row.currency, row.title)
             html = template.format(len(response), os.linesep, os.linesep, msg)
         else:
             html = "Ничего не найдено"
