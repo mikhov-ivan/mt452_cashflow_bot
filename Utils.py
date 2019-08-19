@@ -71,7 +71,7 @@ class ServerUtils(object):
     
     @classmethod
     def align_right(cls, value):
-        return "{:7.1f}".format(value)
+        return "{:6.1f}".format(value)
 
 
 class AppData(object):
