@@ -123,7 +123,7 @@ class CmdGet(object):
             msg = ""
             current_date = None
             for row in response.values():
-                date = row.execution_date.strftime(Formats.DATETIME.value)
+                date = row.execution_date.strftime(Formats.DATE.value)
                 if not current_date or date != current_date:
                     current_date = date
                     msg += "{}{}<b>{}</b>".format(os.linesep, os.linesep, date, os.linesep)
