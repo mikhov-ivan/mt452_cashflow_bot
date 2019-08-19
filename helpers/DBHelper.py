@@ -162,7 +162,7 @@ class DBHelper:
         }
         
         if not execution_date:
-            query_data["execution_date"] = datetime.now().date()
+            query_data["execution_date"] = datetime.now().datetime()
         
         if not category_ouid:
             query_data["category_ouid"] = ""
