@@ -2,6 +2,8 @@ import os
 import logging
 import datetime
 import mysql.connector
+
+from datetime import date, datetime
 from mysql.connector import errorcode
 from Structures import CategoryGroup
 from Structures import Category
