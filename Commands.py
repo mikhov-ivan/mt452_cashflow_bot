@@ -119,7 +119,7 @@ class CmdGet(object):
     @classmethod
     def get_all_transactions(cls, category_ouid):
         response = AppData.db.get_transactions(category_ouid=category_ouid)
-        template = "<b>Транзакций</b> записано: {}{}"
+        template = "{}"
         
         if len(response) > 0:
             msg = ""
@@ -127,15 +127,17 @@ class CmdGet(object):
             for row in response.values():
                 date = row.execution_date.strftime(Formats.DATE.value)
                 if not current_date or date != current_date:
+                    if current_date:
+                        msg += "{}{}".format(os.linesep, os.linesep)
                     current_date = date
                     weekday = calendar.day_name[datetime.datetime.strptime(date, Formats.DATE.value).weekday()]
-                    msg += "{}{}<b><code>{} {}</code></b>".format(os.linesep, os.linesep, date, weekday, os.linesep)
+                    msg += "<b>{} {}</b>".format(date, weekday, os.linesep)
                 msg += "{}<code>{}{}</code> {}".format(
                     os.linesep,
                     ServerUtils.align_right(row.amount),
                     row.currency,
                     row.title)
-            html = template.format(len(response), msg)
+            html = template.format(msg)
         else:
             html = "Ничего не найдено"
         return html
