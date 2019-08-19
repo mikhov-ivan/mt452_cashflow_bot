@@ -59,7 +59,6 @@ class DBHelper:
                 "454": CategoryGroup("454", "test_group_3", "Group 3"),
                 "455": CategoryGroup("455", "test_group_4", "Group 4")
             }
-        
         return response
     
     def get_categories(self, ouid=None, group_ouid=None):
@@ -105,52 +104,90 @@ class DBHelper:
                 "554": CategoryGroup("554", "test_category_3", "Category 3"),
                 "555": CategoryGroup("555", "test_category_4", "Category 4")
             }
-        
         return response
     
     def get_transactions(self, ouid=None, category_ouid=None):
         if self.mode == "prod":
             try:
-                query = (
-                    " SELECT"
-                    "    t.ouid AS transaction_ouid,"
-                    "    t.execution_date AS transaction_execution_date,"
-                    "    cur.symbol AS currency_symbol,"
-                    "    t.amount AS transaction_amount,"
-                    "    t.title AS transaction_title"
-                    " FROM transaction t"
-                    "    INNER JOIN currency cur ON cur.OUID = t.currency_ouid"
-                    "    LEFT JOIN category c ON c.OUID = t.category_ouid"
-                    " WHERE 1 = 1 {}"
-                    " ORDER BY t.execution_date, t.OUID")
-                
-                where = ""
-                if ouid:
-                    where += " AND t.OUID = {}".format(ouid)
-                if category_ouid:
-                    where += " AND c.OUID = {}".format(category_ouid)
-                query = query.format(where)
-                logger.info(query)
+                query = self.get_transaction_q(ouid, category_ouid)
                 
                 response = {}
                 cnx = self.connect()
                 cursor = cnx.cursor()
                 cursor.execute(query)
                 for row in cursor:
-                    response[row[0]] = Transaction(row[0], row[1], row[2], row[3], row[4])
+                    response[row[0]] = Transaction(row[0], row[1], row[3], row[4], row[5])
                 cursor.close()
                 self.disconnect(cnx)
             except mysql.connector.Error as err:
                 logger.error(err.msg)
         else:
             response = {
-                "652": Transaction("652", "2019-08-14 08:23:15", "€", 452, "Transaction 1"),
-                "653": Transaction("653", "2019-08-14 09:23:15", "€", 452, "Transaction 2"),
+                "652": Transaction("652", "2019-08-12 08:23:15", "€", 452, "Transaction 1"),
+                "653": Transaction("653", "2019-08-13 09:23:15", "€", 452, "Transaction 2"),
                 "654": Transaction("654", "2019-08-14 10:23:15", "€", 452, "Transaction 3"),
                 "655": Transaction("655", "2019-08-14 11:23:15", "€", 452, "Transaction 4")
             }
-        
         return response
+    
+    def get_transaction_totals(self, ouid=None, category_ouid=None):
+        if self.mode == "prod":
+            try:
+                query = (
+                    " SELECT"
+                    "     t.transaction_execution_date,"
+                    "     t.currency_symbol,"
+                    "     SUM(t.transaction_amount) AS total_amount"
+                    " FROM ({}) t"
+                    " GROUP BY CAST(t.transaction_execution_date AS DATE), t.currency_ouid"
+                    " ORDER BY t.transaction_execution_date").format(self.get_transaction_q(ouid, category_ouid))
+                
+                response = {}
+                cnx = self.connect()
+                cursor = cnx.cursor()
+                cursor.execute(query)
+                for row in cursor:
+                    date = row[0].strftime(Formats.DATE.value)
+                    if not date in response:
+                        response[date] = {}
+                    if not row[1] in response[date]:
+                        response[date][row[1]] = 0.0
+                    response[date][row[1]] += row[2]
+                cursor.close()
+                self.disconnect(cnx)
+            except mysql.connector.Error as err:
+                logger.error(err.msg)
+        else:
+            response = {
+                "12.08.2019": {"₽": 100.5, "€": 0.0},
+                "13.08.2019": {"₽": 100.5, "€": 202.7},
+                "14.08.2019": {"₽": 780.5, "€": 452.0}
+            }
+        return response
+    
+    def get_transaction_q(self, ouid, category_ouid):
+        query = (
+            " SELECT"
+            "    t.ouid AS transaction_ouid,"
+            "    t.execution_date AS transaction_execution_date,"
+            "    cur.ouid AS currency_ouid,"
+            "    cur.symbol AS currency_symbol,"
+            "    t.amount AS transaction_amount,"
+            "    t.title AS transaction_title"
+            " FROM transaction t"
+            "    INNER JOIN currency cur ON cur.OUID = t.currency_ouid"
+            "    LEFT JOIN category c ON c.OUID = t.category_ouid"
+            " WHERE 1 = 1 {}"
+            " ORDER BY t.execution_date, t.OUID")
+        
+        where = ""
+        if ouid:
+            where += " AND t.OUID = {}".format(ouid)
+        if category_ouid:
+            where += " AND c.OUID = {}".format(category_ouid)
+        query = query.format(where)
+        logger.info(query)
+        return query
     
     def create_transaction(self, execution_date=None, category_ouid=None, currency_ouid=None, amount=None, title=None):
         query_data = {

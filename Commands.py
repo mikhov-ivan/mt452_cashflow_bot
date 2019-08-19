@@ -119,6 +119,7 @@ class CmdGet(object):
     @classmethod
     def get_all_transactions(cls, category_ouid):
         response = AppData.db.get_transactions(category_ouid=category_ouid)
+        totals = AppData.db.get_transaction_totals(category_ouid=category_ouid)
         template = "{}"
         
         if len(response) > 0:
@@ -131,7 +132,12 @@ class CmdGet(object):
                         msg += "{}{}".format(os.linesep, os.linesep)
                     current_date = date
                     weekday = calendar.day_name[datetime.datetime.strptime(date, Formats.DATE.value).weekday()]
-                    msg += "<b>{} {}</b>".format(date, weekday, os.linesep)
+                    msg += "<b>{} {}</b><code> = {}{}, {}{}</code>".format(
+                        date,
+                        weekday,
+                        totals[date]["€"], "€",
+                        totals[date]["₽"], "₽",
+                        os.linesep)
                 msg += "{}<code>{}{}</code> {}".format(
                     os.linesep,
                     ServerUtils.align_right(row.amount),
