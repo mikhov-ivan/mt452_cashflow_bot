@@ -5,6 +5,7 @@ from enum import Enum
 
 class Formats(Enum):
     LOG                 = "%(asctime)s %(levelname)s: %(message)s"
+    TG_BREAK            = "#TGBR#"
     DATE                = "%d.%m.%Y"
     TIME                = "%H:%m"
     DATETIME            = "%d.%m.%Y %H:%m"

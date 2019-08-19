@@ -15,8 +15,10 @@ class TgUtils(object):
     @classmethod
     def send(cls, bot, update, msg):
         chat_id = update.message.chat_id
-        ServerUtils.log("Send msg to chat_{}".format(chat_id))
-        bot.sendMessage(chat_id=chat_id, text=msg, parse_mode="HTML")
+        parts = msg.split(Formats.TG_BREAK.value)
+        for text in parts:
+            ServerUtils.log("Send msg to chat_{}".format(chat_id))
+            bot.sendMessage(chat_id=chat_id, text=text, parse_mode="HTML")
 
     @classmethod
     def build_keyboard(cls, items):
