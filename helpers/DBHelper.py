@@ -177,7 +177,6 @@ class DBHelper:
             " INSERT INTO transaction (execution_date, category_ouid, currency_ouid, amount, title)"
             " VALUES (%(execution_date)s, %(category_ouid)s, %(currency_ouid)s, %(amount)s, %(title)s)")
         
-        logger.info(query)
         if self.mode == "prod":
             try:
                 cnx = self.connect()
