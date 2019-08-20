@@ -218,7 +218,7 @@ class CmdUpdate(object):
         type = None
         
         data = {}
-        for type in Types.values():
+        for type in Types:
             data[type.value] = {}
         
         for i in range(0, len(args)):
