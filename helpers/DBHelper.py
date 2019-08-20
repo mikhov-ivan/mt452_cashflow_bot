@@ -230,7 +230,7 @@ class DBHelper:
     def update_transaction(self, data):
         query = (
             "UPDATE transaction SET {} "
-            "WHERE OUID = {} ")
+            "WHERE ouid = {} ")
         
         set = ""
         if "currency_ouid" in data and data["currency_ouid"]:
@@ -238,6 +238,7 @@ class DBHelper:
         
         if set != "":
             query = query.format(set, data["ouid"])
+            logger.info(query)
             if self.mode == "prod":
                 try:
                     cnx = self.connect()
