@@ -238,10 +238,3 @@ class CmdUpdate(object):
         type = Types.TRANSACTION.value
         
         AppData.db.update_transaction(data)
-        
-        bot.update_message_text(
-            chat_id=update.message.chat_id,
-            message_id=update.message.message_id,
-            text=msg,
-            reply_markup=response,
-            parse_mode="HTML")
