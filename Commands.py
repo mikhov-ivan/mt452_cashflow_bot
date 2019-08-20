@@ -169,44 +169,8 @@ class CmdCreate(object):
             new_ouid = AppData.db.create_transaction({"amount": cmd})
             if new_ouid > -1:
                 AppData.TRANSACTION_OUID = new_ouid
-                response = AppData.db.get_transactions(ouid=AppData.TRANSACTION_OUID)
-                template = "{}"
-        
-                if len(response) == 1:
-                    msg = ""
-                    row = response[AppData.TRANSACTION_OUID]
-                    date = row.execution_date.strftime(Formats.DATETIME.value)
-                    msg += "{}{}".format(
-                        "<b>{}</b>: {} {}{}".format(
-                            date,
-                            ServerUtils.numeric_format(row.amount),
-                            row.currency,
-                            os.linesep),
-                        "{}".format(row.title))
-                    html = template.format(msg)
-                    #TgUtils.send(bot, update, html)
-                    
-                    keyboard_items = {
-                        "Валюта: €": "update -type {} -ouid {} -currency {}".format(
-                            Types.TRANSACTION.value,
-                            AppData.TRANSACTION_OUID,
-                            Constants.EUR_OUID.value),
-                        "Валюта: ₽": "update -type {} -ouid {} -currency {}".format(
-                            Types.TRANSACTION.value,
-                            AppData.TRANSACTION_OUID,
-                            Constants.RUB_OUID.value),
-                        "Категория": "get_list -type {}".format(Types.CATEGORY.value),
-                        "Источник": "asd"}
-                    keyboard = TgUtils.build_keyboard(keyboard_items, 2, False)
-                    
-                    update.message.reply_text(
-                        html,
-                        reply_markup=keyboard,
-                        parse_mode="HTML")
-                else:
-                    TgUtils.send(bot, update, "Запись не удалась")
             else:
-                TgUtils.send(bot, update, "Что-то пошло не так")
+                TgUtils.send(bot, update, "Что-то пошло не так (1)")
 
 
 class CmdUpdate(object):
@@ -231,10 +195,47 @@ class CmdUpdate(object):
         
         if type == Types.TRANSACTION.value:
             cls.update_transaction(bot, update, data[type])
+            CmdUpdate.reply_with_transaction(bot, update, data[type]["ouid"])
         
-    
     @classmethod
     def update_transaction(cls, bot, update, data):
         type = Types.TRANSACTION.value
-        
         AppData.db.update_transaction(data)
+    
+    @classmethod
+    def reply_with_transaction(cls, bot, ouid):
+        response = AppData.db.get_transactions(ouid=ouid)
+        if len(response) == 1:
+            template = "{}"
+            msg = ""
+            data = response[AppData.TRANSACTION_OUID]
+            date = data.execution_date.strftime(Formats.DATETIME.value)
+            msg += "{}{}".format(
+                "<b>{}</b>: {} {}{}".format(
+                    date,
+                    ServerUtils.numeric_format(data.amount),
+                    data.currency,
+                    os.linesep),
+                "{}".format(data.title))
+            html = template.format(msg)
+            #TgUtils.send(bot, update, html)
+            
+            keyboard_items = {
+                "Валюта: €": "update -type {} -ouid {} -currency {}".format(
+                    Types.TRANSACTION.value,
+                    AppData.TRANSACTION_OUID,
+                    Constants.EUR_OUID.value),
+                "Валюта: ₽": "update -type {} -ouid {} -currency {}".format(
+                    Types.TRANSACTION.value,
+                    AppData.TRANSACTION_OUID,
+                    Constants.RUB_OUID.value),
+                "Категория": "get_list -type {}".format(Types.CATEGORY.value),
+                "Источник": "asd"}
+            keyboard = TgUtils.build_keyboard(keyboard_items, 2, False)
+            
+            update.message.reply_text(
+                html,
+                reply_markup=keyboard,
+                parse_mode="HTML")
+        else:
+            TgUtils.send(bot, update, "Что-то пошло не так (2)")
