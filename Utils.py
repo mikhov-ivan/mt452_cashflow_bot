@@ -78,7 +78,7 @@ class ServerUtils(object):
     
     @classmethod
     def numeric_format(cls, value):
-        return "{%.1f}".format(value)
+        return "{:0.1f}".format(value)
 
 
 class AppData(object):
