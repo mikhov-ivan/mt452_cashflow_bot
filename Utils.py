@@ -74,11 +74,11 @@ class ServerUtils(object):
     
     @classmethod
     def align_right(cls, value):
-        return "{:6.1f}".format(value)
+        return "{:6.1f}".format(float(value))
     
     @classmethod
     def numeric_format(cls, value):
-        return "{:0.1f}".format(value)
+        return "{:0.1f}".format(float(value))
 
 
 class AppData(object):
