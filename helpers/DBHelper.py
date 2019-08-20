@@ -234,7 +234,7 @@ class DBHelper:
         
         set = ""
         if "currency_ouid" in data and data["currency_ouid"]:
-            set += "currency_ouid = %(currency_ouid), "
+            set += "currency_ouid = %(currency_ouid)s, "
         
         if set != "":
             query = query.format(set, data["ouid"])
