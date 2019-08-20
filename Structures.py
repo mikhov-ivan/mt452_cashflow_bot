@@ -17,8 +17,8 @@ class Defaults(Enum):
 
 
 class Constants(Enum):
+    RUB_OUID = 1
     EUR_OUID = 2
-    RUB_OUID = 2
 
 
 class Regexps(Enum):
