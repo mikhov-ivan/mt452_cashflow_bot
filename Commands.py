@@ -145,8 +145,8 @@ class CmdGet(object):
                     msg += "<b>{} {}</b>:<code> {}{}</code> + <code>{}{}</code>".format(
                         date,
                         weekday,
-                        total_eur, "€",
-                        total_rub, "₽",
+                        ServerUtils.numeric_format(total_eur), "€",
+                        ServerUtils.numeric_format(total_rub), "₽",
                         os.linesep)
                 msg += "{}<code>{}{}</code> {}".format(
                     os.linesep,
