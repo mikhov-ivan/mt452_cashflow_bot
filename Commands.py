@@ -227,7 +227,7 @@ class CmdUpdate(object):
             if args[i] == "-ouid":
                 data[type]["ouid"] = args[i+1]
             if args[i] == "-currency":
-                data[type]["currency"] = args[i+1]
+                data[type]["currency_ouid"] = args[i+1]
         
         if type == Types.TRANSACTION.value:
             cls.update_transaction(bot, update, data[type])

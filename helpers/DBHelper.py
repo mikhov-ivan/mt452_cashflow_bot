@@ -25,10 +25,10 @@ class DBHelper:
     
     def connect(self):
         return mysql.connector.connect(
-            user=os.environ.get('DB_USER', None),
-            password=os.environ.get('DB_PASSWORD', None),
-            host=os.environ.get('DB_HOST', None),
-            database=os.environ.get('DB_NAME', None))
+            user=os.environ.get("DB_USER", None),
+            password=os.environ.get("DB_PASSWORD", None),
+            host=os.environ.get("DB_HOST", None),
+            database=os.environ.get("DB_NAME", None))
         
     def disconnect(self, cnx):
         cnx.close()
@@ -37,13 +37,13 @@ class DBHelper:
         if self.mode == "prod":
             try:
                 query = (
-                    " SELECT"
-                    "    cg.ouid AS category_group_ouid,"
-                    "    cg.code AS category_group_code,"
-                    "    cg_msg.ru AS category_group_title"
-                    " FROM category_group cg"
-                    "    INNER JOIN msg cg_msg ON cg_msg.OUID = cg.title_msg_ouid"
-                    " ORDER BY cg_msg.ru")
+                    "SELECT "
+                    "   cg.ouid AS category_group_ouid, "
+                    "   cg.code AS category_group_code, "
+                    "   cg_msg.ru AS category_group_title "
+                    "FROM category_group cg "
+                    "   INNER JOIN msg cg_msg ON cg_msg.OUID = cg.title_msg_ouid "
+                    "ORDER BY cg_msg.ru ")
                 
                 response = {}
                 cnx = self.connect()
@@ -68,19 +68,19 @@ class DBHelper:
         if self.mode == "prod":
             try:
                 query = (
-                    " SELECT"
-                    "    c.ouid AS category_ouid,"
-                    "    c.code AS category_code,"
-                    "    c_msg.ru AS category_title,"
-                    "    cg.ouid AS category_group_ouid,"
-                    "    cg.code AS category_group_code,"
-                    "    cg_msg.ru AS category_group_title"
-                    " FROM category c"
-                    "    INNER JOIN msg c_msg ON c_msg.OUID = c.title_msg_ouid"
-                    "    INNER JOIN category_group cg ON cg.OUID = c.category_group_ouid"
-                    "        INNER JOIN msg cg_msg ON cg_msg.OUID = cg.title_msg_ouid"
-                    " WHERE 1 = 1 {}"
-                    " ORDER BY c_msg.ru")
+                    "SELECT "
+                    "   c.ouid AS category_ouid, "
+                    "   c.code AS category_code, "
+                    "   c_msg.ru AS category_title, "
+                    "   cg.ouid AS category_group_ouid, "
+                    "   cg.code AS category_group_code, "
+                    "   cg_msg.ru AS category_group_title "
+                    "FROM category c "
+                    "   INNER JOIN msg c_msg ON c_msg.OUID = c.title_msg_ouid "
+                    "   INNER JOIN category_group cg ON cg.OUID = c.category_group_ouid "
+                    "       INNER JOIN msg cg_msg ON cg_msg.OUID = cg.title_msg_ouid "
+                    "WHERE 1 = 1 {} "
+                    "ORDER BY c_msg.ru ")
                 
                 where = ""
                 if group_ouid:
@@ -136,13 +136,13 @@ class DBHelper:
         if self.mode == "prod":
             try:
                 query = (
-                    " SELECT"
-                    "     t.transaction_execution_date,"
-                    "     t.currency_ouid,"
-                    "     SUM(t.transaction_amount) AS total_amount"
-                    " FROM ({}) t"
-                    " GROUP BY CAST(t.transaction_execution_date AS DATE), t.currency_ouid"
-                    " ORDER BY t.transaction_execution_date").format(self.get_transaction_q(ouid, category_ouid))
+                    "SELECT "
+                    "    t.transaction_execution_date, "
+                    "    t.currency_ouid, "
+                    "    SUM(t.transaction_amount) AS total_amount "
+                    "FROM ({}) t "
+                    "GROUP BY CAST(t.transaction_execution_date AS DATE), t.currency_ouid "
+                    "ORDER BY t.transaction_execution_date ").format(self.get_transaction_q(ouid, category_ouid))
                 
                 response = {}
                 cnx = self.connect()
@@ -169,18 +169,18 @@ class DBHelper:
     
     def get_transaction_q(self, ouid, category_ouid):
         query = (
-            " SELECT"
-            "    t.ouid AS transaction_ouid,"
-            "    t.execution_date AS transaction_execution_date,"
-            "    cur.ouid AS currency_ouid,"
-            "    cur.symbol AS currency_symbol,"
-            "    t.amount AS transaction_amount,"
-            "    t.title AS transaction_title"
-            " FROM transaction t"
-            "    INNER JOIN currency cur ON cur.OUID = t.currency_ouid"
-            "    LEFT JOIN category c ON c.OUID = t.category_ouid"
-            " WHERE 1 = 1 {}"
-            " ORDER BY t.execution_date, t.OUID")
+            "SELECT "
+            "   t.ouid AS transaction_ouid, "
+            "   t.execution_date AS transaction_execution_date, "
+            "   cur.ouid AS currency_ouid, "
+            "   cur.symbol AS currency_symbol, "
+            "   t.amount AS transaction_amount, "
+            "   t.title AS transaction_title "
+            "FROM transaction t "
+            "   INNER JOIN currency cur ON cur.OUID = t.currency_ouid "
+            "   LEFT JOIN category c ON c.OUID = t.category_ouid "
+            "WHERE 1 = 1 {} "
+            "ORDER BY t.execution_date, t.OUID ")
         
         where = ""
         if ouid:
@@ -207,8 +207,8 @@ class DBHelper:
             data["title"] = "Назначение неизвестно"
         
         query = (
-            " INSERT INTO transaction (execution_date, category_ouid, currency_ouid, amount, title)"
-            " VALUES (%(execution_date)s, %(category_ouid)s, %(currency_ouid)s, %(amount)s, %(title)s)")
+            "INSERT INTO transaction (execution_date, category_ouid, currency_ouid, amount, title) "
+            "VALUES (%(execution_date)s, %(category_ouid)s, %(currency_ouid)s, %(amount)s, %(title)s) ")
         
         if self.mode == "prod":
             try:
@@ -228,5 +228,29 @@ class DBHelper:
         return -1
     
     def update_transaction(self, data):
-        pass
+        query = (
+            "UPDATE transaction SET {} "
+            "WHERE OUID = {} ")
         
+        set = ""
+        if "currency_ouid" in data and data["currency_ouid"]:
+            set += "currency_ouid = %(currency_ouid), "
+        
+        if set != "":
+            query.format(set, data["ouid"])
+            if self.mode == "prod":
+                try:
+                    cnx = self.connect()
+                    cursor = cnx.cursor()
+                    cursor.execute(query, data)
+                    cnx.commit()
+                    cursor.close()
+                    self.disconnect(cnx)
+                    return 0
+                except mysql.connector.Error as err:
+                    logger.error(err.msg)
+            else:
+                logger.info(query)
+                return 0
+        return -1
+
