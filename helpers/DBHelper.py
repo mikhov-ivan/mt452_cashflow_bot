@@ -237,8 +237,7 @@ class DBHelper:
             set += "currency_ouid = %(currency_ouid)s, "
         
         if set != "":
-            query = query.format(set, data["ouid"])
-            logger.info(query)
+            query = query.format(set + "1 = 1", data["ouid"])
             if self.mode == "prod":
                 try:
                     cnx = self.connect()
