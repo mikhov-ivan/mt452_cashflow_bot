@@ -79,6 +79,7 @@ class ServerUtils(object):
 class AppData(object):
     db = DBHelper()
     keyboards = {}
+    TRANSACTION_OUID = None
 
 
 class Preferences(object):

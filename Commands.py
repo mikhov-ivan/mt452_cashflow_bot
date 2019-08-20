@@ -161,10 +161,6 @@ class CmdGet(object):
 
 class CmdCreate(object):
     @classmethod
-    def create(cls):
-        pass
-    
-    @classmethod
     def create_transaction(cls, bot, update):
         ServerUtils.log_update(update)
         cmd = update.message.text
@@ -184,9 +180,33 @@ class CmdCreate(object):
                         "<b>{}</b>: {} {}{}".format(date, row.amount, row.currency, os.linesep),
                         "{}".format(row.title))
                     html = template.format(msg)
-                    TgUtils.send(bot, update, html)
+                    #TgUtils.send(bot, update, html)
+                    
+                    
+                    keyboard_items = {
+                        "€": "asd",
+                        "₽": "asd",
+                        "Нет категории": "asd",
+                        "Нет источника": "asd"}
+                    keyboard = TgUtils.build_keyboard(keyboard_items)
+                    
+                    update.message.reply_text(
+                        html,
+                        reply_markup=keyboard,
+                        parse_mode="HTML")
+                    TRANSACTION_OUID = new_ouid
                 else:
-                    TgUtils.send(bot, update, "Что-то пошло не так")
+                    TgUtils.send(bot, update, "Запись не удалась")
             else:
                 TgUtils.send(bot, update, "Что-то пошло не так")
 
+
+class CmdEdit(object):
+    @classmethod
+    def edit_transaction(cls, bot, update):
+        bot.edit_message_text(
+            chat_id=update.message.chat_id,
+            message_id=update.message.message_id,
+            text=msg,
+            reply_markup=response,
+            parse_mode="HTML")
