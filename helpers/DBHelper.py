@@ -207,10 +207,12 @@ class DBHelper:
             data["title"] = "Назначение неизвестно"
         
         query = (
-            "INSERT INTO transaction (execution_date, category_ouid, currency_ouid, amount, title) "
-            "VALUES (%(execution_date)s, %(category_ouid)s, %(currency_ouid)s, %(amount)s, %(title)s) ")
+            "INSERT INTO transaction (execution_date, category_ouid, currency_ouid, amount, title, last_update) "
+            "VALUES (%(execution_date)s, %(category_ouid)s, %(currency_ouid)s, %(amount)s, %(title)s, %(last_update)s) ")
         
         if self.mode == "prod":
+            data["last_update"] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            
             try:
                 cnx = self.connect()
                 cursor = cnx.cursor()
@@ -237,7 +239,10 @@ class DBHelper:
             set += "currency_ouid = %(currency_ouid)s, "
         
         if set != "":
-            query = query.format(set + "1 = 1", data["ouid"])
+            set += "last_update = %(last_update)s "
+            query = query.format(set, data["ouid"])
+            data["last_update"] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        
             if self.mode == "prod":
                 try:
                     cnx = self.connect()
