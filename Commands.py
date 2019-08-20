@@ -10,8 +10,8 @@ from Utils import ServerUtils
 from Structures import Types
 from Structures import Formats
 from Structures import Defaults
+from Structures import Constants
 from Structures import Regexps
-from Structures import Actions
 from Structures import ResponseTypes
 
 
@@ -63,7 +63,7 @@ class CmdGet(object):
         if response:
             if response_type == ResponseTypes.INLINE_KEYBOARD:
                 if is_callback:
-                    bot.edit_message_text(
+                    bot.update_message_text(
                         chat_id=update.message.chat_id,
                         message_id=update.message.message_id,
                         text=msg,
@@ -76,7 +76,7 @@ class CmdGet(object):
                         parse_mode="HTML")
             elif response_type == ResponseTypes.HTML:
                 if is_callback:
-                    bot.edit_message_text(
+                    bot.update_message_text(
                         chat_id=update.message.chat_id,
                         message_id=update.message.message_id,
                         text=response,
@@ -93,7 +93,7 @@ class CmdGet(object):
             response = AppData.db.get_category_groups()
             for cg in response.values():
                 # Get all available categories in the selected group
-                callback = "get_list -type category -g {}".format(cg.ouid)
+                callback = "get_list -type {} -g {}".format(Types.CATEGORY.value, cg.ouid)
                 keyboard_items[cg.title] = callback
             keyboard = TgUtils.build_keyboard(keyboard_items)
             AppData.keyboards["get_all_groups"] = keyboard
@@ -111,7 +111,7 @@ class CmdGet(object):
             response = AppData.db.get_categories(group_ouid=group_ouid)
             for c in response.values():
                 # Get all available categories in the selected group
-                callback = "get_list -type transaction -c {}".format(c.ouid)
+                callback = "get_list -type {} -c {}".format(Types.TRANSACTION.value, c.ouid)
                 keyboard_items[c.title] = callback
             keyboard = TgUtils.build_keyboard(keyboard_items)
             AppData.keyboards[keyboard_code] = keyboard
@@ -164,10 +164,9 @@ class CmdCreate(object):
     def create_transaction(cls, bot, update):
         ServerUtils.log_update(update)
         cmd = update.message.text
-        
         pattern = re.compile(Regexps.NUMBER.value)
         if pattern.match(cmd):
-            new_ouid = AppData.db.create_transaction(amount=cmd)
+            new_ouid = AppData.db.create_transaction({"amount": cmd})
             if new_ouid > -1:
                 response = AppData.db.get_transactions(ouid=new_ouid)
                 template = "{}"
@@ -187,9 +186,15 @@ class CmdCreate(object):
                     #TgUtils.send(bot, update, html)
                     
                     keyboard_items = {
-                        "Это €": "asd",
-                        "Это ₽": "asd",
-                        "Категория": "asd",
+                        "Валюта: €": "update -type {} -ouid {} -currency {}".format(
+                            Types.TRANSACTION.value,
+                            new_ouid,
+                            Constants.EUR_OUID.value),
+                        "Валюта: ₽": "update -type {} -ouid {} -currency {}".format(
+                            Types.TRANSACTION.value,
+                            new_ouid,
+                            Constants.RUB_OUID.value),
+                        "Категория": "get_list -type {}".format(Types.CATEGORY.value),
                         "Источник": "asd"}
                     keyboard = TgUtils.build_keyboard(keyboard_items, 2, False)
                     
@@ -204,10 +209,37 @@ class CmdCreate(object):
                 TgUtils.send(bot, update, "Что-то пошло не так")
 
 
-class CmdEdit(object):
+class CmdUpdate(object):
     @classmethod
-    def edit_transaction(cls, bot, update):
-        bot.edit_message_text(
+    def update(cls, bot, update):
+        ServerUtils.log_update(update)
+        cmd = update.message.text
+        args = cmd.split(" ")
+        type = None
+        
+        data = {}
+        for type in Types.values():
+            data[type.value] = {}
+        
+        for i in range(0, len(args)):
+            if args[i] == "-type":
+                type = args[i+1]
+            if args[i] == "-ouid":
+                data[type]["ouid"] = args[i+1]
+            if args[i] == "-currency":
+                data[type]["currency"] = args[i+1]
+        
+        if type == Types.TRANSACTION.value:
+            cls.update_transaction(bot, update, data[type])
+        
+    
+    @classmethod
+    def update_transaction(cls, bot, update, data):
+        type = Types.TRANSACTION.value
+        
+        AppData.db.update_transaction(data)
+        
+        bot.update_message_text(
             chat_id=update.message.chat_id,
             message_id=update.message.message_id,
             text=msg,

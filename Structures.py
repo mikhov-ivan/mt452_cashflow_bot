@@ -16,6 +16,11 @@ class Defaults(Enum):
     CURRENCY = 2
 
 
+class Constants(Enum):
+    EUR_OUID = 2
+    RUB_OUID = 2
+
+
 class Regexps(Enum):
     NUMBER = "^([0-9]*\.?[0-9]+)$"
 
@@ -29,7 +34,7 @@ class Types(Enum):
 class Actions(Enum):
     GET     = "get"
     CREATE  = "create"
-    EDIT    = "edit"
+    EDIT    = "update"
     DELETE  = "delete"
 
 

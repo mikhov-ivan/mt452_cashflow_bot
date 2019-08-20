@@ -190,29 +190,21 @@ class DBHelper:
         query = query.format(where)
         return query
     
-    def create_transaction(self, execution_date=None, category_ouid=None, currency_ouid=None, amount=None, title=None):
-        query_data = {
-            "execution_date": execution_date,
-            "category_ouid": category_ouid,
-            "currency_ouid": currency_ouid,
-            "amount": amount,
-            "title": title
-        }
+    def create_transaction(self, data):
+        if not "execution_date" in data or not data["execution_date"]:
+            data["execution_date"] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         
-        if not execution_date:
-            query_data["execution_date"] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        if not "category_ouid" in data or not data["category_ouid"]:
+            data["category_ouid"] = ""
         
-        if not category_ouid:
-            query_data["category_ouid"] = ""
-            
-        if not currency_ouid:
-            query_data["currency_ouid"] = Defaults.CURRENCY.value
-            
-        if not amount:
-            query_data["amount"] = ""
-            
-        if not title:
-            query_data["title"] = "Назначение неизвестно"
+        if not "currency_ouid" in data or not data["currency_ouid"]:
+            data["currency_ouid"] = Defaults.CURRENCY.value
+        
+        if not "amount" in data or not data["amount"]:
+            data["amount"] = ""
+        
+        if not "title" in data or not data["title"]:
+            data["title"] = "Назначение неизвестно"
         
         query = (
             " INSERT INTO transaction (execution_date, category_ouid, currency_ouid, amount, title)"
@@ -222,7 +214,7 @@ class DBHelper:
             try:
                 cnx = self.connect()
                 cursor = cnx.cursor()
-                cursor.execute(query, query_data)
+                cursor.execute(query, data)
                 new_ouid = cursor.lastrowid
                 cnx.commit()
                 cursor.close()
@@ -234,4 +226,7 @@ class DBHelper:
             logger.info(query)
             return 0
         return -1
+    
+    def update_transaction(self, data):
+        pass
         

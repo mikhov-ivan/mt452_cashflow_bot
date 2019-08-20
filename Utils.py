@@ -54,6 +54,7 @@ class TgUtils(object):
                     keyboard.append(line)
             elif len(line) > 0:
                 keyboard.append(line)
+                
             markup = InlineKeyboardMarkup(keyboard)
         return markup
 
