@@ -150,7 +150,7 @@ class CmdGet(object):
                         os.linesep)
                 msg += "{}<code>{}{}</code> {}".format(
                     os.linesep,
-                    ServerUtils.align_right(row.amount),
+                    ServerUtils.align_right(ServerUtils.numeric_format(row.amount)),
                     row.currency,
                     row.title)
             html = template.format(msg)
@@ -177,18 +177,21 @@ class CmdCreate(object):
                     row = response[new_ouid]
                     date = row.execution_date.strftime(Formats.DATETIME.value)
                     msg += "{}{}".format(
-                        "<b>{}</b>: {} {}{}".format(date, row.amount, row.currency, os.linesep),
+                        "<b>{}</b>: {} {}{}".format(
+                            date,
+                            ServerUtils.numeric_format(row.amount),
+                            row.currency,
+                            os.linesep),
                         "{}".format(row.title))
                     html = template.format(msg)
                     #TgUtils.send(bot, update, html)
-                    
                     
                     keyboard_items = {
                         "€": "asd",
                         "₽": "asd",
                         "Нет категории": "asd",
                         "Нет источника": "asd"}
-                    keyboard = TgUtils.build_keyboard(keyboard_items)
+                    keyboard = TgUtils.build_keyboard(keyboard_items, 2, False)
                     
                     update.message.reply_text(
                         html,

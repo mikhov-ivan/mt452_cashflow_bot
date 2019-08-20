@@ -27,14 +27,14 @@ class TgUtils(object):
         return json.dumps(reply_markup)
     
     @classmethod
-    def build_keyboard(cls, items):
+    def build_keyboard(cls, items, line_len=3, can_create=True):
         line = []
         keyboard = []
         markup = None
         if len(items):
             for title, callback in items.items():
                 button = InlineKeyboardButton(title, callback_data=callback)
-                if len(line) < 3:
+                if len(line) < line_len:
                     line.append(button)
                 else:
                     keyboard.append(line)
@@ -45,10 +45,11 @@ class TgUtils(object):
                 Utils.log("Register callback: {}".format(callback))
             
             button = InlineKeyboardButton("Создать", callback_data=callback)
-            if len(line) > 0 and len(line) < 3:
-                line.append(button)
+            if len(line) > 0 and len(line) < line_len:
+                if can_create:
+                    line.append(button)
                 keyboard.append(line)
-            else:
+            elif can_create:
                 line = [button]
                 keyboard.append(line)
             markup = InlineKeyboardMarkup(keyboard)
@@ -74,6 +75,10 @@ class ServerUtils(object):
     @classmethod
     def align_right(cls, value):
         return "{:6.1f}".format(value)
+    
+    @classmethod
+    def numeric_format(cls, value):
+        return "{.1f}".format(value)
 
 
 class AppData(object):
