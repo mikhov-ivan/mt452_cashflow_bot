@@ -44,13 +44,15 @@ class TgUtils(object):
                 callback = "{}_{}_{}".format(CmdPrefix.CREATE.value, TypePrefix.TRANSACTION.value, row.ouid)
                 Utils.log("Register callback: {}".format(callback))
             
-            button = InlineKeyboardButton("Создать", callback_data=callback)
-            if len(line) > 0 and len(line) < line_len:
-                if can_create:
+            if can_create:
+                button = InlineKeyboardButton("Создать", callback_data=callback)
+                if len(line) > 0 and len(line) < line_len:
                     line.append(button)
-                keyboard.append(line)
-            elif can_create:
-                line = [button]
+                    keyboard.append(line)
+                elif can_create:
+                    line = [button]
+                    keyboard.append(line)
+            elif len(line) > 0:
                 keyboard.append(line)
             markup = InlineKeyboardMarkup(keyboard)
         return markup

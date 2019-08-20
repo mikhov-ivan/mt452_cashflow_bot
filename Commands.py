@@ -187,10 +187,10 @@ class CmdCreate(object):
                     #TgUtils.send(bot, update, html)
                     
                     keyboard_items = {
-                        "€": "asd",
-                        "₽": "asd",
-                        "Нет категории": "asd",
-                        "Нет источника": "asd"}
+                        "Это €": "asd",
+                        "Это ₽": "asd",
+                        "Категория": "asd",
+                        "Источник": "asd"}
                     keyboard = TgUtils.build_keyboard(keyboard_items, 2, False)
                     
                     update.message.reply_text(
