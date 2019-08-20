@@ -168,12 +168,13 @@ class CmdCreate(object):
         if pattern.match(cmd):
             new_ouid = AppData.db.create_transaction({"amount": cmd})
             if new_ouid > -1:
-                response = AppData.db.get_transactions(ouid=new_ouid)
+                AppData.TRANSACTION_OUID = new_ouid
+                response = AppData.db.get_transactions(ouid=AppData.TRANSACTION_OUID)
                 template = "{}"
         
                 if len(response) == 1:
                     msg = ""
-                    row = response[new_ouid]
+                    row = response[AppData.TRANSACTION_OUID]
                     date = row.execution_date.strftime(Formats.DATETIME.value)
                     msg += "{}{}".format(
                         "<b>{}</b>: {} {}{}".format(
@@ -188,11 +189,11 @@ class CmdCreate(object):
                     keyboard_items = {
                         "Валюта: €": "update -type {} -ouid {} -currency {}".format(
                             Types.TRANSACTION.value,
-                            new_ouid,
+                            AppData.TRANSACTION_OUID,
                             Constants.EUR_OUID.value),
                         "Валюта: ₽": "update -type {} -ouid {} -currency {}".format(
                             Types.TRANSACTION.value,
-                            new_ouid,
+                            AppData.TRANSACTION_OUID,
                             Constants.RUB_OUID.value),
                         "Категория": "get_list -type {}".format(Types.CATEGORY.value),
                         "Источник": "asd"}
@@ -202,7 +203,6 @@ class CmdCreate(object):
                         html,
                         reply_markup=keyboard,
                         parse_mode="HTML")
-                    TRANSACTION_OUID = new_ouid
                 else:
                     TgUtils.send(bot, update, "Запись не удалась")
             else:
@@ -211,7 +211,7 @@ class CmdCreate(object):
 
 class CmdUpdate(object):
     @classmethod
-    def update(cls, bot, update):
+    def update(cls, bot, update, is_callback=False):
         ServerUtils.log_update(update)
         cmd = update.message.text
         args = cmd.split(" ")

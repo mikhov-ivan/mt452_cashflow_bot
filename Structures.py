@@ -31,13 +31,6 @@ class Types(Enum):
     TRANSACTION     = "transaction"
 
 
-class Actions(Enum):
-    GET     = "get"
-    CREATE  = "create"
-    EDIT    = "update"
-    DELETE  = "delete"
-
-
 class ResponseTypes(Enum):
     INLINE_KEYBOARD = "inline_keyboard"
     HTML            = "html"
