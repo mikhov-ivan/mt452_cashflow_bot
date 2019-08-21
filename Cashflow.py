@@ -39,5 +39,5 @@ class Bot:
                 ServerUtils.log("Handle callback: {}".format(query.data))
                 ServerUtils.log("Handle as: {}".format(cmd))
                 query.message.text = query.data
-                handler(bot, query, True)
+                handler(bot, query, is_callback=True)
 

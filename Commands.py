@@ -16,8 +16,8 @@ from Structures import ResponseTypes
 
 
 class CmdGet(object):
-    @classmethod
-    def get_list(cls, bot, update, is_callback=False):
+    @staticmethod
+    def get_list(bot, update, is_callback=False):
         ServerUtils.log_update(update)
         cmd = update.message.text
         args = cmd.split(" ")
@@ -43,27 +43,27 @@ class CmdGet(object):
                 pass
             else:
                 msg = "Список доступных <b>групп</b>"
-                response = cls.get_all_groups()
+                response = CmdGet.get_all_groups()
                 response_type = ResponseTypes.INLINE_KEYBOARD
         elif type == Types.CATEGORY.value:
             if ouid:
                 pass
             else:
                 msg = "Список доступных <b>категорий</b>"
-                response = cls.get_all_categories(group_ouid)
+                response = CmdGet.get_all_categories(group_ouid)
                 response_type = ResponseTypes.INLINE_KEYBOARD
         elif type == Types.TRANSACTION.value:
             if ouid:
                 pass
             else:
                 msg = "Список <b>транзакций</b>"
-                response = cls.get_all_transactions(category_ouid)
+                response = CmdGet.get_all_transactions(category_ouid)
                 response_type = ResponseTypes.HTML
         
         if response:
             if response_type == ResponseTypes.INLINE_KEYBOARD:
                 if is_callback:
-                    bot.update_message_text(
+                    bot.edit_message_text(
                         chat_id=update.message.chat_id,
                         message_id=update.message.message_id,
                         text=msg,
@@ -76,7 +76,7 @@ class CmdGet(object):
                         parse_mode="HTML")
             elif response_type == ResponseTypes.HTML:
                 if is_callback:
-                    bot.update_message_text(
+                    bot.edit_message_text(
                         chat_id=update.message.chat_id,
                         message_id=update.message.message_id,
                         text=response,
@@ -86,8 +86,8 @@ class CmdGet(object):
         else:
             TgUtils.send(bot, update, "Что-то пошло не так")
     
-    @classmethod
-    def get_all_groups(cls):
+    @staticmethod
+    def get_all_groups():
         if not "get_all_groups" in AppData.keyboards:
             keyboard_items = {}
             response = AppData.db.get_category_groups()
@@ -100,8 +100,8 @@ class CmdGet(object):
         keyboard = AppData.keyboards["get_all_groups"]
         return keyboard
     
-    @classmethod
-    def get_all_categories(cls, group_ouid):
+    @staticmethod
+    def get_all_categories(group_ouid):
         keyboard_code = "get_all_categories"
         if group_ouid:
             keyboard_code = "get_all_categories_group_{}".format(group_ouid)
@@ -118,8 +118,8 @@ class CmdGet(object):
         keyboard = AppData.keyboards[keyboard_code]
         return keyboard
     
-    @classmethod
-    def get_all_transactions(cls, category_ouid):
+    @staticmethod
+    def get_all_transactions(category_ouid):
         response = AppData.db.get_transactions(category_ouid=category_ouid)
         totals = AppData.db.get_transaction_totals(category_ouid=category_ouid)
         template = "{}"
@@ -160,8 +160,8 @@ class CmdGet(object):
 
 
 class CmdCreate(object):
-    @classmethod
-    def create_transaction(cls, bot, update):
+    @staticmethod
+    def create_transaction(bot, update):
         ServerUtils.log_update(update)
         cmd = update.message.text
         pattern = re.compile(Regexps.NUMBER.value)
@@ -169,14 +169,14 @@ class CmdCreate(object):
             new_ouid = AppData.db.create_transaction({"amount": cmd})
             if new_ouid > -1:
                 AppData.TRANSACTION_OUID = new_ouid
-                CmdUpdate.reply_with_transaction(bot, update, False, new_ouid)
+                CmdUpdate.reply_with_transaction(bot, update, False, int(new_ouid))
             else:
                 TgUtils.send(bot, update, "Что-то пошло не так (1)")
 
 
 class CmdUpdate(object):
-    @classmethod
-    def update(cls, bot, update, is_callback=False):
+    @staticmethod
+    def update(bot, update, is_callback=False):
         ServerUtils.log_update(update)
         cmd = update.message.text
         args = cmd.split(" ")
@@ -195,16 +195,16 @@ class CmdUpdate(object):
                 data[type]["currency_ouid"] = args[i+1]
         
         if type == Types.TRANSACTION.value:
-            cls.update_transaction(bot, update, data[type])
-            CmdUpdate.reply_with_transaction(bot, update, True, int(data[type]["ouid"]))
+            CmdUpdate.update_transaction(bot, update, data[type])
+            CmdUpdate.reply_with_transaction(bot, update, is_callback, int(data[type]["ouid"]))
         
-    @classmethod
-    def update_transaction(cls, bot, update, data):
+    @staticmethod
+    def update_transaction(bot, update, data):
         type = Types.TRANSACTION.value
         AppData.db.update_transaction(data)
     
-    @classmethod
-    def reply_with_transaction(cls, bot, update, is_callback, ouid):
+    @staticmethod
+    def reply_with_transaction(bot, update, is_callback, ouid):
         response = AppData.db.get_transactions(ouid=ouid)
         if len(response) == 1:
             template = "{}"
@@ -235,7 +235,7 @@ class CmdUpdate(object):
             keyboard = TgUtils.build_keyboard(keyboard_items, 2, False)
             
             if is_callback:
-                bot.update_message_text(
+                bot.edit_message_text(
                             chat_id=update.message.chat_id,
                             message_id=update.message.message_id,
                             text=html,
