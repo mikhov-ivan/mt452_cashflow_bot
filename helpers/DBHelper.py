@@ -118,6 +118,7 @@ class DBHelper:
                 cursor = cnx.cursor()
                 cursor.execute(query)
                 for row in cursor:
+                    logger.info(row[0])
                     response[row[0]] = Transaction(row[0], row[1], row[3], row[4], row[5])
                 cursor.close()
                 self.disconnect(cnx)
@@ -188,7 +189,6 @@ class DBHelper:
         if category_ouid:
             where += " AND c.OUID = {}".format(category_ouid)
         query = query.format(where)
-        logger.info(query)
         return query
     
     def create_transaction(self, data):
