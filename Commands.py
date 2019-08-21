@@ -204,7 +204,7 @@ class CmdUpdate(object):
         AppData.db.update_transaction(data)
     
     @classmethod
-    def reply_with_transaction(cls, bot, ouid):
+    def reply_with_transaction(cls, bot, update, ouid):
         response = AppData.db.get_transactions(ouid=ouid)
         if len(response) == 1:
             template = "{}"
