@@ -151,7 +151,7 @@ class CmdGet(object):
                 msg += "{}<code>{}{}</code> {}".format(
                     os.linesep,
                     ServerUtils.align_right(ServerUtils.numeric_format(row.amount)),
-                    AppData.db.get_currency(row.currency)["symbol"],
+                    AppData.db.get_currency(row.currency)[row.currency].symbol,
                     row.title)
             html = template.format(msg)
         else:
@@ -215,7 +215,7 @@ class CmdUpdate(object):
                 "<b>{}</b>: {} {}{}".format(
                     date,
                     ServerUtils.numeric_format(data.amount),
-                    AppData.db.get_currency(data.currency)["symbol"],
+                    AppData.db.get_currency(data.currency)[data.currency].symbol,
                     os.linesep),
                 "{}".format(data.title))
             html = template.format(msg)
