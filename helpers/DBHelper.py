@@ -188,6 +188,7 @@ class DBHelper:
         if category_ouid:
             where += " AND c.OUID = {}".format(category_ouid)
         query = query.format(where)
+        logger.info(query)
         return query
     
     def create_transaction(self, data):
