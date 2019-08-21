@@ -221,18 +221,22 @@ class CmdUpdate(object):
             html = template.format(msg)
             #TgUtils.send(bot, update, html)
             
-            keyboard_items = {
-                "Валюта: €": "update -type {} -ouid {} -currency {}".format(
-                    Types.TRANSACTION.value,
-                    AppData.TRANSACTION_OUID,
-                    Constants.EUR_OUID.value),
-                "Валюта: ₽": "update -type {} -ouid {} -currency {}".format(
-                    Types.TRANSACTION.value,
-                    AppData.TRANSACTION_OUID,
-                    Constants.RUB_OUID.value),
-                "Категория": "get_list -type {}".format(Types.CATEGORY.value),
-                "Источник": "asd"}
-            keyboard = TgUtils.build_keyboard(keyboard_items, 2, False)
+            keyboard_code = "transaction_{}".format(ouid)
+            if not keyboard_code in AppData.keyboards:
+                keyboard_items = {
+                    "Валюта: €": "update -type {} -ouid {} -currency {}".format(
+                        Types.TRANSACTION.value,
+                        AppData.TRANSACTION_OUID,
+                        Constants.EUR_OUID.value),
+                    "Валюта: ₽": "update -type {} -ouid {} -currency {}".format(
+                        Types.TRANSACTION.value,
+                        AppData.TRANSACTION_OUID,
+                        Constants.RUB_OUID.value),
+                    "Категория": "get_list -type {}".format(Types.CATEGORY.value),
+                    "Источник": "asd"}
+                keyboard = TgUtils.build_keyboard(keyboard_items, 2, False)
+                AppData.keyboards[keyboard_code] = keyboard
+            keyboard = AppData.keyboards[keyboard_code]
             
             if is_callback:
                 bot.edit_message_text(
@@ -248,3 +252,4 @@ class CmdUpdate(object):
                     parse_mode="HTML")
         else:
             TgUtils.send(bot, update, "Что-то пошло не так (2)")
+
