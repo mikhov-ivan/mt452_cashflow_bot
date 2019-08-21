@@ -1,5 +1,6 @@
 import os
 import re
+import time
 import datetime
 import calendar
 
@@ -120,10 +121,15 @@ class CmdGet(object):
     
     @staticmethod
     def get_all_transactions(category_ouid):
+        start = time.time()
         response = AppData.db.get_transactions(category_ouid=category_ouid)
-        totals = AppData.db.get_transaction_totals(category_ouid=category_ouid)
-        template = "{}"
+        ServerUtils.log("Time for get_transactions: {}".format(time.time() - start))
         
+        start = time.time()
+        totals = AppData.db.get_transaction_totals(category_ouid=category_ouid)
+        ServerUtils.log("Time for get_transactions: {}".format(time.time() - start))
+
+        template = "{}"
         if len(response) > 0:
             msg = ""
             current_date = None
