@@ -169,6 +169,7 @@ class CmdCreate(object):
             new_ouid = AppData.db.create_transaction({"amount": cmd})
             if new_ouid > -1:
                 AppData.TRANSACTION_OUID = new_ouid
+                CmdUpdate.reply_with_transaction(bot, update, new_ouid)
             else:
                 TgUtils.send(bot, update, "Что-то пошло не так (1)")
 
@@ -208,7 +209,7 @@ class CmdUpdate(object):
         if len(response) == 1:
             template = "{}"
             msg = ""
-            data = response[AppData.TRANSACTION_OUID]
+            data = response[ouid]
             date = data.execution_date.strftime(Formats.DATETIME.value)
             msg += "{}{}".format(
                 "<b>{}</b>: {} {}{}".format(
