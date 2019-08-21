@@ -17,9 +17,9 @@ from Commands import CmdUpdate
 class Bot:
     def __init__(self):
         self.cmds = {
-            "^(get_list.*)$": CmdGet.get_list,                  # get_list -type <type> [-ouid <ouid>]
-            "^(update.*)$":   CmdUpdate.update,                 # update -type <type> -ouid <ouid> [-currency <ouid>]
-            Regexps.NUMBER.value: CmdCreate.create_transaction  # create transaction by numeric input
+            "^(get_list.*)$":     CmdGet.get_list,             # get_list -type <type> [-ouid <ouid>]
+            "^(update.*)$":       CmdUpdate.update,            # update -type <type> -ouid <ouid> [-currency <ouid>]
+            Regexps.NUMBER.value: CmdCreate.create_transaction # create transaction by numeric input
         }
     
     def set_handlers(self, dispatcher):

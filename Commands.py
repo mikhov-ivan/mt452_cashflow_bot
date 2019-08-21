@@ -169,7 +169,7 @@ class CmdCreate(object):
             new_ouid = AppData.db.create_transaction({"amount": cmd})
             if new_ouid > -1:
                 AppData.TRANSACTION_OUID = new_ouid
-                CmdUpdate.reply_with_transaction(bot, update, new_ouid)
+                CmdUpdate.reply_with_transaction(bot, update, False, new_ouid)
             else:
                 TgUtils.send(bot, update, "Что-то пошло не так (1)")
 
@@ -196,7 +196,7 @@ class CmdUpdate(object):
         
         if type == Types.TRANSACTION.value:
             cls.update_transaction(bot, update, data[type])
-            CmdUpdate.reply_with_transaction(bot, update, int(data[type]["ouid"]))
+            CmdUpdate.reply_with_transaction(bot, update, True, int(data[type]["ouid"]))
         
     @classmethod
     def update_transaction(cls, bot, update, data):
@@ -204,7 +204,7 @@ class CmdUpdate(object):
         AppData.db.update_transaction(data)
     
     @classmethod
-    def reply_with_transaction(cls, bot, update, ouid):
+    def reply_with_transaction(cls, bot, update, is_callback, ouid):
         response = AppData.db.get_transactions(ouid=ouid)
         if len(response) == 1:
             template = "{}"
@@ -234,9 +234,17 @@ class CmdUpdate(object):
                 "Источник": "asd"}
             keyboard = TgUtils.build_keyboard(keyboard_items, 2, False)
             
-            update.message.reply_text(
-                html,
-                reply_markup=keyboard,
-                parse_mode="HTML")
+            if is_callback:
+                bot.update_message_text(
+                            chat_id=update.message.chat_id,
+                            message_id=update.message.message_id,
+                            text=html,
+                            reply_markup=keyboard,
+                            parse_mode="HTML")
+            else:
+                update.message.reply_text(
+                    html,
+                    reply_markup=keyboard,
+                    parse_mode="HTML")
         else:
             TgUtils.send(bot, update, "Что-то пошло не так (2)")
