@@ -131,7 +131,7 @@ class CmdGet(object):
                 date = row.execution_date.strftime(Formats.DATE.value)
                 if not current_date or date != current_date:
                     if current_date:
-                        msg += "{}".format(Formats.TG_BREAK.value)
+                        msg += "{}".format(os.linesep) # Formats.TG_BREAK.value
                     current_date = date
                     weekday = calendar.day_abbr[datetime.datetime.strptime(date, Formats.DATE.value).weekday()]
                     
