@@ -151,7 +151,7 @@ class CmdGet(object):
                 msg += "{}<code>{}{}</code> {}".format(
                     os.linesep,
                     ServerUtils.align_right(ServerUtils.numeric_format(row.amount)),
-                    row.currency,
+                    AppData.db.get_currency(row.currency).symbol,
                     row.title)
             html = template.format(msg)
         else:
@@ -215,25 +215,23 @@ class CmdUpdate(object):
                 "<b>{}</b>: {} {}{}".format(
                     date,
                     ServerUtils.numeric_format(data.amount),
-                    data.currency,
+                    AppData.db.get_currency(data.currency).symbol,
                     os.linesep),
                 "{}".format(data.title))
             html = template.format(msg)
-            #TgUtils.send(bot, update, html)
             
             keyboard_code = "transaction_{}".format(ouid)
             if not keyboard_code in AppData.keyboards:
+                if data.currency == Constants.EUR_OUID.value:
+                    switch_currency = Constants.RUB_OUID.value
+                else:
+                    switch_currency = Constants.EUR_OUID.value
                 keyboard_items = {
-                    "Валюта: €": "update -type {} -ouid {} -currency {}".format(
+                    "€ &rlarr; ₽": "update -type {} -ouid {} -currency {}".format(
                         Types.TRANSACTION.value,
                         AppData.TRANSACTION_OUID,
-                        Constants.EUR_OUID.value),
-                    "Валюта: ₽": "update -type {} -ouid {} -currency {}".format(
-                        Types.TRANSACTION.value,
-                        AppData.TRANSACTION_OUID,
-                        Constants.RUB_OUID.value),
-                    "Категория": "get_list -type {}".format(Types.CATEGORY.value),
-                    "Источник": "asd"}
+                        switch_currency),
+                    "Категория": "get_list -type {}".format(Types.CATEGORY.value)}
                 keyboard = TgUtils.build_keyboard(keyboard_items, 2, False)
                 AppData.keyboards[keyboard_code] = keyboard
             keyboard = AppData.keyboards[keyboard_code]

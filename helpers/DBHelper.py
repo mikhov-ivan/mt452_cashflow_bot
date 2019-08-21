@@ -8,6 +8,7 @@ from mysql.connector import errorcode
 
 from Structures import Formats
 from Structures import Defaults
+from Structures import Currency
 from Structures import CategoryGroup
 from Structures import Category
 from Structures import Transaction
@@ -32,6 +33,42 @@ class DBHelper:
         
     def disconnect(self, cnx):
         cnx.close()
+    
+    def get_currency(self, ouid=None):
+        if self.mode == "prod":
+            try:
+                query = (
+                    "SELECT "
+                    "   cur.ouid AS currency_ouid, "
+                    "   cur.code AS currency_code, "
+                    "   cur.symbol AS currency_symbol, "
+                    "   cur_msg.ru AS currency_title "
+                    "FROM currency cur "
+                    "   INNER JOIN msg cur_msg ON cur_msg.OUID = cur.title_msg_ouid "
+                    "WHERE 1 = 1 {} "
+                    "ORDER BY cur_msg.ru ")
+        
+                where = ""
+                if ouid:
+                    where += " AND cur.OUID = {}".format(ouid)
+                query = query.format(where)
+                
+                response = {}
+                cnx = self.connect()
+                cursor = cnx.cursor()
+                cursor.execute(query)
+                for row in cursor:
+                    response[row[0]] = Currency(row[0], row[1], row[2], row[3])
+                cursor.close()
+                self.disconnect(cnx)
+            except mysql.connector.Error as err:
+                logger.error(err.msg)
+        else:
+            response = {
+                "1": Currency("1", "RUB", "₽", "Российский рубль"),
+                "2": Currency("2", "EUR", "€", "Евро")
+            }
+        return response
     
     def get_category_groups(self):
         if self.mode == "prod":
@@ -118,7 +155,7 @@ class DBHelper:
                 cursor = cnx.cursor()
                 cursor.execute(query)
                 for row in cursor:
-                    response[row[0]] = Transaction(row[0], row[1], row[3], row[4], row[5])
+                    response[row[0]] = Transaction(row[0], row[1], row[2], row[4], row[5])
                 cursor.close()
                 self.disconnect(cnx)
             except mysql.connector.Error as err:

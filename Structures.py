@@ -36,6 +36,14 @@ class ResponseTypes(Enum):
     HTML            = "html"
 
 
+class Currency:
+    def __init__(self, ouid, code, symbol, title):
+        self.ouid = ouid
+        self.code = code
+        self.symbol = symbol
+        self.title = title
+
+
 class CategoryGroup:
     def __init__(self, ouid, code, title):
         self.ouid = ouid
@@ -51,10 +59,10 @@ class Category:
 
 
 class Transaction:
-    def __init__(self, ouid, execution_date, code, amount, title):
+    def __init__(self, ouid, execution_date, currency_ouid, amount, title):
         self.ouid = ouid
         self.execution_date = datetime.datetime.strptime(str(execution_date), Formats.DATETIME_DB.value)
-        self.currency = code
+        self.currency = currency_ouid
         self.amount = amount
         self.title = title
 
