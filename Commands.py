@@ -196,7 +196,7 @@ class CmdUpdate(object):
         
         if type == Types.TRANSACTION.value:
             cls.update_transaction(bot, update, data[type])
-            CmdUpdate.reply_with_transaction(bot, update, data[type]["ouid"])
+            CmdUpdate.reply_with_transaction(bot, update, int(data[type]["ouid"]))
         
     @classmethod
     def update_transaction(cls, bot, update, data):
@@ -209,7 +209,7 @@ class CmdUpdate(object):
         if len(response) == 1:
             template = "{}"
             msg = ""
-            data = response[str(ouid)]
+            data = response[ouid]
             date = data.execution_date.strftime(Formats.DATETIME.value)
             msg += "{}{}".format(
                 "<b>{}</b>: {} {}{}".format(
