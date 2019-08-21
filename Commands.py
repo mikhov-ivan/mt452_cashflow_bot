@@ -128,6 +128,10 @@ class CmdGet(object):
         start = time.time()
         totals = AppData.db.get_transaction_totals(category_ouid=category_ouid)
         ServerUtils.log("Time for get_transaction_totals: {}".format(time.time() - start))
+        
+        start = time.time()
+        currencies = AppData.db.get_currency()
+        ServerUtils.log("Time for get_currency: {}".format(time.time() - start))
 
         template = "{}"
         start = time.time()
@@ -158,7 +162,7 @@ class CmdGet(object):
                 msg += "{}<code>{}{}</code> {}".format(
                     os.linesep,
                     ServerUtils.align_right(ServerUtils.numeric_format(row.amount)),
-                    AppData.db.get_currency(row.currency)[row.currency].symbol,
+                    currencies[row.currency].symbol,
                     row.title)
             html = template.format(msg)
         else:
@@ -213,6 +217,7 @@ class CmdUpdate(object):
     
     @staticmethod
     def reply_with_transaction(bot, update, is_callback, ouid):
+        currencies = AppData.db.get_currency(data.currency)[data.currency].symbol
         response = AppData.db.get_transactions(ouid=ouid)
         if len(response) == 1:
             template = "{}"
@@ -223,7 +228,7 @@ class CmdUpdate(object):
                 "<b>{}</b>: {} {}{}".format(
                     date,
                     ServerUtils.numeric_format(data.amount),
-                    AppData.db.get_currency(data.currency)[data.currency].symbol,
+                    currencies[data.currency].symbol,
                     os.linesep),
                 "{}".format(data.title))
             html = template.format(msg)
