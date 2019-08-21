@@ -159,7 +159,7 @@ class CmdGet(object):
                         ServerUtils.numeric_format(total_eur), "€",
                         ServerUtils.numeric_format(total_rub), "₽",
                         os.linesep)
-                msg += "{}<code>{}{}</code> {}".format(
+                msg += "{}<code>{}{} </code>{}".format(
                     os.linesep,
                     ServerUtils.align_right(ServerUtils.numeric_format(row.amount)),
                     currencies[row.currency].symbol,
