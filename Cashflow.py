@@ -40,4 +40,5 @@ class Bot:
                 ServerUtils.log("Handle as: {}".format(cmd))
                 query.message.text = query.data
                 handler(bot, query, is_callback=True)
+                bot.answer_callback_query(callback_query_id=query.id)
 
