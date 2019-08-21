@@ -217,8 +217,8 @@ class CmdUpdate(object):
     
     @staticmethod
     def reply_with_transaction(bot, update, is_callback, ouid):
-        currencies = AppData.db.get_currency(data.currency)[data.currency].symbol
         response = AppData.db.get_transactions(ouid=ouid)
+        currencies = AppData.db.get_currency()
         if len(response) == 1:
             template = "{}"
             msg = ""
