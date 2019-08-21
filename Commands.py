@@ -127,9 +127,10 @@ class CmdGet(object):
         
         start = time.time()
         totals = AppData.db.get_transaction_totals(category_ouid=category_ouid)
-        ServerUtils.log("Time for get_transactions: {}".format(time.time() - start))
+        ServerUtils.log("Time for get_transaction_totals: {}".format(time.time() - start))
 
         template = "{}"
+        start = time.time()
         if len(response) > 0:
             msg = ""
             current_date = None
@@ -162,6 +163,7 @@ class CmdGet(object):
             html = template.format(msg)
         else:
             html = "Ничего не найдено"
+        ServerUtils.log("HTML generation time: {}".format(time.time() - start))
         return html
 
 
