@@ -220,14 +220,14 @@ class CmdUpdate(object):
                 "{}".format(data.title))
             html = template.format(msg)
             
-            keyboard_code = "transaction_{}".format(ouid)
+            keyboard_code = "transaction_{}_{}".format(ouid, data.currency)
             if not keyboard_code in AppData.keyboards:
                 if data.currency == Constants.EUR_OUID.value:
                     switch_currency = Constants.RUB_OUID.value
                 else:
                     switch_currency = Constants.EUR_OUID.value
                 keyboard_items = {
-                    "€ &rlarr; ₽": "update -type {} -ouid {} -currency {}".format(
+                    "€ ⇄ ₽": "update -type {} -ouid {} -currency {}".format(
                         Types.TRANSACTION.value,
                         AppData.TRANSACTION_OUID,
                         switch_currency),
