@@ -209,7 +209,7 @@ class CmdUpdate(object):
         if len(response) == 1:
             template = "{}"
             msg = ""
-            data = response[ouid]
+            data = response[str(ouid)]
             date = data.execution_date.strftime(Formats.DATETIME.value)
             msg += "{}{}".format(
                 "<b>{}</b>: {} {}{}".format(

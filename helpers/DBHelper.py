@@ -118,7 +118,6 @@ class DBHelper:
                 cursor = cnx.cursor()
                 cursor.execute(query)
                 for row in cursor:
-                    logger.info(row[0])
                     response[row[0]] = Transaction(row[0], row[1], row[3], row[4], row[5])
                 cursor.close()
                 self.disconnect(cnx)
